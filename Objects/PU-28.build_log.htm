@@ -5,7 +5,7 @@
 <h2>Tool Versions:</h2>
 IDE-Version: µVision V5.35.0.0
 Copyright (C) 2021 ARM Ltd and ARM Germany GmbH. All rights reserved.
-License Information: user honor2, advers, LIC=GMZI6-DHHH1-RA2DM-XIAJE-SF482-PLILQ
+License Information: Petr Grifov, TSSKB, LIC=X96CK-ZBUV6-BSFYX-H5133-4QU6P-6F0ZA
  
 Tool Versions:
 Toolchain:       MDK-ARM Plus  Version: 5.35.0.2
@@ -21,46 +21,43 @@ Target DLL:      Segger\JL2CM3.dll V2.99.40.0
 Dialog DLL:      TCM.DLL V1.53.0.0
  
 <h2>Project:</h2>
-C:\source\PU28RVC\PU-28.uvprojx
-Project File Date:  04/28/2023
+C:\source\Prg_v9.0.100.19 - elwell - GD\PU28RVC\PU-28.uvprojx
+Project File Date:  04/25/2023
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 7 (build 960)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Rebuild target 'Target'
-compiling error.cpp...
-compiling search.cpp...
-compiling main.cpp...
-compiling start_timers.cpp...
 compiling sleep.cpp...
+compiling error.cpp...
+compiling main.cpp...
+compiling search.cpp...
 compiling system.cpp...
+compiling start_timers.cpp...
 compiling setup_clock.cpp...
 compiling about.cpp...
-compiling setup.cpp...
 compiling text.cpp...
+compiling setup.cpp...
 compiling start_timer.cpp...
-compiling slider.cpp...
 compiling checkbox.cpp...
 compiling core.cpp...
 compiling clock.cpp...
-compiling canvas.cpp...
+compiling slider.cpp...
 compiling can.cpp...
 compiling rvc.cpp...
-User\Can\rvc.cpp(329): warning:  #1035-D: single-precision operand implicitly converted to double-precision
-                  preciseTemp = core.celToFar(preciseTemp)+0.5;
-User\Can\rvc.cpp: 1 warning, 0 errors
-compiling temperature.cpp...
+compiling canvas.cpp...
 compiling pgn_rvc.cpp...
-compiling memory.cpp...
+compiling temperature.cpp...
 compiling font.c...
-compiling sensor.cpp...
+compiling memory.cpp...
 compiling display.cpp...
+compiling sensor.cpp...
 compiling gd32f30x_can.c...
 compiling unix_time.cpp...
 compiling hcu.cpp...
 compiling usart.cpp...
 compiling gd32f30x_adc.c...
-compiling gd32f30x_bkp.c...
 compiling gd32f30x_crc.c...
+compiling gd32f30x_bkp.c...
 compiling gd32f30x_ctc.c...
 compiling gd32f30x_dac.c...
 compiling gd32f30x_dbg.c...
@@ -74,20 +71,20 @@ compiling gd32f30x_gpio.c...
 compiling gd32f30x_misc.c...
 compiling gd32f30x_i2c.c...
 compiling gd32f30x_pmu.c...
-compiling gd32f30x_rtc.c...
 compiling gd32f30x_rcu.c...
+compiling gd32f30x_rtc.c...
 compiling gd32f30x_sdio.c...
 compiling gd32f30x_spi.c...
-compiling gd32f30x_timer.c...
 assembling startup_gd32f30x_hd.s...
 compiling gd32f30x_wwdgt.c...
+compiling gd32f30x_timer.c...
 compiling gd32f30x_usart.c...
 compiling system_gd32f30x.c...
 linking...
-Program Size: Code=90780 RO-data=12032 RW-data=292 ZI-data=14428  
+Program Size: Code=90744 RO-data=12032 RW-data=292 ZI-data=14428  
 FromELF: creating hex file...
 After Build - User command #1: C:\Keil_v5\ARM\ARMCC\bin\fromelf.exe --bin Objects\PU-28.axf --output PU-28.bin
-".\Objects\PU-28.axf" - 0 Error(s), 1 Warning(s).
+".\Objects\PU-28.axf" - 0 Error(s), 0 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -129,10 +126,10 @@ Package Vendor: GigaDevice
 
 <h2>Collection of Component include folders:</h2>
   .\RTE\_Target
-  C:\Users\honor2\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include
-  C:\Users\honor2\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Firmware\Peripherals\inc
-  C:\Users\honor2\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Include
-  C:\Users\honor2\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Template
+  C:\Users\miai\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include
+  C:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Firmware\Peripherals\inc
+  C:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Include
+  C:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Template
 
 <h2>Collection of Component Files used:</h2>
 
@@ -143,20 +140,20 @@ Package Vendor: GigaDevice
       Source file:   Device\Firmware\Peripherals\src\gd32f30x_adc.c
 
    * Component: GigaDevice::Device:GD32F30x_StdPeripherals:BKP:1.0.2
-      Source file:   Device\Firmware\Peripherals\src\gd32f30x_bkp.c
       Include file:  Device\Firmware\Peripherals\inc\gd32f30x_bkp.h
+      Source file:   Device\Firmware\Peripherals\src\gd32f30x_bkp.c
 
    * Component: GigaDevice::Device:GD32F30x_StdPeripherals:CRC:1.0.2
-      Source file:   Device\Firmware\Peripherals\src\gd32f30x_crc.c
       Include file:  Device\Firmware\Peripherals\inc\gd32f30x_crc.h
+      Source file:   Device\Firmware\Peripherals\src\gd32f30x_crc.c
 
    * Component: GigaDevice::Device:GD32F30x_StdPeripherals:CTC:1.0.2
-      Source file:   Device\Firmware\Peripherals\src\gd32f30x_ctc.c
       Include file:  Device\Firmware\Peripherals\inc\gd32f30x_ctc.h
+      Source file:   Device\Firmware\Peripherals\src\gd32f30x_ctc.c
 
    * Component: GigaDevice::Device:GD32F30x_StdPeripherals:DAC:1.0.2
-      Include file:  Device\Firmware\Peripherals\inc\gd32f30x_dac.h
       Source file:   Device\Firmware\Peripherals\src\gd32f30x_dac.c
+      Include file:  Device\Firmware\Peripherals\inc\gd32f30x_dac.h
 
    * Component: GigaDevice::Device:GD32F30x_StdPeripherals:DBG:1.0.2
       Include file:  Device\Firmware\Peripherals\inc\gd32f30x_dbg.h
@@ -171,28 +168,28 @@ Package Vendor: GigaDevice
       Source file:   Device\Firmware\Peripherals\src\gd32f30x_enet.c
 
    * Component: GigaDevice::Device:GD32F30x_StdPeripherals:EXMC:1.0.2
-      Include file:  Device\Firmware\Peripherals\inc\gd32f30x_exmc.h
       Source file:   Device\Firmware\Peripherals\src\gd32f30x_exmc.c
+      Include file:  Device\Firmware\Peripherals\inc\gd32f30x_exmc.h
 
    * Component: GigaDevice::Device:GD32F30x_StdPeripherals:EXTI:1.0.2
-      Source file:   Device\Firmware\Peripherals\src\gd32f30x_exti.c
       Include file:  Device\Firmware\Peripherals\inc\gd32f30x_exti.h
+      Source file:   Device\Firmware\Peripherals\src\gd32f30x_exti.c
 
    * Component: GigaDevice::Device:GD32F30x_StdPeripherals:FMC:1.0.2
-      Include file:  Device\Firmware\Peripherals\inc\gd32f30x_fmc.h
       Source file:   Device\Firmware\Peripherals\src\gd32f30x_fmc.c
+      Include file:  Device\Firmware\Peripherals\inc\gd32f30x_fmc.h
 
    * Component: GigaDevice::Device:GD32F30x_StdPeripherals:FWDGT:1.0.2
-      Source file:   Device\Firmware\Peripherals\src\gd32f30x_fwdgt.c
       Include file:  Device\Firmware\Peripherals\inc\gd32f30x_fwdgt.h
+      Source file:   Device\Firmware\Peripherals\src\gd32f30x_fwdgt.c
 
    * Component: GigaDevice::Device:GD32F30x_StdPeripherals:GPIO:1.0.2
-      Include file:  Device\Firmware\Peripherals\inc\gd32f30x_gpio.h
       Source file:   Device\Firmware\Peripherals\src\gd32f30x_gpio.c
+      Include file:  Device\Firmware\Peripherals\inc\gd32f30x_gpio.h
 
    * Component: GigaDevice::Device:GD32F30x_StdPeripherals:I2C:1.0.2
-      Source file:   Device\Firmware\Peripherals\src\gd32f30x_i2c.c
       Include file:  Device\Firmware\Peripherals\inc\gd32f30x_i2c.h
+      Source file:   Device\Firmware\Peripherals\src\gd32f30x_i2c.c
 
    * Component: GigaDevice::Device:GD32F30x_StdPeripherals:MISC:1.0.2
       Include file:  Device\Firmware\Peripherals\inc\gd32f30x_misc.h
@@ -207,8 +204,8 @@ Package Vendor: GigaDevice
       Source file:   Device\Firmware\Peripherals\src\gd32f30x_rcu.c
 
    * Component: GigaDevice::Device:GD32F30x_StdPeripherals:RTC:1.0.2
-      Source file:   Device\Firmware\Peripherals\src\gd32f30x_rtc.c
       Include file:  Device\Firmware\Peripherals\inc\gd32f30x_rtc.h
+      Source file:   Device\Firmware\Peripherals\src\gd32f30x_rtc.c
 
    * Component: GigaDevice::Device:GD32F30x_StdPeripherals:SDIO:1.0.2
       Include file:  Device\Firmware\Peripherals\inc\gd32f30x_sdio.h
@@ -219,25 +216,25 @@ Package Vendor: GigaDevice
       Source file:   Device\Firmware\Peripherals\src\gd32f30x_spi.c
 
    * Component: GigaDevice::Device:GD32F30x_StdPeripherals:TIMER:1.0.2
-      Source file:   Device\Firmware\Peripherals\src\gd32f30x_timer.c
       Include file:  Device\Firmware\Peripherals\inc\gd32f30x_timer.h
+      Source file:   Device\Firmware\Peripherals\src\gd32f30x_timer.c
 
    * Component: GigaDevice::Device:GD32F30x_StdPeripherals:USART:1.0.2
       Source file:   Device\Firmware\Peripherals\src\gd32f30x_usart.c
       Include file:  Device\Firmware\Peripherals\inc\gd32f30x_usart.h
 
    * Component: GigaDevice::Device:GD32F30x_StdPeripherals:WWDGT:1.0.2
-      Include file:  Device\Firmware\Peripherals\inc\gd32f30x_wwdgt.h
       Source file:   Device\Firmware\Peripherals\src\gd32f30x_wwdgt.c
+      Include file:  Device\Firmware\Peripherals\inc\gd32f30x_wwdgt.h
 
    * Component: GigaDevice::Device:GD32F30x_libopt:1.0.2
       Include file:  Device\Template\gd32f30x_libopt.h
 
    * Component: GigaDevice::Device:Startup:1.0.2
       Include file:  Device\Include\gd32f30x.h
-      Source file:   Device\Source\ARM\startup_gd32f30x_hd.s
       Source file:   Device\Source\system_gd32f30x.c
-Build Time Elapsed:  00:00:10
+      Source file:   Device\Source\ARM\startup_gd32f30x_hd.s
+Build Time Elapsed:  00:00:05
 </pre>
 </body>
 </html>

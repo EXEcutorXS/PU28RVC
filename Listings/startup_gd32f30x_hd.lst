@@ -542,14 +542,14 @@ ARM Macro Assembler    Page 9
               00000000 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --apcs=
 interwork --depend=.\objects\startup_gd32f30x_hd.d -o.\objects\startup_gd32f30x
-_hd.o -I.\RTE\_Target -IC:\Users\honor2\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0
-\CMSIS\Core\Include -IC:\Users\honor2\AppData\Local\Arm\Packs\GigaDevice\GD32F3
-0x_DFP\2.0.0\Device\Firmware\Peripherals\inc -IC:\Users\honor2\AppData\Local\Ar
-m\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Include -IC:\Users\honor2\AppData\
-Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Template --predefine="__UV
-ISION_VERSION SETA 535" --predefine="_RTE_ SETA 1" --predefine="GD32F30X_HD SET
-A 1" --predefine="_RTE_ SETA 1" --list=.\listings\startup_gd32f30x_hd.lst RTE\D
-evice\GD32F303CC\startup_gd32f30x_hd.s
+_hd.o -I.\RTE\_Target -IC:\Users\miai\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\C
+MSIS\Core\Include -IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_D
+FP\2.0.0\Device\Firmware\Peripherals\inc -IC:\Users\miai\AppData\Local\Arm\Pack
+s\GigaDevice\GD32F30x_DFP\2.0.0\Device\Include -IC:\Users\miai\AppData\Local\Ar
+m\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Template --predefine="__UVISION_VE
+RSION SETA 535" --predefine="_RTE_ SETA 1" --predefine="GD32F30X_HD SETA 1" --p
+redefine="_RTE_ SETA 1" --list=.\listings\startup_gd32f30x_hd.lst RTE\Device\GD
+32F303CC\startup_gd32f30x_hd.s
 
 
 
