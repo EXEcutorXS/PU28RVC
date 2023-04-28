@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\PU-28.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\PU-28.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Fri Apr 28 13:54:56 2023
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Fri Apr 28 17:20:34 2023
 <BR><P>
 <H3>Maximum Stack Usage =        652 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -2231,7 +2231,7 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysTick_Handler
 </UL>
 
-<P><STRONG><a name="[f7]"></a>Core::celToFar(float)</STRONG> (Thumb, 26 bytes, Stack size 0 bytes, core.o(i._ZN4Core8celToFarEf))
+<P><STRONG><a name="[f7]"></a>Core::celToFar(float)</STRONG> (Thumb, 18 bytes, Stack size 0 bytes, core.o(i._ZN4Core8celToFarEf))
 <BR><BR>[Called By]<UL><LI><a href="#[d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Temperature::request()
 <LI><a href="#[f6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;readSetup()
 <LI><a href="#[193]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Setup::viewScreen15(unsigned char)
@@ -2239,7 +2239,7 @@ Global Symbols
 <LI><a href="#[13d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Hcu::parsing()
 </UL>
 
-<P><STRONG><a name="[13a]"></a>Core::farToCel(float)</STRONG> (Thumb, 26 bytes, Stack size 0 bytes, core.o(i._ZN4Core8farToCelEf))
+<P><STRONG><a name="[13a]"></a>Core::farToCel(float)</STRONG> (Thumb, 22 bytes, Stack size 0 bytes, core.o(i._ZN4Core8farToCelEf))
 <BR><BR>[Called By]<UL><LI><a href="#[1e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;System::viewTemperature(bool)
 <LI><a href="#[1fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RVCModule::handler()
 <LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Hcu::handler()
@@ -4260,17 +4260,18 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[163]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Clock::timeUpdate()
 </UL>
 
-<P><STRONG><a name="[1f9]"></a>RVCModule::ProcessMessage(unsigned char)</STRONG> (Thumb, 1284 bytes, Stack size 64 bytes, rvc.o(i._ZN9RVCModule14ProcessMessageEh))
+<P><STRONG><a name="[1f9]"></a>RVCModule::ProcessMessage(unsigned char)</STRONG> (Thumb, 1354 bytes, Stack size 64 bytes, rvc.o(i._ZN9RVCModule14ProcessMessageEh))
 <BR><BR>[Stack]<UL><LI>Max Depth = 96<LI>Call Chain = RVCModule::ProcessMessage(unsigned char) &rArr; __aeabi_d2uiz
 </UL>
 <BR>[Calls]<UL><LI><a href="#[9c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Slider::setPosition(short)
 <LI><a href="#[f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Core::celToFar(float)
 <LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Core::getTick()
 <LI><a href="#[1fa]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
-<LI><a href="#[9d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_i2d
+<LI><a href="#[13f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ui2d
 <LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2uiz
 <LI><a href="#[130]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ddiv
 <LI><a href="#[18e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dsub
+<LI><a href="#[131]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dadd
 <LI><a href="#[132]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
 </UL>
 <BR>[Called By]<UL><LI><a href="#[1fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RVCModule::handler()
@@ -4521,6 +4522,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Temperature::request()
 <LI><a href="#[190]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Setup::viewScreen13(unsigned char)
 <LI><a href="#[189]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Setup::viewScreen11(unsigned char)
+<LI><a href="#[1f9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RVCModule::ProcessMessage(unsigned char)
 </UL>
 
 <P><STRONG><a name="[21e]"></a>_dadd</STRONG> (Thumb, 332 bytes, Stack size 16 bytes, daddsub_clz.o(x$fpl$dadd), UNUSED)
@@ -4587,7 +4589,6 @@ Global Symbols
 <LI><a href="#[116]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_PGN_RVC::msgWaterHeater()
 <LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_PGN_RVC::msgAmbientTemp()
 <LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_PGN_RVC::msgExtMessage()
-<LI><a href="#[1f9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RVCModule::ProcessMessage(unsigned char)
 <LI><a href="#[169]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Clock::drawHour(unsigned short, char)
 <LI><a href="#[13d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Hcu::parsing()
 </UL>
@@ -4596,6 +4597,7 @@ Global Symbols
 
 <P><STRONG><a name="[13f]"></a>__aeabi_ui2d</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, dflt_clz.o(x$fpl$dfltu))
 <BR><BR>[Called By]<UL><LI><a href="#[189]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Setup::viewScreen11(unsigned char)
+<LI><a href="#[1f9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RVCModule::ProcessMessage(unsigned char)
 <LI><a href="#[13d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Hcu::parsing()
 </UL>
 

@@ -121,7 +121,7 @@ const Errors errors[28] =
 
 //-----------------------------------------------------
 int main(void)
-{
+ {
     readSetup();
     initAll();                                                                  // инициализация микроконтроллера
     display.setLight(display.setup.brightness);                                 // включение подсветки дисплея

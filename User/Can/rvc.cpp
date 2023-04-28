@@ -232,6 +232,7 @@ void RVCModule::ProcessMessage(uint8_t MsgNum)
     int16_t Ts;
     uint32_t DGN = (can.RxMsgBuf[MsgNum].RxMsg.rx_efid >> 8) & 0x1FFFF;
     uint8_t mesLen= can.RxMsgBuf[MsgNum].RxMsg.rx_dlen;
+		bool redrawSlider=false;
     if (mesLen!=8) return;
     hcu.lockTimer = core.getTick();
     switch(DGN) {
@@ -288,27 +289,30 @@ void RVCModule::ProcessMessage(uint8_t MsgNum)
                     air.isAirOn[0] = true;
                     air.isAirOn[1] = true;
                 }
+								redrawSlider=true;
 			}
-			if (((can.RxMsgBuf[MsgNum].RxMsg.rx_data[4]<<8)+can.RxMsgBuf[MsgNum].RxMsg.rx_data[3]) != 0xFFFF){
+				uint16_t temp = (can.RxMsgBuf[MsgNum].RxMsg.rx_data[4]<<8)+can.RxMsgBuf[MsgNum].RxMsg.rx_data[3];		
+			if( temp != 0xFFFF){
                 //If it's day we change day time setpoint,otherwise - night time
-				double precisionTemp = (can.RxMsgBuf[MsgNum].RxMsg.rx_data[4]<<8)+can.RxMsgBuf[MsgNum].RxMsg.rx_data[3];
+				
+				double precisionTemp = temp;
                 
-                precisionTemp = (Ts/32.0-273.0);
+                precisionTemp = (precisionTemp/32.0-273.0);
                 if (!(display.setup.celsius & 0x01)) {
-                    precisionTemp = core.celToFar(precisionTemp);
+                    precisionTemp = core.celToFar(precisionTemp)+0.5f;
                 }
 				Ts = (uint16_t)precisionTemp;
 				
                 if (!air.isDay) {
 					hcu.airHeaterTSetPoint[0]=Ts;
                     if (air.isAirOn[0]) {
-                        slider.setPosition(hcu.airHeaterTSetPoint[0]);
+                        redrawSlider=true;
                     }
                 }
                 else {
 					hcu.airHeaterTSetPoint[1]=Ts;
                     if (air.isAirOn[1]) {
-                        slider.setPosition(hcu.airHeaterTSetPoint[1]);
+                        redrawSlider=true;
                     }
                 }
             }
@@ -319,16 +323,17 @@ void RVCModule::ProcessMessage(uint8_t MsgNum)
     case 0x1FEF5: //Thermostat schedule command 1 //Supports only day/nignt schedule instances
         instance = can.RxMsgBuf[MsgNum].RxMsg.rx_data[0];
         if (instance == 1) {
-            Ts = (can.RxMsgBuf[MsgNum].RxMsg.rx_data[5] << 8) + can.RxMsgBuf[MsgNum].RxMsg.rx_data[4];
-            Ts = (int16_t)(Ts / 32 - 273);
+					float preciseTemp = (can.RxMsgBuf[MsgNum].RxMsg.rx_data[5] << 8) + can.RxMsgBuf[MsgNum].RxMsg.rx_data[4];
+            preciseTemp = (preciseTemp / 32 - 273);
             if (!(display.setup.celsius & 0x01)) {
-                Ts = core.celToFar(Ts);
+                preciseTemp = core.celToFar(preciseTemp)+0.5;
             }
+						Ts = (int16_t)preciseTemp;
             if (can.RxMsgBuf[MsgNum].RxMsg.rx_data[1] == 0) {
                 if ((can.RxMsgBuf[MsgNum].RxMsg.rx_data[5] << 8) + can.RxMsgBuf[MsgNum].RxMsg.rx_data[4] != 0xFFFF) {
                     hcu.airHeaterTSetPoint[0] = Ts;
                     if (air.isAirOn[0]) {
-                        slider.setPosition(hcu.airHeaterTSetPoint[0]);
+                        redrawSlider=true;
                     }
                 }
                 if (can.RxMsgBuf[MsgNum].RxMsg.rx_data[2] < 24) {
@@ -342,7 +347,7 @@ void RVCModule::ProcessMessage(uint8_t MsgNum)
                 if ((can.RxMsgBuf[MsgNum].RxMsg.rx_data[5] << 8) + can.RxMsgBuf[MsgNum].RxMsg.rx_data[4] != 0xFFFF) {
                     hcu.airHeaterTSetPoint[1] = Ts;
                     if (air.isAirOn[1]) {
-                        slider.setPosition(hcu.airHeaterTSetPoint[1]);
+                        redrawSlider=true;
                     }
                 }
                 if (can.RxMsgBuf[MsgNum].RxMsg.rx_data[2] < 24) {
@@ -352,7 +357,7 @@ void RVCModule::ProcessMessage(uint8_t MsgNum)
                     air.dayTimeM = can.RxMsgBuf[MsgNum].RxMsg.rx_data[3];
                 }
             }
-            //slider.setPosition(hcu.airHeaterTSetPoint[(air.isDay|air.isSelectDay)&(!air.isSelectNight)]);
+            
         }
         break;
     case 0x1FE96:
@@ -397,5 +402,8 @@ void RVCModule::ProcessMessage(uint8_t MsgNum)
             }
             break;
         }
+				
     }
+		if (redrawSlider)
+							slider.setPosition(hcu.airHeaterTSetPoint[(air.isDay|air.isSelectDay)&(!air.isSelectNight)]);
 }

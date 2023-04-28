@@ -120,12 +120,12 @@ void Core::resetTimer(void)
 //-----------------------------------------------------
 float Core::celToFar(float cel)
 {
-    return (9.0f / 5.0f * cel + 32.0f) + 0.5f;
+    return (9.0f / 5.0f * cel + 32.0f);
 }
 //-----------------------------------------------------
 float Core::farToCel(float far)
 {
-    return (5.0f / 9.0f * (far - 32.0f)) + 0.5f;
+    return (5.0f / 9.0f * (far - 32.0f));
 }
 //-----------------------------------------------------
 void Core::packFloat(uint8_t *dst, float val)
