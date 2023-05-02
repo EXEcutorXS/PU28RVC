@@ -21,6 +21,7 @@ class Memory
         uint8_t writePage(uint8_t* data, uint32_t addr, uint8_t len);
         uint8_t writeByte(uint8_t data, uint32_t addr, uint32_t len);
         void blockErase(uint32_t addr);
+        void lockMemory(bool isLock);
         void chipErase(void);
         uint32_t searchEnd(uint32_t* N);
         uint32_t searchImage(uint32_t N);
@@ -33,6 +34,9 @@ class Memory
     private:
         void reset(void);
         uint8_t writeEnable(void);
+        uint8_t volatileWriteEnable(void);
+        uint8_t writeDisable(void);
+        uint8_t globalUnlock(void);
         uint8_t write(uint8_t* data, uint8_t len);
         uint8_t read(uint8_t* data, uint8_t len);
         uint8_t readStatus(void);
@@ -87,11 +91,17 @@ extern Memory memory;
 typedef enum {
     W25_WRITE_DISABLE = 0x04,
     W25_WRITE_ENABLE = 0x06,
+    W25_VOLATILE_WRITE_ENABLE = 0x50,
+    
+    W25_GLOBAL_BLOCK_UNLOCK = 0x98,
      
     W25_READ_STATUS_1 = 0x05,
     W25_READ_STATUS_2 = 0x35,
     W25_READ_STATUS_3 = 0x15,
-     
+    
+    W25_SECTOL_LOCK = 0x36, 
+    W25_SECTOL_UNLOCK = 0x39, 
+    
     W25_WRITE_STATUS_1 = 0x01,
     W25_WRITE_STATUS_2 = 0x31,
     W25_WRITE_STATUS_3 = 0x11,
@@ -126,7 +136,7 @@ typedef struct {
     uint8_t busy : 1;
     uint8_t write_enable : 1;
     uint8_t block_protect : 3;
-    uint8_t top_bot_ptotect : 1;
+    uint8_t top_bot_protect : 1;
     uint8_t sector_protect : 1;
     uint8_t status_reg_protect0 : 1;
 } STATUS_REG1_STRUCT_t;
@@ -136,39 +146,44 @@ typedef union {
     STATUS_REG1_STRUCT_t bit;
 } Status_reg_1_t;
 
-// Структура принимаемых изображений через последовательный порт:
-// 0 - 0xAA
-// 1 - 0xCD
-// 2 - 0xBA
-// 3 - 0x00
-// 4 - Width (L)
-// 5 - Width (H)
-// 6 - Height (L)
-// 7 - Height (H)
-// 8 - Reserved
-// 9 - Reserved
-// 10 - Reserved
-// 11 - Reserved
-// 
-// Структура принимаемых команд для изображений через последовательный порт:
-// 0 - 0xAA
-// 1 - 0xCD
-// 2 - 0xBA
-// 3 - 0xC0
-// 4 - Width (L)
-// 5 - Width (H)
-// 6 - Height (L)
-// 7 - Height (H)
-// 8 - Command
-// 9 - Reserved
-// 10 - Reserved
-// 11 - Reserved
-// 
+
+typedef struct {
+    uint8_t status_reg_protect1 : 1;
+    uint8_t quad_enable : 1;
+    uint8_t reserved : 1;
+    uint8_t security_reg_lock : 3;
+    uint8_t complement_protect : 1;
+    uint8_t suspend_status : 1;
+} STATUS_REG2_STRUCT_t;
+
+typedef union {
+    uint8_t all;
+    STATUS_REG2_STRUCT_t bit;
+} Status_reg_2_t;
+
+
+typedef struct {
+    uint8_t reserved0 : 1;
+    uint8_t reserved1 : 1;
+    uint8_t write_protect_selection : 1;
+    uint8_t reserved3 : 1;
+    uint8_t reserved4 : 1;
+    uint8_t output_driver_strength : 2;
+    uint8_t hold_or_reset_function : 1;
+} STATUS_REG3_STRUCT_t;
+
+typedef union {
+    uint8_t all;
+    STATUS_REG3_STRUCT_t bit;
+} Status_reg_3_t;
+
+//-----------------------------------------------------
 // Структура хранимых изображений в памяти:
+// --------Заголовок----------
 // 0 - 0xCD
 // 1 - 0xBA
 // 2 - 0x00
-// 3 - Width (L)
+// 3 - Width (L)            размер данных = Width x Height x 3
 // 4 - Width (H)
 // 5 - Height (L)
 // 6 - Height (H)
@@ -176,48 +191,103 @@ typedef union {
 // 8 - Reserved
 // 9 - Reserved
 // 10 - Reserved
+// ---------Данные---------
 // 11 - Data (R)
 // 12 - Data (G)
 // 13 - Data (B)
 // 14 - ...
-// 
+
+//-----------------------------------------------------
 // Структура хранимых шрифтов в памяти:
+// --------Заголовок----------
 // 0 - 0xCD
 // 1 - 0xBA
-// 2 - 0x01
-// 3 - Language number
-// 4 - Length (L)
-// 5 - Length (H)
-// 6 - Width
-// 7 - Height
+// 2 - 0x00
+// 3 - Width (L)            размер данных = Width x Height x 3
+// 4 - Width (H)
+// 5 - Height (L)
+// 6 - Height (H)
+// 7 - Reserved
 // 8 - Reserved
 // 9 - Reserved
 // 10 - Reserved
+// ---------Данные---------
 // 11 - Data1 (L)
 // 12 - Data1 (H)
 // 13 - Data2 (L)
 // 14 - ...
-// 
+
+//-----------------------------------------------------
 // Структура хранимых строк в памяти:
+// --------Заголовок----------
 // 0 - 0xCD
 // 1 - 0xBA
-// 2 - 0x02
-// 3 - Language number
-// 4 - Length (L)
+// 2 - 0x00
+// 3 - Width (L)            размер данных = Width x Height x 3
+// 4 - Width (H)
+// 5 - Height (L)
+// 6 - Height (H)
+// 7 - Reserved
+// 8 - Reserved
+// 9 - Reserved
+// 10 - Reserved
+// ---------Данные---------
+// 11 - Stroke1 (L)
+// 12 - Stroke1 (H)
+// 13 - Stroke1 (L)
+// 14 - Stroke1 (H)
+// 15 - 0x00
+// 16 - Stroke2 (L)
+// 17 - Stroke2 (H)
+// 18 - ...
+
+//-----------------------------------------------------
+// Структура хранимых прошивок в памяти:
+// --------Заголовок----------
+// 0 - 0xCD
+// 1 - 0xBA
+// 2 - 0x01
+// 3 - Length (L)           размер данных (всех описаний и прошивки)
+// 4 - Length (M)
 // 5 - Length (H)
 // 6 - Reserved
 // 7 - Reserved
 // 8 - Reserved
 // 9 - Reserved
 // 10 - Reserved
-// 11 - Stroke1
-// 12 - Stroke1
-// 13 - 0x00
-// 14 - Stroke2
-// 15 - ...
-// 
+// ---------Данные---------
+// 11 - Length (L)          размер данных описания (на всех языках)
+// 12 - Length (H)
+// 13 - Language number     номер языка (0-eng, 1-rus, 2-cz...)
+// 14 - Stroke1 (L)         описание
+// 15 - Stroke1 (H)
+// 16 - Stroke1 (L)
+// 17 - Stroke1 (H)
+// 18 - ...
+// 19 - 0x00
+// xx - Language number     номер языка (0-eng, 1-rus, 2-cz...)
+// xx - Stroke2 (L)         описание
+// xx - Stroke2 (H)
+// xx - Stroke2 (L)
+// xx - Stroke2 (H)
+// xx - ...
+// xx - 0x00
+// xx - Address (L)         адрес загрузки в память, со смещением от загрузчика
+// xx - Address (M) 
+// xx - Address (M) 
+// xx - Address (H)
+// xx - CRC (L)             контрольная сумма
+// xx - CRC (H)
+// xx - Version 1           версия ПО
+// xx - Version 2
+// xx - Version 3
+// xx - Version 4
+// xx - Type device         тип устройства (0-пульт, 1- подогреватель)
+// xx - Data                прошивка
+// xx - Data
+// xx - ...
 
-
+//-----------------------------------------------------
 
 
 

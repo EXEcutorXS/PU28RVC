@@ -198,6 +198,7 @@ void initAll(void)
     temperature.initialize();
     //***********************************
     memory.initializeQuad();
+	memory.lockMemory(true);
     //***********************************
     slider.initialize();
     //***********************************

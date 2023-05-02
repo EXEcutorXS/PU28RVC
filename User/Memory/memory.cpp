@@ -38,7 +38,7 @@ uint8_t Memory::initializeSpi(void)
             MEM_CS_OFF;
             MEM_CS_ON;
             this->quadSend(W25_WRITE_STATUS_2);
-            this->quadSend(0x00);
+            this->quadSend(0x40);   // 0x00
             MEM_CS_OFF;
             this->isQuadMode = 0;
             a = this->ident();
@@ -88,7 +88,7 @@ uint8_t Memory::initializeQuad(void)
     
     MEM_CS_ON;
     this->spiSend(W25_WRITE_STATUS_2);
-    this->spiSend(0x02);
+    this->spiSend(0x42);    // 0x02
     MEM_CS_OFF;
     
     www = 1000;
@@ -117,7 +117,7 @@ uint8_t Memory::initializeQuad(void)
     core.delayMs(1);
     MEM_CS_ON;
     this->spiSend(W25_WRITE_STATUS_2);
-    this->spiSend(0x02);
+    this->spiSend(0x42);    // 0x02
     MEM_CS_OFF;
     
     www = 1000;
@@ -325,6 +325,51 @@ uint8_t Memory::writeEnable(void)
     return 0;
 }
 //-----------------------------------------------------
+uint8_t Memory::volatileWriteEnable(void)
+{
+    MEM_CS_ON;
+    if (!this->isQuadMode){
+        this->spiSend(W25_VOLATILE_WRITE_ENABLE);
+    }
+    else{
+        this->quadOutInit();
+        this->quadSend(W25_VOLATILE_WRITE_ENABLE);
+    }
+    MEM_CS_OFF;
+    
+    return 0;
+}
+//-----------------------------------------------------
+uint8_t Memory::writeDisable(void)
+{
+    MEM_CS_ON;
+    if (!this->isQuadMode){
+        this->spiSend(W25_WRITE_DISABLE);
+    }
+    else{
+        this->quadOutInit();
+        this->quadSend(W25_WRITE_DISABLE);
+    }
+    MEM_CS_OFF;
+    
+    return 0;
+}
+//-----------------------------------------------------
+uint8_t Memory::globalUnlock(void)
+{
+    MEM_CS_ON;
+    if (!this->isQuadMode){
+        this->spiSend(W25_GLOBAL_BLOCK_UNLOCK);
+    }
+    else{
+        this->quadOutInit();
+        this->quadSend(W25_GLOBAL_BLOCK_UNLOCK);
+    }
+    MEM_CS_OFF;
+    
+    return 0;
+}
+//-----------------------------------------------------
 uint8_t Memory::powerDown(void)
 {
     MEM_CS_ON;
@@ -415,6 +460,8 @@ uint8_t Memory::writePage(uint8_t* data, uint32_t addr, uint8_t len)
         r.all=this->readStatus();
     } while(r.bit.busy);
     
+    this->writeDisable();
+    
     return 0;
 }
 uint8_t Memory::writeByte(uint8_t data, uint32_t addr, uint32_t len)
@@ -449,6 +496,8 @@ uint8_t Memory::writeByte(uint8_t data, uint32_t addr, uint32_t len)
         r.all=this->readStatus();
     } while(r.bit.busy);
     
+    this->writeDisable();
+    
     return 0;
 }
 //-----------------------------------------------------
@@ -477,6 +526,8 @@ void Memory::blockErase(uint32_t addr)
     do {
         r.all=this->readStatus();
     } while(r.bit.busy);
+    
+    this->writeDisable();
 }
 //-----------------------------------------------------
 uint8_t Memory::writeZero(uint32_t addr, uint8_t len)
@@ -492,6 +543,8 @@ uint8_t Memory::writeZero(uint32_t addr, uint8_t len)
         this->spiSend(0xFF);
     }
     MEM_CS_OFF;
+    
+    this->writeDisable();
     return 0;
 }
 //-----------------------------------------------------
@@ -506,9 +559,151 @@ void Memory::reset(void)
     MEM_CS_OFF;
 }
 //-----------------------------------------------------
+void Memory::lockMemory(bool isLock)
+{
+    Status_reg_1_t reg1;
+    Status_reg_2_t reg2;
+    Status_reg_3_t reg3;
+    
+    MEM_CS_ON;
+    if (!this->isQuadMode){
+        this->spiSend(W25_READ_STATUS_3);
+        this->read(&reg3.all, 1);
+        MEM_CS_OFF; MEM_CS_ON;
+        this->spiSend(W25_READ_STATUS_2);
+        this->read(&reg2.all, 1);
+        MEM_CS_OFF; MEM_CS_ON;
+        this->spiSend(W25_READ_STATUS_1);
+        this->read(&reg1.all, 1);
+        MEM_CS_OFF; MEM_CS_ON;
+    }
+    else{
+        this->quadOutInit();
+        this->quadSend(W25_READ_STATUS_3);
+        this->quadInInit();
+        reg3.all = this->quadReceiv();
+        
+        MEM_CS_OFF; MEM_CS_ON;
+        this->quadOutInit();
+        this->quadSend(W25_READ_STATUS_2);
+        this->quadInInit();
+        reg2.all = this->quadReceiv();
+        
+        MEM_CS_OFF; MEM_CS_ON;
+        this->quadOutInit();
+        this->quadSend(W25_READ_STATUS_1);
+        this->quadInInit();
+        reg1.all = this->quadReceiv();
+    }
+    MEM_CS_OFF;
+    
+    if (reg3.bit.write_protect_selection != isLock || true){    // WPS = 1
+        
+        if (isLock){
+            // защищаем от записи нижние участки памяти
+            if (reg2.bit.complement_protect){
+                reg1.bit.top_bot_protect = false;
+                reg1.bit.block_protect = 0x06;
+            }
+            else{
+                reg1.bit.top_bot_protect = true;
+                reg1.bit.block_protect = 0x06;
+            }
+            //reg2.bit.complement_protect = false;
+            //reg3.bit.write_protect_selection = false;
+        }
+        else{
+            // снимаем защиту от записи
+            if (reg2.bit.complement_protect){
+                reg1.bit.top_bot_protect = false;
+                reg1.bit.block_protect = 0x07;
+            }
+            else{
+                reg1.bit.top_bot_protect = false;
+                reg1.bit.block_protect = 0x00;
+            }
+            //reg2.bit.complement_protect = false;
+            //reg3.bit.write_protect_selection = false;
+        }
+        volatileWriteEnable();
+        this->writeEnable();
+        
+        MEM_CS_ON;
+        if (!this->isQuadMode){
+            this->spiSend(W25_WRITE_STATUS_1);
+            this->spiSend(reg1.all);
+            
+            MEM_CS_OFF; 
+            MEM_CS_ON;
+            this->spiSend(W25_WRITE_STATUS_2);
+            this->spiSend(reg2.all);
+            
+            MEM_CS_OFF; 
+            MEM_CS_ON;
+            this->spiSend(W25_WRITE_STATUS_3);
+            this->spiSend(reg3.all);
+        }
+        else{
+            this->quadOutInit();
+            this->quadSend(W25_WRITE_STATUS_1);
+            this->quadSend(reg1.all);
+            
+            MEM_CS_OFF;
+            MEM_CS_ON;
+            this->quadSend(W25_WRITE_STATUS_2);
+            this->quadSend(reg2.all);
+            
+            MEM_CS_OFF; 
+            MEM_CS_ON;
+            this->quadSend(W25_WRITE_STATUS_3);
+            this->quadSend(reg3.all);
+        }
+        MEM_CS_OFF;
+        
+        do {
+            reg1.all = this->readStatus();
+        } while(reg1.bit.busy);
+        
+        this->writeDisable();
+        
+        MEM_CS_ON;
+        if (!this->isQuadMode){
+            this->spiSend(W25_READ_STATUS_3);
+            this->read(&reg3.all, 1);
+            MEM_CS_OFF; MEM_CS_ON;
+            this->spiSend(W25_READ_STATUS_2);
+            this->read(&reg2.all, 1);
+            MEM_CS_OFF; MEM_CS_ON;
+            this->spiSend(W25_READ_STATUS_1);
+            this->read(&reg1.all, 1);
+            MEM_CS_OFF; MEM_CS_ON;
+        }
+        else{
+            this->quadOutInit();
+            this->quadSend(W25_READ_STATUS_3);
+            this->quadInInit();
+            reg3.all = this->quadReceiv();
+            
+            MEM_CS_OFF; MEM_CS_ON;
+            this->quadOutInit();
+            this->quadSend(W25_READ_STATUS_2);
+            this->quadInInit();
+            reg2.all = this->quadReceiv();
+            
+            MEM_CS_OFF; MEM_CS_ON;
+            this->quadOutInit();
+            this->quadSend(W25_READ_STATUS_1);
+            this->quadInInit();
+            reg1.all = this->quadReceiv();
+        }
+        MEM_CS_OFF;
+    }
+}
+//-----------------------------------------------------
 uint8_t Memory::readStatus(void)
 {
     uint8_t resp;
+    
     MEM_CS_ON;
     if (!this->isQuadMode){
         this->spiSend(W25_READ_STATUS_1);
@@ -544,6 +739,8 @@ void Memory::chipErase(void)
     do {
         r.all=this->readStatus();
     } while(r.bit.busy);
+    
+    this->writeDisable();
 }
 //-----------------------------------------------------
 void Memory::fillPage(void)
