@@ -23,12 +23,17 @@ class CAN_PGN_RVC
 		void msgExtMessage();
 		void msgTimers();
 		void msgHeaterInfo();
+		void msgPanelInfo();
+		void msgHcuInfo();
+		void msgTimersSetupStatus();
 
 		int16_t tankTemperaturex10C;
 		int16_t airTemperaturex10C;
 		int16_t heatExchangerTemperaturex10C;
 		int16_t heaterTemperaturex10C;
 		int16_t panelSensorx10C;
+		
+		uint32_t minutesSinceStart;
         private:
             
 };

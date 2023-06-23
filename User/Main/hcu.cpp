@@ -13,12 +13,13 @@
 #include "slider.h"
 #include "main.h"
 #include "pgn_rvc.h"
+#include "rvc.h"
 
 Hcu hcu;
 //-----------------------------------------------------
 Hcu::Hcu(void)
 {
-    
+   clearErrorRequest = false; 
 }
 //-----------------------------------------------------
 void Hcu::handler(void)
@@ -35,6 +36,16 @@ void Hcu::handler(void)
         usart.processTimeOut();
     }
 
+	 if (usart.isTransmission == false && clearErrorRequest) {
+		 
+		 clearErrorRequest = false;
+            usart.packetOut[1] = 3;      //это команда, нужен ответ
+			usart.packetOut[2] = 0;      //Длина...данных нет, только команда
+            usart.packetOut[3] = 0;
+            usart.packetOut[4] = 5;
+            usart.startTransmission();
+        }
+	 
     if ((core.getTick() - timerRequest) >= 500 && core.getTick()>3000) { //запрос на передачу данных по изменению в случае потери связи первые 3 секунды молчим чтобы получить данные из HCU
         timerRequest = core.getTick();
         
@@ -63,6 +74,13 @@ void Hcu::handler(void)
                 usart.packetOut[i++] = core.farToCel(temperature.panel);
             }
             usart.packetOut[i++] = air.isPanelSensor;
+			uint8_t rvcTemp=255;
+			if (rvc.externalTemperatureProvided)
+			{
+				rvcTemp=rvc.externalTemperature-75;
+				if (rvcTemp==255) rvcTemp=254;
+			}
+			usart.packetOut[i++] = rvcTemp;
             
             usart.packetOut[2] = i-5;      //длина
             usart.startTransmission();
@@ -224,10 +242,12 @@ void Hcu::parsing(void)
                         i++;
                         
                         hcu.voltage = usart.packetIn[i]/10.0;
+						i++;
+						rvc.newState.FanSpeed=usart.packetIn[i];
                     }
 					   usart.linkCnt=0;
                     break;
-                case 0x16:  //запуск загрузчика
+                case 22:  //запуск загрузчика
                     if (usart.packetIn[1] == 2 
                      && usart.packetIn[4] == 0xAA
                      && usart.packetIn[5] == 0x55) {

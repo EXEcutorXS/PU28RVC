@@ -20,8 +20,10 @@ uint8_t FanSpeed;
 float setpointDay;
 float setpointNight;
 float currentSetpoint;
-	
+
+
 }rvcState_t;
+
 class RVCModule
 {
     public:
@@ -31,8 +33,11 @@ class RVCModule
         void ProcessMessage(uint8_t MsgNum);
 		rvcState_t oldState;
 		rvcState_t newState;
-	
+		bool externalTemperatureProvided;
+		float externalTemperature;
+		
     private:
+		uint32_t lastExtTempGetTick;		
 
 };
 

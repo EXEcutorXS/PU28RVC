@@ -32,6 +32,7 @@
 #include "canvas.h"
 #include "text.h"
 #include "font.h"
+#include "rvc.h"
 // Library
 #include <math.h>
 
@@ -308,7 +309,11 @@ void System::viewTemperature(bool isReset)
             tHcu = core.farToCel(temperatureActual);
         }
         
-        if (air.isPanelSensor & 0x01){
+		if (rvc.externalTemperatureProvided)
+		{
+		temp = rvc.externalTemperature;
+		}
+        else if (air.isPanelSensor & 0x01){
             temp = temperature.panel;
             if (tPanel >= 127){
                 if (countFault < 3) countFault++;
@@ -390,13 +395,13 @@ void System::viewTemperature(bool isReset)
                 str[1] = '-';
                 str[2] = 0;
                 canvas.writeFillRect((160-Font_16x26.width*5/2),190,Font_16x26.width*5,26,0);
-                text.writeOneDigit((160-w/2)+Font_16x26.width*0,190,str[0],display.COLOR_TEMP, false);
-                text.writeOneDigit((160-w/2)+Font_16x26.width*1,190,str[1],display.COLOR_TEMP, false);
+					text.writeOneDigit((160-w/2)+Font_16x26.width*0,190,str[0],rvc.externalTemperatureProvided?display.COLOR_TEMP_RVC:display.COLOR_TEMP, false);
+                text.writeOneDigit((160-w/2)+Font_16x26.width*1,190,str[1],rvc.externalTemperatureProvided?display.COLOR_TEMP_RVC:display.COLOR_TEMP, false);
             }
             else{
                 for (i=0; i<6; i++){
                     if (oldStr[i] != str[i]){
-                        text.writeOneDigit((160-w/2)+Font_16x26.width*i,190,str[i],display.COLOR_TEMP, false);
+                        text.writeOneDigit((160-w/2)+Font_16x26.width*i,190,str[i],rvc.externalTemperatureProvided?display.COLOR_TEMP_RVC:display.COLOR_TEMP, false);
                     }
                 }
             }
@@ -523,7 +528,7 @@ uint8_t System::sensorCheck(void)
                     viewDuration(isFHeaterOn, hcu.durationSystem);
                     if (isFHeaterOn) hcu.timerOffSystem = core.getTick();
                 }
-                //canPGNRVC.msgWaterHeater();
+                canPGNRVC.msgWaterHeater();
             }
             else if (slider.touch==0 && 
                 sensor.x1>(BUTTON_RIGHT_X-10) && 
@@ -534,7 +539,7 @@ uint8_t System::sensorCheck(void)
                     viewDuration(isEHeaterOn, hcu.durationSystem);
                     if (isEHeaterOn) hcu.timerOffSystem = core.getTick();
                 }
-                //canPGNRVC.msgWaterHeater();
+                canPGNRVC.msgWaterHeater();
             }
             else if (slider.touch==0 && 
                 sensor.x1>(BUTTON_DAY_NIGHT_X) && sensor.x1<(BUTTON_DAY_NIGHT_X+BUTTON_DAY_NIGHT_X_SIZE) && 

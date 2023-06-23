@@ -74,42 +74,7 @@ void Display::initialize(void)
     this->writeData(0xa4);
     this->writeData(0xa1);
     
-//--------------------------------ST7789S gamma setting------------------------------
-/*
-    this->writeCommand(0xe0);
-    this->writeData(0xd0);
-    this->writeData(0x00);
-    this->writeData(0x06);
-    this->writeData(0x09);
-    this->writeData(0x0b);
-    this->writeData(0x2a);
-    this->writeData(0x3c);
-    this->writeData(0x55);
-    this->writeData(0x4b);
-    this->writeData(0x08);
-    this->writeData(0x16);
-    this->writeData(0x14);
-    this->writeData(0x19);
-    this->writeData(0x20);
-    this->writeCommand(0xe1);
-    this->writeData(0xd0);
-    this->writeData(0x00);
-    this->writeData(0x06);
-    this->writeData(0x09);
-    this->writeData(0x0b);
-    this->writeData(0x29);
-    this->writeData(0x36);
-    this->writeData(0x54);
-    this->writeData(0x4b);
-    this->writeData(0x0d);
-    this->writeData(0x16);
-    this->writeData(0x14);
-    this->writeData(0x21);
-    this->writeData(0x20);
-    this->writeCommand(0x29);
-*/
-    //this->writeCommand(ST7789H2_IDMON);      // тест
-    
+   
     this->writeCommand(ST7789H2_PIXFMT);     // 
     if (this->setup.resolution == this->RESOLUTION_12) this->writeData(0x03);   // 0x03-12bit/pixel, 0x05-16bit/pixel, 0x06-18bit/pixel
     if (this->setup.resolution == this->RESOLUTION_16) this->writeData(0x05);   // 0x03-12bit/pixel, 0x05-16bit/pixel, 0x06-18bit/pixel
@@ -232,49 +197,17 @@ void Display::writeDataFast(uint8_t data)
 //-----------------------------------------------------
 void Display::writeColor(uint32_t color)
 {
-    /*if (this->setup.resolution == this->RESOLUTION_12){
-        //this->writeData(((color>>12)&0x0F) | ((color>>16)&0xF0));
-        //this->writeData(0 | ((color>>0)&0xF0));
-        DISP_cs_on;
-        this->writeDataFast(((color>>12)&0x0F) | ((color>>16)&0xF0));
-        this->writeDataFast(((color>>20)&0x0F) | ((color>>0)&0xF0));
-        this->writeDataFast(((color>>4)&0x0F) | ((color>>8)&0xF0));
-        DISP_cs_off;
-    }
-    else if (this->setup.resolution == this->RESOLUTION_16){*/
         this->writeData(((color>>13)&0x07) | ((color>>16)&0xF8));
         this->writeData(((color>>3)&0x1F) | ((color>>5)&0xE0));
-    /*}
-    else if (this->setup.resolution == this->RESOLUTION_18){
-        this->writeData((color>>16)&0xFF);
-        this->writeData((color>>8)&0xFF);
-        this->writeData(color&0xFF);
-    }*/
 }
 //-----------------------------------------------------
 void Display::writeColorFast(uint32_t color)
 {
     if (sleep.isLowPower) sleep.setLowPower(false);
-    /*if (this->setup.resolution == this->RESOLUTION_12){
-        this->pixelCount++;
-        if (this->pixelCount & 0x01){
-            this->pixelPrevious = color;
-        }
-        else{
-            this->writeDataFast(((this->pixelPrevious>>12)&0x0F) | ((this->pixelPrevious>>16)&0xF0));
-            this->writeDataFast(((color>>20)&0x0F) | ((this->pixelPrevious>>0)&0xF0));
-            this->writeDataFast(((color>>4)&0x0F) | ((color>>8)&0xF0));
-        }
-    }
-    else if (this->setup.resolution == this->RESOLUTION_16){*/
+
         writeData(0x100 + (((color>>13)&0x07) | ((color>>16)&0xF8)));
         writeData(0x100 + (((color>>3)&0x1F) | ((color>>5)&0xE0)));
-    /*}
-    else if (this->setup.resolution == this->RESOLUTION_18){
-        writeData(0x100 + ((color>>16)&0xFF));
-        writeData(0x100 + ((color>>8)&0xFF));
-        writeData(0x100 + (color&0xFF));
-    }*/
+
 }
 //-----------------------------------------------------
 void Display::setAddrWindow(uint16_t x, uint16_t y, uint16_t w, uint16_t h)
@@ -327,20 +260,7 @@ void Display::switchOn(void)
     this->writeCommand(ST7789H2_SLPOUT);
     this->writeCommand(ST7789H2_DISPON);
 }
-//-----------------------------------------------------
-/*extern "C" void DMA1_Channel2_3_IRQHandler(void)
-{
-    
-    DMA_ClearITPendingBit(DMA1_IT_TC3);
-    
-    DMA_ClearITPendingBit(DMA1_IT_GL3);
-    DMA_ClearITPendingBit(DMA1_IT_HT3);
-    DMA_ClearITPendingBit(DMA1_IT_TE3);
-    
-    DMA_Cmd(DMA1_Channel3, DISABLE); 
-    
-    display.isDispOk = 1;
-}*/
+
 //-----------------------------------------------------
 void Display::setTimer(uint32_t value)
 {

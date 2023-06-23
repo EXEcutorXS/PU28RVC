@@ -69,6 +69,8 @@ class Hcu
         uint8_t version[4];
         uint8_t heaterVersion[4];
         uint32_t heaterTotalOperatingTime; //время наработки подогревателя, с
+		
+		bool clearErrorRequest;
     private:
         
 };

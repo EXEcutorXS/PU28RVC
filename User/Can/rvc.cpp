@@ -20,6 +20,8 @@
 #include "hcu.h"
 #include "temperature.h"
 
+#define BKP_VALUE    0x32F0 
+
 RVCModule rvc;
 //-----------------------------------------------------
 RVCModule::RVCModule(void)
@@ -81,21 +83,6 @@ void RVCModule::handler(void)
         setpoint = core.farToCel(setpoint);
         temp = core.farToCel(temp);
     }
-    if ((!air.isAirOn[(air.isDay|air.isSelectDay)&(!air.isSelectNight)]) || ((air.isEHeaterOn&0x01)==0 && (air.isFHeaterOn&0x01)==0)) {
-        newState.FanSpeed = 0;
-    }
-    else if (hcu.fanManual)
-        newState.FanSpeed = hcu.fanPower;
-    else
-    {
-        if (temp >= setpoint+1) newState.FanSpeed = 0;
-        else if (temp >= setpoint-1) newState.FanSpeed = 35;
-        else if (temp >= setpoint-2) newState.FanSpeed = 50;
-        else if (temp >= setpoint-3) newState.FanSpeed = 70;
-        else if (temp >= setpoint-4) newState.FanSpeed = 85;
-        else newState.FanSpeed = 100;
-    }
-
 
     //Send updated info to CAN
     if (oldState.PumpState!=newState.PumpState)
@@ -157,6 +144,8 @@ void RVCModule::handler(void)
 
     }
 
+    if (core.getTick()-lastExtTempGetTick > 60000)
+        externalTemperatureProvided = false;
 
 
 }
@@ -165,9 +154,26 @@ void RVCModule::TransmitMessage(void)
 {
     static uint32_t lastMsgSendTick1 = core.getTick();
     static uint32_t lastMsgSendTick2 = core.getTick()+200; //Shift to spread messages
-    static uint8_t msgNum1 = 0;
-    static uint8_t msgNum2 = 0;
+    static uint32_t lastMsgSendTick3 = core.getTick()+300; //Shift to spread messages
+    static uint8_t msgNum1 = 1;
+    static uint8_t msgNum2 = 1;
+    static uint8_t msgNum3 = 1;
 
+    // every second messages
+    if ((core.getTick()-lastMsgSendTick3) >= 1000) {                             // 1000ms/msg count = 1000 / 1 = 1000
+        lastMsgSendTick3 = core.getTick();
+        switch(msgNum3)
+        {
+        case 1:
+            canPGNRVC.msgTimers();
+            break;
+        default:
+            msgNum3=0;
+            break;
+        }
+        msgNum3++;
+    }
+    //5 second messages
     if ((core.getTick()-lastMsgSendTick1) >= 416) {                             // 5000ms/msg count = 5000 / 12 = 416
         lastMsgSendTick1 = core.getTick();
         switch(msgNum1)
@@ -202,9 +208,10 @@ void RVCModule::TransmitMessage(void)
         case 10:
             canPGNRVC.msgExtMessage();
             break;
-        case 11:
-            canPGNRVC.msgTimers();
+		case 11:
+            canPGNRVC.msgTimersSetupStatus();
             break;
+
         default:
             canPGNRVC.msgDiagnosticMessage();
             msgNum1=0;
@@ -212,15 +219,20 @@ void RVCModule::TransmitMessage(void)
         msgNum1++;
     }
 
-    if ((core.getTick()-lastMsgSendTick2)>=60000) {                             // 60000ms/msg count = 5000 / 12 = 416
+    //60 second messages
+    if ((core.getTick()-lastMsgSendTick2)>=20000) {                             // 60000ms/msg count = 60000 / 3 = 20000
         lastMsgSendTick2 = core.getTick();
         switch(msgNum2)
         {
         case 1:
+            canPGNRVC.msgHeaterInfo();
+            break;
+        case 2:
+            canPGNRVC.msgPanelInfo();
             break;
 
         default:
-            canPGNRVC.msgHeaterInfo();
+            canPGNRVC.msgHcuInfo();
             msgNum2=0;
         }
         msgNum2++;
@@ -237,11 +249,41 @@ void RVCModule::ProcessMessage(uint8_t MsgNum)
     bool redrawSlider=false;
     if (mesLen!=8) return;
     hcu.lockTimer = core.getTick();
+    uint8_t* D = can.RxMsgBuf[MsgNum].RxMsg.rx_data;
     switch(DGN) {
+    case 0x1FFFF: //Date time
+        unixTime.year = D[0]+2000;
+        if (D[1]>0&&D[1]<13) unixTime.mon = D[1];
+        if (D[2]>0&&D[2]<32) unixTime.mday = D[2];
+        if (D[3]>0&&D[3]<8) unixTime.wday = D[3];
+        if (D[4]<24) unixTime.hour = D[4];
+        if (D[5]<60) unixTime.min = D[5];
+        if (D[6]<60) unixTime.sec = D[6];
+		    // allow access to BKP domain
+    rcu_periph_clock_enable(RCU_PMU);
+    pmu_backup_write_enable();
+    // wait for RTC registers synchronization
+    rtc_register_sync_wait();
+    rtc_lwoff_wait();
+    // wait until last write operation on RTC registers has finished
+    rtc_lwoff_wait();
+    
+    uint32_t timer = unixTime.calToTimer();
+    rtc_counter_set(timer);
+    bkp_write_data(BKP_DATA_0, BKP_VALUE);
+        break;
+
+    case 0x1FF9C: //Date time
+        if (D[0]!=1) return;
+        externalTemperatureProvided = true;
+        externalTemperature = (D[1]+D[2]*256)/32.0-273.0;
+        lastExtTempGetTick = core.getTick();
+        break;
+
     case 0x1FFF6: //Water Heater Command         //automatic and test modes are not supported
-        instance = can.RxMsgBuf[MsgNum].RxMsg.rx_data[0];
+        instance = D[0];
         if (instance == 1) {
-            switch(can.RxMsgBuf[MsgNum].RxMsg.rx_data[1]) {
+            switch(D[1]) {
             case 0: //Выключить все
                 air.isFHeaterOn = false;
                 air.isEHeaterOn = false;
@@ -265,22 +307,22 @@ void RVCModule::ProcessMessage(uint8_t MsgNum)
         }
         break;
     case 0x1FFE3: //Furnace Command
-        instance = can.RxMsgBuf[MsgNum].RxMsg.rx_data[0];
+        instance = D[0];
         if (instance == 1) {
-            B = can.RxMsgBuf[MsgNum].RxMsg.rx_data[1]&3;
+            B = D[1]&3;
             if (B < 2) {
                 hcu.fanManual = B | 2;
                 hcu.fanAuto = !B | 2;
-                if (can.RxMsgBuf[MsgNum].RxMsg.rx_data[2] < 201) {
-                    hcu.fanPower = can.RxMsgBuf[MsgNum].RxMsg.rx_data[2]/2;
+                if (D[2] < 201) {
+                    hcu.fanPower = D[2]/2;
                 }
             }
         }
         break;
     case 0x1FEF9: //Thermostat Command
-        instance = can.RxMsgBuf[MsgNum].RxMsg.rx_data[0];
+        instance = D[0];
         if (instance == 1) {
-            B = can.RxMsgBuf[MsgNum].RxMsg.rx_data[1]&0xF;
+            B = D[1]&0xF;
             if (B==2 || B==0 || B==3) { // 0-off // 2-heat 3-auto
 
                 if (B==0) {
@@ -293,7 +335,7 @@ void RVCModule::ProcessMessage(uint8_t MsgNum)
                 }
                 redrawSlider=true;
             }
-            uint16_t temp = (can.RxMsgBuf[MsgNum].RxMsg.rx_data[4]<<8)+can.RxMsgBuf[MsgNum].RxMsg.rx_data[3];
+            uint16_t temp = (D[4]<<8)+D[3];
             if( temp != 0xFFFF) {
                 //If it's day we change day time setpoint,otherwise - night time
 
@@ -323,53 +365,53 @@ void RVCModule::ProcessMessage(uint8_t MsgNum)
 
 
     case 0x1FEF5: //Thermostat schedule command 1 //Supports only day/nignt schedule instances
-        instance = can.RxMsgBuf[MsgNum].RxMsg.rx_data[0];
+        instance = D[0];
         if (instance == 1) {
-            float preciseTemp = (can.RxMsgBuf[MsgNum].RxMsg.rx_data[5] << 8) + can.RxMsgBuf[MsgNum].RxMsg.rx_data[4];
+            float preciseTemp = (D[5] << 8) + D[4];
             preciseTemp = (preciseTemp / 32 - 273);
             if (!(display.setup.celsius & 0x01)) {
                 preciseTemp = core.celToFar(preciseTemp)+0.5f;
             }
             Ts = (int16_t)preciseTemp;
-            if (can.RxMsgBuf[MsgNum].RxMsg.rx_data[1] == 0) {
-                if ((can.RxMsgBuf[MsgNum].RxMsg.rx_data[5] << 8) + can.RxMsgBuf[MsgNum].RxMsg.rx_data[4] != 0xFFFF) {
+            if (D[1] == 0) {
+                if ((D[5] << 8) + D[4] != 0xFFFF) {
                     hcu.airHeaterTSetPoint[0] = Ts;
                     if (air.isAirOn[0]) {
                         redrawSlider=true;
                     }
                 }
-                if (can.RxMsgBuf[MsgNum].RxMsg.rx_data[2] < 24) {
-                    air.nightTimeH = can.RxMsgBuf[MsgNum].RxMsg.rx_data[2];
+                if (D[2] < 24) {
+                    air.nightTimeH = D[2];
                 }
-                if (can.RxMsgBuf[MsgNum].RxMsg.rx_data[3] < 60) {
-                    air.nightTimeM = can.RxMsgBuf[MsgNum].RxMsg.rx_data[3];
+                if (D[3] < 60) {
+                    air.nightTimeM = D[3];
                 }
             }
-            else if (can.RxMsgBuf[MsgNum].RxMsg.rx_data[1] == 1) {
-                if ((can.RxMsgBuf[MsgNum].RxMsg.rx_data[5] << 8) + can.RxMsgBuf[MsgNum].RxMsg.rx_data[4] != 0xFFFF) {
+            else if (D[1] == 1) {
+                if ((D[5] << 8) + D[4] != 0xFFFF) {
                     hcu.airHeaterTSetPoint[1] = Ts;
                     if (air.isAirOn[1]) {
                         redrawSlider=true;
                     }
                 }
-                if (can.RxMsgBuf[MsgNum].RxMsg.rx_data[2] < 24) {
-                    air.dayTimeH = can.RxMsgBuf[MsgNum].RxMsg.rx_data[2];
+                if (D[2] < 24) {
+                    air.dayTimeH = D[2];
                 }
-                if (can.RxMsgBuf[MsgNum].RxMsg.rx_data[3] < 60) {
-                    air.dayTimeM = can.RxMsgBuf[MsgNum].RxMsg.rx_data[3];
+                if (D[3] < 60) {
+                    air.dayTimeM = D[3];
                 }
             }
 
         }
         break;
     case 0x1FE96:
-        if (can.RxMsgBuf[MsgNum].RxMsg.rx_data[0]==1)
+        if (D[0]==1)
         {
-            if (can.RxMsgBuf[MsgNum].RxMsg.rx_data[1]==0)
+            if (D[1]==0)
             {
                 hcu.pumpOn = 2;
             }
-            if (can.RxMsgBuf[MsgNum].RxMsg.rx_data[1]==1)
+            if (D[1]==1)
             {
                 hcu.pumpOn = 3;
                 hcu.timerPumpOn = core.getTick();
@@ -379,7 +421,7 @@ void RVCModule::ProcessMessage(uint8_t MsgNum)
         break;
 
     case 0x1EF65:
-        switch(can.RxMsgBuf[MsgNum].RxMsg.rx_data[0])
+        switch(D[0])
         {
         case 0x81:
             hcu.faultCodePanel = 0;
@@ -390,18 +432,39 @@ void RVCModule::ProcessMessage(uint8_t MsgNum)
             else {
                 hcu.isError = 0;
             }
+            hcu.clearErrorRequest=true;
             break;
+
         case 0x83:
-            if((can.RxMsgBuf[MsgNum].RxMsg.rx_data[1] & 3)!=3)
+            if((D[1] & 3)!=3)
             {
-                if ((can.RxMsgBuf[MsgNum].RxMsg.rx_data[1] & 3) == 0)
+                if ((D[1] & 3) == 0)
                     air.isWaterOn = false;
-                if ((can.RxMsgBuf[MsgNum].RxMsg.rx_data[1] & 3) == 1)
+                if ((D[1] & 3) == 1)
                 {
                     air.isWaterOn = true;
                     hcu.timerOffDomesticWater = core.getTick();
                 }
             }
+			canPGNRVC.msgWaterHeater2();
+            break;
+        case 0x89:
+            if ((D[1]+D[2]*256)!=0xFFFF)
+            {
+                uint16_t systemLimitation = D[1]+D[2]*256;
+                if (systemLimitation<60) systemLimitation=60;
+                if (systemLimitation>7200) systemLimitation=7200;
+                hcu.durationSystem = systemLimitation;
+            }
+
+            if ((D[3])!=0xFF)
+            {
+                uint16_t waterLimitation = D[3];
+                if (waterLimitation<30) waterLimitation=30;
+                if (waterLimitation>60) waterLimitation=60;
+                hcu.durationDomesticWater = waterLimitation;
+            }
+			canPGNRVC.msgTimersSetupStatus();
             break;
         }
 

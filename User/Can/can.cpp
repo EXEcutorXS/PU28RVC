@@ -97,10 +97,11 @@ void Can::initialize(void)
 	ConfigFilter(0x1FFF6,0); //Heater command
 	ConfigFilter(0x1FFE3,1); //Furnace command
 	ConfigFilter(0x1FEF9,2); //Thermostat control
-	//ConfigFilter(0x1FF9C,3); //Ambient temp
+	ConfigFilter(0x1FF9C,3); //Ambient temp
 	ConfigFilter(0x1FEF5,4); //Thermostat schedule command
 	ConfigFilter(0x1EF65,5); //Proprietary packet
 	ConfigFilter(0x1FE96,6); //Pump command
+	ConfigFilter(0x1FFFF,7); //Pump command
 
     //can_interrupt_enable(CAN0, CAN_INT_RFNE1); // |CAN_INT_WERR|CAN_INT_PERR|CAN_INT_ERRN |CAN_INT_ERR  CAN_INT_RFF1 CAN_INT_RFNE1
     //can_interrupt_enable(CAN0, CAN_INT_WERR | CAN_INT_PERR | CAN_INT_ERRN | CAN_INT_ERR); // |CAN_INT_WERR|CAN_INT_PERR|CAN_INT_ERRN |CAN_INT_ERR  

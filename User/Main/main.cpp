@@ -36,6 +36,7 @@
 #include "text.h"
 #include "unix_time.h"
 #include "can.h"
+#include "pgn_rvc.h"
 #include "rvc.h"
 
 #include "hcu.h"
@@ -61,6 +62,7 @@ void setNewId(void);
 void setNewKey(void);
 void writeSetup(void);
 void readSetup(void);
+void minuteHandler(void);
 
 /* Variables ------------------------------------------------------------------*/
 uint8_t screen_visible=SCREEN_VISIBLE_SEARCH, screen_visible_old=SCREEN_VISIBLE_AIR;
@@ -83,7 +85,7 @@ const uint8_t _CRC[11]  __attribute__((at(0x0803F800 ))) =
 {
     0x55, 0x55, 0x55, 0x55,     // длина ПО
     0x55, 0x55,                 // CRC ПО
-    9, 0, 100, 20,                // версия ПО
+    9, 0, 100, 20,              // версия ПО
     0x00                        // резерв
 };
 
@@ -156,7 +158,7 @@ int main(void)
         handlerTemperature();                                                   // получение данных температуры
         handlerClock();                                                         // обновление текущего времени
         handlerTimer();                                                         // отсчет ограничений по времени работы
-
+		minuteHandler();
         air.checkDayNight();                                                    // проверка дневного/ночного режима
 		
 		if (isTest)
@@ -903,7 +905,7 @@ void readSetup(void)
         hcu.fanPower = 50;
         hcu.pumpOn = 0;
         hcu.durationDomesticWater = 30;
-        hcu.durationSystem = 24*60;
+        hcu.durationSystem = 7200;
         
         air.dayTimeH = 7;
         air.dayTimeM = 0;
@@ -922,5 +924,15 @@ void readSetup(void)
         
         writeSetup();
     }
+}
+
+void minuteHandler()
+{
+static uint32_t lastTick=0;
+if (core.getTick()-lastTick>60000)
+{
+	lastTick+=60000;
+	canPGNRVC.minutesSinceStart++;
+}
 }
 //-----------------------------------------------------

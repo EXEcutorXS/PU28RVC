@@ -94,9 +94,6 @@ void Clock::timeRegulate(void)
     // wait until last write operation on RTC registers has finished
     rtc_lwoff_wait();
     
-    unixTime.year = 2022;
-    unixTime.mon = 6;
-    unixTime.mday = 0;
     unixTime.wday = weekDay;
     unixTime.hour = hour;
     unixTime.min = minute;

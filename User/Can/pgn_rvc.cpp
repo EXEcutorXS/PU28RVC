@@ -16,12 +16,14 @@
 #include "system.h"
 #include "temperature.h"
 #include "rvc.h"
+#include "main.h"
 
 CAN_PGN_RVC canPGNRVC;
 
 //-----------------------------------------------------
 CAN_PGN_RVC::CAN_PGN_RVC(void)
 {
+	minutesSinceStart=0;
 }
 //-----------------------------------------------------
 uint32_t CAN_PGN_RVC::generateAID(uint8_t priority, uint32_t DGN, uint8_t SA)
@@ -88,7 +90,9 @@ void CAN_PGN_RVC::msgDiagnosticMessage(void)
     uint8_t yellowLampStatus;
     uint8_t redLampStatus;
     uint8_t dsa;
-    uint32_t spn;
+    uint8_t spnMsb;
+	uint8_t spnIsb;
+	uint8_t spnLsb;
     uint8_t fmi;
     uint8_t occurenceCount;
     uint8_t reserved;
@@ -104,22 +108,26 @@ void CAN_PGN_RVC::msgDiagnosticMessage(void)
     else
         redLampStatus = 0;
 
-    spn = 0xFFFFFFFF;
+    
     fmi = 0xFF;
     occurenceCount = 0x7F;
     reserved = 1;
     if (hcu.faultCode!=0)
-        spn = hcu.faultCode;
+	{
+        spnMsb = hcu.faultCode;
+		spnMsb = 1;   //Instance
+	}
+	
     
-        dsaExtension=0xFF;
+        dsaExtension = 101;//Water heater address
     bankSelect = 0xFF;
     uint32_t pgn = generateAID(6, 0x1FECA, 101);
     can.SendMessage(pgn,
                     operatingStatus1 | (operatingStatus2<<2) | (yellowLampStatus<<4) | (redLampStatus<<6),
                     dsa,
-                    (spn>>11)&0xFF,
-                    (spn>>3)&0xFF,
-                    (spn<<5) | fmi,
+                    spnMsb,
+                    spnIsb,
+                    (spnLsb<<5) | fmi,
                     occurenceCount | (reserved<<7),
                     dsaExtension,
                     bankSelect);
@@ -341,4 +349,45 @@ void CAN_PGN_RVC::msgHeaterInfo()
 	                hcu.heaterVersion[3]);
 }
 
+void CAN_PGN_RVC::msgPanelInfo()
+{
+    uint32_t pgn = generateAID(6, 0x1EF65, 101);
+    can.SendMessage(pgn,
+                    0x87,
+                    minutesSinceStart,
+                    minutesSinceStart>>8,
+                    minutesSinceStart>>16,
+                    *(__IO uint8_t*)(CRC_FIRMWARE_ADDRESS+6),
+                    *(__IO uint8_t*)(CRC_FIRMWARE_ADDRESS+7),
+	                *(__IO uint8_t*)(CRC_FIRMWARE_ADDRESS+8),
+	                *(__IO uint8_t*)(CRC_FIRMWARE_ADDRESS+9));
+}
+
+void CAN_PGN_RVC::msgHcuInfo()
+{
+    uint32_t pgn = generateAID(6, 0x1EF65, 101);
+    can.SendMessage(pgn,
+                    0x88,
+                    0xFF,
+                    0xFF,
+                    0xFF,
+                    hcu.version[0],
+                    hcu.version[1],
+	                hcu.version[2],
+	                hcu.version[3]);
+}
+
+void CAN_PGN_RVC::msgTimersSetupStatus()
+{
+    uint32_t pgn = generateAID(6, 0x1EF65, 101);
+    can.SendMessage(pgn,
+                    0x8A,
+                    hcu.durationDomesticWater,
+                    hcu.durationSystem&0xFF,
+                    (hcu.durationSystem>>8)&0xFF,
+                    0xFF,
+                    0xFF,
+	                0xFF,
+	                0xFF);
+}
 
