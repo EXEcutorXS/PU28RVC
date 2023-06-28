@@ -29,7 +29,7 @@ class System
         bool isWaterOn;
         bool isFHeaterOn;
         bool isEHeaterOn;
-        bool isAirOn[2];
+        bool isAirOn;
         char isPanelSensor;
     
         bool isDay, isSelectDay, isSelectNight;

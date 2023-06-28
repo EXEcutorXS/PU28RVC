@@ -74,7 +74,7 @@ void System::viewScreen(bool isFirst)
         viewMode();
         slider.setMinMax(OFF_VALUE, MIN_VALUE, MAX_VALUE, SMALL_STEP, BIG_STEP); // ставим пределы шкалы и шаг отрисовки сетки
         value = hcu.airHeaterTSetPoint[(air.isDay|air.isSelectDay)&(!air.isSelectNight)];
-        if (air.isAirOn[(air.isDay|air.isSelectDay)&(!air.isSelectNight)]){
+        if (air.isAirOn){
             for (i=0; i<slider.VALUE_LEN; i++){                // ставим ползунок по настройке
                 if (slider.values[i] == value) break;
             }
@@ -138,7 +138,7 @@ uint8_t System::viewHandler(void)
     if (a == 0){                                   // ползунок дополз до места назначения
         value = slider.values[slider.position];
         if (sensor.status){
-            isAirOn[(air.isDay|air.isSelectDay)&(!air.isSelectNight)] = (slider.position != 0);
+            isAirOn = (slider.position != 0);
         }
         this->viewMode();                           // вывод на экран режима работы хоз.воды
         this->viewDuration();                       // вывод на экран режима выбора длительности работы
@@ -311,7 +311,10 @@ void System::viewTemperature(bool isReset)
         
 		if (rvc.externalTemperatureProvided)
 		{
-		temp = rvc.externalTemperature;
+			if (display.setup.celsius & 0x01)
+				temp = rvc.externalTemperature;
+			else
+				temp = core.celToFar(rvc.externalTemperature);
 		}
         else if (air.isPanelSensor & 0x01){
             temp = temperature.panel;
@@ -400,10 +403,11 @@ void System::viewTemperature(bool isReset)
             }
             else{
                 for (i=0; i<6; i++){
-                    if (oldStr[i] != str[i]){
+                    if (oldStr[i] != str[i] || rvc.externalTemperatureProvidedChanged){
                         text.writeOneDigit((160-w/2)+Font_16x26.width*i,190,str[i],rvc.externalTemperatureProvided?display.COLOR_TEMP_RVC:display.COLOR_TEMP, false);
                     }
                 }
+				rvc.externalTemperatureProvidedChanged = false;
             }
             for (i=0; i<6; i++) oldStr[i] = str[i];
         }
@@ -630,12 +634,10 @@ uint8_t System::sensorCheck(void)
         if (slider.mode == 1 || slider.touch == 1){
             if (slider.values[slider.position] > OFF_VALUE){
                 hcu.airHeaterTSetPoint[(air.isDay|air.isSelectDay)&(!air.isSelectNight)] = slider.values[slider.position];
-                air.isAirOn[0] = true;
-                air.isAirOn[1] = true;
+                air.isAirOn = true;
             }
             else{
-                air.isAirOn[0] = false;
-                air.isAirOn[1] = false;
+                air.isAirOn = false;
             }
             hcu.lockTimer = core.getTick();
         }

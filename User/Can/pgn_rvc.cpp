@@ -101,7 +101,7 @@ void CAN_PGN_RVC::msgDiagnosticMessage(void)
 
 
     operatingStatus1 = !(hcu.faultCodeHcu || hcu.faultCodeHeater || hcu.faultCodePanel);  // "Enabled" if we don't have any error codes
-    operatingStatus2 = hcu.stateHeater || hcu.stateAch || rvc.newState.FanSpeed; //Device is running if any of these units is active
+    operatingStatus2 = hcu.stateHeater || hcu.stateAch || rvc.newState.FanCurrentSpeed; //Device is running if any of these units is active
     yellowLampStatus = 0;
     if (hcu.faultCodeHcu || hcu.faultCodeHeater || hcu.faultCodePanel)
         redLampStatus = 1;
@@ -140,8 +140,8 @@ void CAN_PGN_RVC::msgFurnace()
     uint32_t pgn = generateAID(6, 0x1FFE4, 101);
     can.SendMessage(pgn,
                     1,
-                    rvc.newState.FanManual | 0xFC,
-                    rvc.newState.FanSpeed*2,
+                    rvc.newState.FanManualMode | 0xFC,
+                    rvc.newState.FanCurrentSpeed*2,
                     0xFF,
                     0xFF,
                     0xFF,
@@ -162,7 +162,7 @@ void CAN_PGN_RVC::msgThermostat1()
 
 
     instance = 1;
-    if (air.isAirOn[air.isDay]) {
+    if (air.isAirOn) {
         operatingMode = 2;
     }
     else {
@@ -192,7 +192,7 @@ void CAN_PGN_RVC::msgThermostat2()
     uint8_t numberScheduleInstance;
 
     currentScheduleInstance = air.isDay;
-    numberScheduleInstance = 2;
+    numberScheduleInstance = 2;     //total instances
 
     uint32_t pgn = generateAID(6, 0x1FEFA, 101);
     can.SendMessage(pgn,
@@ -291,7 +291,7 @@ void CAN_PGN_RVC::msgExtMessage()
                     tankTemperature>>8,
                     heaterTemperature,
                     heaterTemperature>>8,
-                    0xFF,
+                    hcu.fanPower*2,
                     0xFF);
 
 }
@@ -307,7 +307,7 @@ void CAN_PGN_RVC::msgTimers()
 	else if (hcu.durationSystem<7200)
 		systemTimer = (uint32_t)hcu.durationSystem*60 - (core.getTick()-hcu.timerOffSystem)/1000;
 	else
-		systemTimer = 16777214;
+		systemTimer = 432000;
 		
 		
 	if (air.isWaterOn)
@@ -382,9 +382,9 @@ void CAN_PGN_RVC::msgTimersSetupStatus()
     uint32_t pgn = generateAID(6, 0x1EF65, 101);
     can.SendMessage(pgn,
                     0x8A,
-                    hcu.durationDomesticWater,
                     hcu.durationSystem&0xFF,
-                    (hcu.durationSystem>>8)&0xFF,
+					(hcu.durationSystem>>8)&0xFF,
+                    hcu.durationDomesticWater,
                     0xFF,
                     0xFF,
 	                0xFF,

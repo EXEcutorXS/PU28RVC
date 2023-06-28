@@ -89,7 +89,7 @@ void Can::initialize(void)
     canInitStruct.no_auto_retrans = ENABLE;                                    
     canInitStruct.rec_fifo_overwrite = DISABLE;                                
     canInitStruct.trans_fifo_order = DISABLE;                                  
-    canInitStruct.prescaler = 3000/bdrt*2.5;                                   
+    canInitStruct.prescaler = SystemCoreClock/32000/bdrt;                                   
     
     can_init(CAN0, &canInitStruct);
     
@@ -103,7 +103,7 @@ void Can::initialize(void)
 	ConfigFilter(0x1FE96,6); //Pump command
 	ConfigFilter(0x1FFFF,7); //Pump command
 
-    //can_interrupt_enable(CAN0, CAN_INT_RFNE1); // |CAN_INT_WERR|CAN_INT_PERR|CAN_INT_ERRN |CAN_INT_ERR  CAN_INT_RFF1 CAN_INT_RFNE1
+    can_interrupt_enable(CAN0, CAN_INT_RFNE1); // |CAN_INT_WERR|CAN_INT_PERR|CAN_INT_ERRN |CAN_INT_ERR  CAN_INT_RFF1 CAN_INT_RFNE1
     //can_interrupt_enable(CAN0, CAN_INT_WERR | CAN_INT_PERR | CAN_INT_ERRN | CAN_INT_ERR); // |CAN_INT_WERR|CAN_INT_PERR|CAN_INT_ERRN |CAN_INT_ERR  
             // CAN_INT_RFF0 | CAN_INT_RFF1 | CAN_INT_RFO0 | CAN_INT_RFO1 | 
     can_interrupt_enable(CAN0, CAN_INT_RFNE1); 
@@ -196,7 +196,4 @@ extern "C" void CAN0_RX1_IRQHandler(void)
         can.SaveMessage();
         can_interrupt_flag_clear(CAN0, CAN_INT_FLAG_RFL1);
     }
-    
-	//rvc.ProcessMessage();
-	//TO DO: RV-C message handler
 }

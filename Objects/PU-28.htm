@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\PU-28.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\PU-28.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Fri Jun 23 19:05:29 2023
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Wed Jun 28 16:54:38 2023
 <BR><P>
 <H3>Maximum Stack Usage =        652 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -729,7 +729,7 @@ Global Symbols
 <LI><a href="#[b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;activitySetup()
 </UL>
 
-<P><STRONG><a name="[9a]"></a>activityAir()</STRONG> (Thumb, 524 bytes, Stack size 24 bytes, main.o(i._Z11activityAirv))
+<P><STRONG><a name="[9a]"></a>activityAir()</STRONG> (Thumb, 496 bytes, Stack size 24 bytes, main.o(i._Z11activityAirv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 628<LI>Call Chain = activityAir() &rArr; Setup::viewScreen() &rArr; Setup::viewPage(unsigned char, unsigned char) &rArr; Setup::viewScreen11(unsigned char) &rArr; Text::writeDigit(unsigned short, unsigned short, const char*, unsigned, unsigned char) &rArr; Text::writeOneDigit(unsigned short, unsigned short, char, unsigned, unsigned char) &rArr; Canvas::loadImageOverColor(unsigned short, unsigned short, unsigned, unsigned, unsigned char, unsigned) &rArr; Canvas::writePixel(short, short, unsigned) &rArr; Display::setAddrWindow(unsigned short, unsigned short, unsigned short, unsigned short) &rArr; Display::writeData(unsigned char) &rArr; Sleep::setLowPower(bool) &rArr; Usart::changeBaudrate(unsigned) &rArr; usart_baudrate_set(unsigned, unsigned) &rArr; rcu_clock_freq_get(rcu_clock_freq_enum)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;System::viewHandler()
@@ -1836,7 +1836,7 @@ Global Symbols
 
 <P><STRONG><a name="[267]"></a>StartTimer::StartTimer__sub_object()</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, start_timer.o(i._ZN10StartTimerC1Ev), UNUSED)
 
-<P><STRONG><a name="[10f]"></a>CAN_PGN_RVC::msgFurnace()</STRONG> (Thumb, 66 bytes, Stack size 40 bytes, pgn_rvc.o(i._ZN11CAN_PGN_RVC10msgFurnaceEv))
+<P><STRONG><a name="[10f]"></a>CAN_PGN_RVC::msgFurnace()</STRONG> (Thumb, 70 bytes, Stack size 40 bytes, pgn_rvc.o(i._ZN11CAN_PGN_RVC10msgFurnaceEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 76<LI>Call Chain = CAN_PGN_RVC::msgFurnace() &rArr; Can::SendMessage(unsigned, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can::SendMessage(unsigned, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char)
@@ -1884,7 +1884,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[202]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RVCModule::TransmitMessage()
 </UL>
 
-<P><STRONG><a name="[114]"></a>CAN_PGN_RVC::msgExtMessage()</STRONG> (Thumb, 152 bytes, Stack size 64 bytes, pgn_rvc.o(i._ZN11CAN_PGN_RVC13msgExtMessageEv))
+<P><STRONG><a name="[114]"></a>CAN_PGN_RVC::msgExtMessage()</STRONG> (Thumb, 162 bytes, Stack size 64 bytes, pgn_rvc.o(i._ZN11CAN_PGN_RVC13msgExtMessageEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 100<LI>Call Chain = CAN_PGN_RVC::msgExtMessage() &rArr; Can::SendMessage(unsigned, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can::SendMessage(unsigned, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char)
@@ -1918,7 +1918,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[202]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RVCModule::TransmitMessage()
 </UL>
 
-<P><STRONG><a name="[117]"></a>CAN_PGN_RVC::msgThermostat1()</STRONG> (Thumb, 136 bytes, Stack size 64 bytes, pgn_rvc.o(i._ZN11CAN_PGN_RVC14msgThermostat1Ev))
+<P><STRONG><a name="[117]"></a>CAN_PGN_RVC::msgThermostat1()</STRONG> (Thumb, 132 bytes, Stack size 64 bytes, pgn_rvc.o(i._ZN11CAN_PGN_RVC14msgThermostat1Ev))
 <BR><BR>[Stack]<UL><LI>Max Depth = 100<LI>Call Chain = CAN_PGN_RVC::msgThermostat1() &rArr; Can::SendMessage(unsigned, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can::SendMessage(unsigned, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char)
@@ -1952,7 +1952,7 @@ Global Symbols
 <LI><a href="#[202]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RVCModule::TransmitMessage()
 </UL>
 
-<P><STRONG><a name="[11a]"></a>CAN_PGN_RVC::msgWaterHeater2()</STRONG> (Thumb, 70 bytes, Stack size 40 bytes, pgn_rvc.o(i._ZN11CAN_PGN_RVC15msgWaterHeater2Ev))
+<P><STRONG><a name="[11a]"></a>CAN_PGN_RVC::msgWaterHeater2()</STRONG> (Thumb, 72 bytes, Stack size 40 bytes, pgn_rvc.o(i._ZN11CAN_PGN_RVC15msgWaterHeater2Ev))
 <BR><BR>[Stack]<UL><LI>Max Depth = 76<LI>Call Chain = CAN_PGN_RVC::msgWaterHeater2() &rArr; Can::SendMessage(unsigned, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can::SendMessage(unsigned, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char)
@@ -1963,7 +1963,7 @@ Global Symbols
 <LI><a href="#[200]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RVCModule::ProcessMessage(unsigned char)
 </UL>
 
-<P><STRONG><a name="[11b]"></a>CAN_PGN_RVC::msgDiagnosticMessage()</STRONG> (Thumb, 196 bytes, Stack size 88 bytes, pgn_rvc.o(i._ZN11CAN_PGN_RVC20msgDiagnosticMessageEv))
+<P><STRONG><a name="[11b]"></a>CAN_PGN_RVC::msgDiagnosticMessage()</STRONG> (Thumb, 198 bytes, Stack size 88 bytes, pgn_rvc.o(i._ZN11CAN_PGN_RVC20msgDiagnosticMessageEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 124<LI>Call Chain = CAN_PGN_RVC::msgDiagnosticMessage() &rArr; Can::SendMessage(unsigned, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can::SendMessage(unsigned, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char)
@@ -1979,7 +1979,8 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can::SendMessage(unsigned, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char)
 <LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_PGN_RVC::generateAID(unsigned char, unsigned, unsigned char)
 </UL>
-<BR>[Called By]<UL><LI><a href="#[202]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RVCModule::TransmitMessage()
+<BR>[Called By]<UL><LI><a href="#[203]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RVCModule::handler()
+<LI><a href="#[202]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RVCModule::TransmitMessage()
 <LI><a href="#[200]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RVCModule::ProcessMessage(unsigned char)
 </UL>
 
@@ -1993,7 +1994,7 @@ Global Symbols
 <LI><a href="#[202]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RVCModule::TransmitMessage()
 </UL>
 
-<P><STRONG><a name="[11e]"></a>CAN_PGN_RVC::msgCirculationPumpStatus()</STRONG> (Thumb, 56 bytes, Stack size 40 bytes, pgn_rvc.o(i._ZN11CAN_PGN_RVC24msgCirculationPumpStatusEv))
+<P><STRONG><a name="[11e]"></a>CAN_PGN_RVC::msgCirculationPumpStatus()</STRONG> (Thumb, 58 bytes, Stack size 40 bytes, pgn_rvc.o(i._ZN11CAN_PGN_RVC24msgCirculationPumpStatusEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 76<LI>Call Chain = CAN_PGN_RVC::msgCirculationPumpStatus() &rArr; Can::SendMessage(unsigned, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can::SendMessage(unsigned, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char)
@@ -2003,7 +2004,7 @@ Global Symbols
 <LI><a href="#[202]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RVCModule::TransmitMessage()
 </UL>
 
-<P><STRONG><a name="[11f]"></a>CAN_PGN_RVC::msgTimers()</STRONG> (Thumb, 212 bytes, Stack size 48 bytes, pgn_rvc.o(i._ZN11CAN_PGN_RVC9msgTimersEv))
+<P><STRONG><a name="[11f]"></a>CAN_PGN_RVC::msgTimers()</STRONG> (Thumb, 218 bytes, Stack size 48 bytes, pgn_rvc.o(i._ZN11CAN_PGN_RVC9msgTimersEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 84<LI>Call Chain = CAN_PGN_RVC::msgTimers() &rArr; Can::SendMessage(unsigned, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Core::getTick()
@@ -2106,8 +2107,8 @@ Global Symbols
 
 <P><STRONG><a name="[26a]"></a>Temperature::Temperature__sub_object()</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, temperature.o(i._ZN11TemperatureC1Ev), UNUSED)
 
-<P><STRONG><a name="[ef]"></a>Can::initialize()</STRONG> (Thumb, 310 bytes, Stack size 48 bytes, can.o(i._ZN3Can10initializeEv))
-<BR><BR>[Stack]<UL><LI>Max Depth = 104<LI>Call Chain = Can::initialize() &rArr; ConfigFilter(unsigned, unsigned char) &rArr; can_struct_para_init(can_struct_type_enum, void*)
+<P><STRONG><a name="[ef]"></a>Can::initialize()</STRONG> (Thumb, 282 bytes, Stack size 24 bytes, can.o(i._ZN3Can10initializeEv))
+<BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = Can::initialize() &rArr; ConfigFilter(unsigned, unsigned char) &rArr; can_struct_para_init(can_struct_type_enum, void*)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[137]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gpio_bit_reset(unsigned, unsigned)
 <LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gpio_init(unsigned, unsigned, unsigned, unsigned)
@@ -2118,9 +2119,6 @@ Global Symbols
 <LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;can_deinit(unsigned)
 <LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ConfigFilter(unsigned, unsigned char)
 <LI><a href="#[120]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rcu_periph_clock_enable(rcu_periph_enum)
-<LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_dmul
-<LI><a href="#[9c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_i2d
-<LI><a href="#[10d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2uiz
 </UL>
 <BR>[Called By]<UL><LI><a href="#[13a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can::handler()
 <LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;initAll()
@@ -2155,7 +2153,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[13a]"></a>Can::handler()</STRONG> (Thumb, 144 bytes, Stack size 16 bytes, can.o(i._ZN3Can7handlerEv))
-<BR><BR>[Stack]<UL><LI>Max Depth = 120<LI>Call Chain = Can::handler() &rArr; Can::initialize() &rArr; ConfigFilter(unsigned, unsigned char) &rArr; can_struct_para_init(can_struct_type_enum, void*)
+<BR><BR>[Stack]<UL><LI>Max Depth = 96<LI>Call Chain = Can::handler() &rArr; Can::initialize() &rArr; ConfigFilter(unsigned, unsigned char) &rArr; can_struct_para_init(can_struct_type_enum, void*)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Core::getTick()
 <LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can::initialize()
@@ -2173,7 +2171,7 @@ Global Symbols
 
 <P><STRONG><a name="[26b]"></a>Can::Can__sub_object()</STRONG> (Thumb, 0 bytes, Stack size 8 bytes, can.o(i._ZN3CanC1Ev), UNUSED)
 
-<P><STRONG><a name="[ac]"></a>Hcu::handler()</STRONG> (Thumb, 712 bytes, Stack size 24 bytes, hcu.o(i._ZN3Hcu7handlerEv))
+<P><STRONG><a name="[ac]"></a>Hcu::handler()</STRONG> (Thumb, 684 bytes, Stack size 24 bytes, hcu.o(i._ZN3Hcu7handlerEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 104<LI>Call Chain = Hcu::handler() &rArr; Hcu::parsing() &rArr; __aeabi_d2iz
 </UL>
 <BR>[Calls]<UL><LI><a href="#[13f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Core::farToCel(float)
@@ -2186,7 +2184,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;handlerUsart()
 </UL>
 
-<P><STRONG><a name="[141]"></a>Hcu::parsing()</STRONG> (Thumb, 1500 bytes, Stack size 48 bytes, hcu.o(i._ZN3Hcu7parsingEv))
+<P><STRONG><a name="[141]"></a>Hcu::parsing()</STRONG> (Thumb, 1408 bytes, Stack size 48 bytes, hcu.o(i._ZN3Hcu7parsingEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = Hcu::parsing() &rArr; __aeabi_d2iz
 </UL>
 <BR>[Calls]<UL><LI><a href="#[f8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Core::celToFar(float)
@@ -2291,7 +2289,8 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[f8]"></a>Core::celToFar(float)</STRONG> (Thumb, 18 bytes, Stack size 0 bytes, core.o(i._ZN4Core8celToFarEf))
-<BR><BR>[Called By]<UL><LI><a href="#[d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Temperature::request()
+<BR><BR>[Called By]<UL><LI><a href="#[1e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;System::viewTemperature(bool)
+<LI><a href="#[d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Temperature::request()
 <LI><a href="#[f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;readSetup()
 <LI><a href="#[197]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Setup::viewScreen15(unsigned char)
 <LI><a href="#[200]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RVCModule::ProcessMessage(unsigned char)
@@ -4014,7 +4013,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;System::viewScreen(bool)
 </UL>
 
-<P><STRONG><a name="[b1]"></a>System::viewScreen(bool)</STRONG> (Thumb, 666 bytes, Stack size 40 bytes, system.o(i._ZN6System10viewScreenEb))
+<P><STRONG><a name="[b1]"></a>System::viewScreen(bool)</STRONG> (Thumb, 640 bytes, Stack size 40 bytes, system.o(i._ZN6System10viewScreenEb))
 <BR><BR>[Stack]<UL><LI>Max Depth = 492<LI>Call Chain = System::viewScreen(bool) &rArr; Slider::setMinMax(short, unsigned char, unsigned char, unsigned char, unsigned char) &rArr; Slider::drawDigGrid() &rArr; Text::writeStringOver(short, short, char*, FontDef, unsigned, unsigned, unsigned char) &rArr; Text::writeCharOver(unsigned short, unsigned short, char, FontDef, unsigned, unsigned, unsigned char) &rArr; Display::setAddrWindow(unsigned short, unsigned short, unsigned short, unsigned short) &rArr; Display::writeData(unsigned char) &rArr; Sleep::setLowPower(bool) &rArr; Usart::changeBaudrate(unsigned) &rArr; usart_baudrate_set(unsigned, unsigned) &rArr; rcu_clock_freq_get(rcu_clock_freq_enum)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Slider::setMinMax(short, unsigned char, unsigned char, unsigned char, unsigned char)
@@ -4059,7 +4058,7 @@ Global Symbols
 <LI><a href="#[197]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Setup::viewScreen15(unsigned char)
 </UL>
 
-<P><STRONG><a name="[1e7]"></a>System::sensorCheck()</STRONG> (Thumb, 2444 bytes, Stack size 96 bytes, system.o(i._ZN6System11sensorCheckEv))
+<P><STRONG><a name="[1e7]"></a>System::sensorCheck()</STRONG> (Thumb, 2432 bytes, Stack size 96 bytes, system.o(i._ZN6System11sensorCheckEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 396<LI>Call Chain = System::sensorCheck() &rArr; Canvas::loadImageEffect(unsigned short, unsigned short, unsigned, unsigned, unsigned char) &rArr; Canvas::writePixel(short, short, unsigned) &rArr; Display::setAddrWindow(unsigned short, unsigned short, unsigned short, unsigned short) &rArr; Display::writeData(unsigned char) &rArr; Sleep::setLowPower(bool) &rArr; Usart::changeBaudrate(unsigned) &rArr; usart_baudrate_set(unsigned, unsigned) &rArr; rcu_clock_freq_get(rcu_clock_freq_enum)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_PGN_RVC::msgWaterHeater()
@@ -4077,7 +4076,7 @@ Global Symbols
 <LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;System::viewScreen(bool)
 </UL>
 
-<P><STRONG><a name="[9f]"></a>System::viewHandler()</STRONG> (Thumb, 128 bytes, Stack size 16 bytes, system.o(i._ZN6System11viewHandlerEv))
+<P><STRONG><a name="[9f]"></a>System::viewHandler()</STRONG> (Thumb, 102 bytes, Stack size 16 bytes, system.o(i._ZN6System11viewHandlerEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 460<LI>Call Chain = System::viewHandler() &rArr; Slider::viewPosition() &rArr; Slider::clearDigRight(unsigned short) &rArr; Slider::textDigGrid(unsigned short, unsigned) &rArr; Text::writeStringOver(short, short, char*, FontDef, unsigned, unsigned, unsigned char) &rArr; Text::writeCharOver(unsigned short, unsigned short, char, FontDef, unsigned, unsigned, unsigned char) &rArr; Display::setAddrWindow(unsigned short, unsigned short, unsigned short, unsigned short) &rArr; Display::writeData(unsigned char) &rArr; Sleep::setLowPower(bool) &rArr; Usart::changeBaudrate(unsigned) &rArr; usart_baudrate_set(unsigned, unsigned) &rArr; rcu_clock_freq_get(rcu_clock_freq_enum)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Slider::viewPosition()
@@ -4134,13 +4133,14 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[6f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[1e8]"></a>System::viewTemperature(bool)</STRONG> (Thumb, 990 bytes, Stack size 64 bytes, system.o(i._ZN6System15viewTemperatureEb))
+<P><STRONG><a name="[1e8]"></a>System::viewTemperature(bool)</STRONG> (Thumb, 1112 bytes, Stack size 64 bytes, system.o(i._ZN6System15viewTemperatureEb))
 <BR><BR>[Stack]<UL><LI>Max Depth = 412<LI>Call Chain = System::viewTemperature(bool) &rArr; Text::writeOneDigit(unsigned short, unsigned short, char, unsigned, unsigned char) &rArr; Canvas::loadImageOverColor(unsigned short, unsigned short, unsigned, unsigned, unsigned char, unsigned) &rArr; Canvas::writePixel(short, short, unsigned) &rArr; Display::setAddrWindow(unsigned short, unsigned short, unsigned short, unsigned short) &rArr; Display::writeData(unsigned char) &rArr; Sleep::setLowPower(bool) &rArr; Usart::changeBaudrate(unsigned) &rArr; usart_baudrate_set(unsigned, unsigned) &rArr; rcu_clock_freq_get(rcu_clock_freq_enum)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[150]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Text::writeOneDigit(unsigned short, unsigned short, char, unsigned, unsigned char)
 <LI><a href="#[13f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Core::farToCel(float)
 <LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Text::decToString(char*, int)
 <LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Canvas::writeFillRect(unsigned short, unsigned short, unsigned short, unsigned short, unsigned)
+<LI><a href="#[f8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Core::celToFar(float)
 <LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Core::getTick()
 </UL>
 <BR>[Called By]<UL><LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;System::viewHandler()
@@ -4392,7 +4392,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[167]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Clock::timeUpdate()
 </UL>
 
-<P><STRONG><a name="[200]"></a>RVCModule::ProcessMessage(unsigned char)</STRONG> (Thumb, 1338 bytes, Stack size 80 bytes, rvc.o(i._ZN9RVCModule14ProcessMessageEh))
+<P><STRONG><a name="[200]"></a>RVCModule::ProcessMessage(unsigned char)</STRONG> (Thumb, 1366 bytes, Stack size 80 bytes, rvc.o(i._ZN9RVCModule14ProcessMessageEh))
 <BR><BR>[Stack]<UL><LI>Max Depth = 156<LI>Call Chain = RVCModule::ProcessMessage(unsigned char) &rArr; CAN_PGN_RVC::msgTimersSetupStatus() &rArr; Can::SendMessage(unsigned, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[9b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Slider::setPosition(short)
@@ -4442,7 +4442,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[203]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RVCModule::handler()
 </UL>
 
-<P><STRONG><a name="[203]"></a>RVCModule::handler()</STRONG> (Thumb, 644 bytes, Stack size 24 bytes, rvc.o(i._ZN9RVCModule7handlerEv))
+<P><STRONG><a name="[203]"></a>RVCModule::handler()</STRONG> (Thumb, 912 bytes, Stack size 24 bytes, rvc.o(i._ZN9RVCModule7handlerEv))
 <BR><BR>[Stack]<UL><LI>Max Depth = 180<LI>Call Chain = RVCModule::handler() &rArr; RVCModule::ProcessMessage(unsigned char) &rArr; CAN_PGN_RVC::msgTimersSetupStatus() &rArr; Can::SendMessage(unsigned, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char, unsigned char)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[13f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Core::farToCel(float)
@@ -4450,6 +4450,7 @@ Global Symbols
 <LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Core::getTick()
 <LI><a href="#[11e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_PGN_RVC::msgCirculationPumpStatus()
 <LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_PGN_RVC::msgThermostatSchedule1(unsigned char)
+<LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_PGN_RVC::msgTimersSetupStatus()
 <LI><a href="#[11b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_PGN_RVC::msgDiagnosticMessage()
 <LI><a href="#[11a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_PGN_RVC::msgWaterHeater2()
 <LI><a href="#[118]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_PGN_RVC::msgThermostat2()
@@ -4711,7 +4712,6 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = __aeabi_d2uiz
 </UL>
 <BR>[Called By]<UL><LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_PGN_RVC::msgWaterHeater()
-<LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can::initialize()
 <LI><a href="#[194]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Setup::viewScreen13(unsigned char)
 <LI><a href="#[18d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Setup::viewScreen11(unsigned char)
 <LI><a href="#[109]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;StartTimer::viewScreen(unsigned char)
@@ -4726,7 +4726,6 @@ Global Symbols
 
 <P><STRONG><a name="[9c]"></a>__aeabi_i2d</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, dflt_clz.o(x$fpl$dflt))
 <BR><BR>[Called By]<UL><LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_PGN_RVC::msgWaterHeater()
-<LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can::initialize()
 <LI><a href="#[d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Temperature::request()
 <LI><a href="#[9a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;activityAir()
 <LI><a href="#[194]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Setup::viewScreen13(unsigned char)
@@ -4769,7 +4768,6 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = __aeabi_dmul
 </UL>
 <BR>[Called By]<UL><LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CAN_PGN_RVC::msgWaterHeater()
-<LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Can::initialize()
 <LI><a href="#[194]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Setup::viewScreen13(unsigned char)
 <LI><a href="#[18d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Setup::viewScreen11(unsigned char)
 <LI><a href="#[109]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;StartTimer::viewScreen(unsigned char)

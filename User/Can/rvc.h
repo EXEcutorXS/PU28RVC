@@ -12,14 +12,27 @@ bool HeaterState;
 bool ElementState;
 bool DomesticWaterPriority;
 bool Solenoid;
+bool ZoneEnabled;
 	
 uint8_t PumpState;
 uint8_t errorCode;
-uint8_t FanManual;
-uint8_t FanSpeed;
+uint8_t FanManualMode;
+uint8_t FanManualSpeed;
+uint8_t FanCurrentSpeed;
+
+	uint8_t DayStartHour;
+	uint8_t DayStartMinute;
+	uint8_t NightStartHour;
+	uint8_t NightStartMinute;
+	
+	uint16_t SystemDuration;
+	uint16_t WaterDuration;
+	
 float setpointDay;
 float setpointNight;
 float currentSetpoint;
+
+
 
 
 }rvcState_t;
@@ -34,6 +47,7 @@ class RVCModule
 		rvcState_t oldState;
 		rvcState_t newState;
 		bool externalTemperatureProvided;
+		bool externalTemperatureProvidedChanged;
 		float externalTemperature;
 		
     private:

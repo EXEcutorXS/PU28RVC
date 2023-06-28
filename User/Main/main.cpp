@@ -85,7 +85,7 @@ const uint8_t _CRC[11]  __attribute__((at(0x0803F800 ))) =
 {
     0x55, 0x55, 0x55, 0x55,     // длина ПО
     0x55, 0x55,                 // CRC ПО
-    9, 0, 100, 20,              // версия ПО
+    9, 0, 100, 21,              // версия ПО
     0x00                        // резерв
 };
 
@@ -338,7 +338,7 @@ void activityAir(void)
         res = false;
         if ((core.getTick() - hcu.lockTimer) <= 1000){
             if (sensor.status == 0){
-                if (air.isAirOn[(air.isDay|air.isSelectDay)&(!air.isSelectNight)]){
+                if (air.isAirOn){
                     // включено, передвинуть ползунок на уставку
                     if (slider.position == 0){
                         slider.setPosition(hcu.airHeaterTSetPoint[(air.isDay|air.isSelectDay)&(!air.isSelectNight)]);
@@ -353,37 +353,37 @@ void activityAir(void)
             }
         }
         if (display.setup.celsius & 0x01){
-            if (air.isAirOn[0] == true && hcu.airHeaterTSetPoint[0] < 10.0){
+            if (air.isAirOn == true && hcu.airHeaterTSetPoint[0] < 10.0){
                 //??//hcu.airHeaterTSetPoint[0] = 10.0;
                 res = true;
             }
-            if (air.isAirOn[1] == true && hcu.airHeaterTSetPoint[1] < 10.0){
+            if (air.isAirOn == true && hcu.airHeaterTSetPoint[1] < 10.0){
                 //??//hcu.airHeaterTSetPoint[1] = 10.0;
                 res = true;
             }
-            if (air.isAirOn[0] == false && hcu.airHeaterTSetPoint[0] >= 10.0){
+            if (air.isAirOn == false && hcu.airHeaterTSetPoint[0] >= 10.0){
                 //??//hcu.airHeaterTSetPoint[0] = 7.0;
                 res = true;
             }
-            if (air.isAirOn[1] == false && hcu.airHeaterTSetPoint[1] >= 10.0){
+            if (air.isAirOn == false && hcu.airHeaterTSetPoint[1] >= 10.0){
                 //??//hcu.airHeaterTSetPoint[1] = 7.0;
                 res = true;
             }
         }
         else{
-            if (air.isAirOn[0] == true && hcu.airHeaterTSetPoint[0] < 50.0){
+            if (air.isAirOn == true && hcu.airHeaterTSetPoint[0] < 50.0){
                 //??//hcu.airHeaterTSetPoint[0] = 50.0;
                 res = true;
             }
-            if (air.isAirOn[1] == true && hcu.airHeaterTSetPoint[1] < 50.0){
+            if (air.isAirOn == true && hcu.airHeaterTSetPoint[1] < 50.0){
                 //??//hcu.airHeaterTSetPoint[1] = 50.0;
                 res = true;
             }
-            if (air.isAirOn[0] == false && hcu.airHeaterTSetPoint[0] >= 50.0){
+            if (air.isAirOn == false && hcu.airHeaterTSetPoint[0] >= 50.0){
                 //??//hcu.airHeaterTSetPoint[0] = 45.0;
                 res = true;
             }
-            if (air.isAirOn[1] == false && hcu.airHeaterTSetPoint[1] >= 50.0){
+            if (air.isAirOn == false && hcu.airHeaterTSetPoint[1] >= 50.0){
                 //??//hcu.airHeaterTSetPoint[1] = 45.0;
                 res = true;
             }
@@ -392,7 +392,7 @@ void activityAir(void)
         if (res == true && false){
             if ((air.isDay|air.isSelectDay)&(!air.isSelectNight)){
                 // Day
-                if (air.isAirOn[1]){
+                if (air.isAirOn){
                     // On
                     if (hcu.airHeaterTSetPoint[1] != slider.values[slider.position]){
                         slider.setPosition(hcu.airHeaterTSetPoint[1]);
@@ -407,7 +407,7 @@ void activityAir(void)
             }
             else{
                 // Night
-                if (air.isAirOn[0]){
+                if (air.isAirOn){
                     // On
                     if (hcu.airHeaterTSetPoint[0] != slider.values[slider.position]){
                         slider.setPosition(hcu.airHeaterTSetPoint[0]);

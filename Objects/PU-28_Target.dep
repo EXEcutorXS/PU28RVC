@@ -1,6 +1,6 @@
 Dependencies for Project 'PU-28', Target 'Target': (DO NOT MODIFY !)
 CompilerVersion: 5060960::V5.06 update 7 (build 960)::.\ARMCC
-F (.\User\Main\main.cpp)(0x64958754)(--cpp -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork --split_sections -I ".\User\Activity\Setup clock" -I .\User\Activity\Setup -I .\User\Activity\Sleep -I ".\User\Activity\Start timers" -I .\User\Activity\Work -I .\User\Objects\Checkbox -I .\User\Objects\Slider -I .\User\Main -I .\User\Objects\Clock -I ".\User\Objects\Start timer" -I .\User\Activity\Boot -I .\User\Temperature -I .\User\Memory -I .\User\Display -I .\User\Sensor -I .\User\Font -I .\User\Canvas -I .\User\Text -I .\User\Activity\System -I .\User\Activity\Search -I .\User\Activity\Error -I .\User\Activity\About -I .\User\Can -I .\User\Time --cpp  --diag_suppress 174-I.\RTE\_Target-IC:\Users\miai\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Firmware\Peripherals\inc-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Include-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Template-D__UVISION_VERSION="535" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
+F (.\User\Main\main.cpp)(0x649C2402)(--cpp -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork --split_sections -I ".\User\Activity\Setup clock" -I .\User\Activity\Setup -I .\User\Activity\Sleep -I ".\User\Activity\Start timers" -I .\User\Activity\Work -I .\User\Objects\Checkbox -I .\User\Objects\Slider -I .\User\Main -I .\User\Objects\Clock -I ".\User\Objects\Start timer" -I .\User\Activity\Boot -I .\User\Temperature -I .\User\Memory -I .\User\Display -I .\User\Sensor -I .\User\Font -I .\User\Canvas -I .\User\Text -I .\User\Activity\System -I .\User\Activity\Search -I .\User\Activity\Error -I .\User\Activity\About -I .\User\Can -I .\User\Time --cpp  --diag_suppress 174-I.\RTE\_Target-IC:\Users\miai\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Firmware\Peripherals\inc-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Include-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Template-D__UVISION_VERSION="535" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
 I (User\Main\main.h)(0x6482CAC6)
 I (C:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Include\gd32f30x.h)(0x6454DEA6)
 I (C:\Users\miai\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm4.h)(0x60D42122)
@@ -39,7 +39,7 @@ I (C:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Fi
 I (User\Main\core.h)(0x6482CAC6)
 I (.\User\Activity\Search\search.h)(0x63A3D6F0)
 I (.\User\Activity\Error\error.h)(0x63A3D6EE)
-I (.\User\Activity\System\system.h)(0x63A3D560)
+I (.\User\Activity\System\system.h)(0x649C2228)
 I (.\User\Activity\About\about.h)(0x63A3D6F0)
 I (.\User\Activity\Sleep\sleep.h)(0x63A3D696)
 I (.\User\Activity\Start timers\start_timers.h)(0x63A3D03C)
@@ -56,13 +56,13 @@ I (User\Main\usart.h)(0x63A3DCA2)
 I (.\User\Can\can.h)(0x63A3D696)
 I (.\User\Can\gd32f30x_can.h)(0x61CC215E)
 I (.\User\Memory\memory.h)(0x6450DBF8)
-I (.\User\Display\display.h)(0x64958332)
+I (.\User\Display\display.h)(0x64994376)
 I (.\User\Sensor\sensor.h)(0x63A3D34E)
 I (.\User\Canvas\canvas.h)(0x63A3D6EE)
 I (.\User\Text\text.h)(0x63A3D6F0)
 I (.\User\Time\unix_time.h)(0x63A3D6EE)
 I (.\User\Can\pgn_rvc.h)(0x64956305)
-I (.\User\Can\rvc.h)(0x64957B19)
+I (.\User\Can\rvc.h)(0x649C1F93)
 F (.\User\Activity\Search\search.cpp)(0x64475D40)(--cpp -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork --split_sections -I ".\User\Activity\Setup clock" -I .\User\Activity\Setup -I .\User\Activity\Sleep -I ".\User\Activity\Start timers" -I .\User\Activity\Work -I .\User\Objects\Checkbox -I .\User\Objects\Slider -I .\User\Main -I .\User\Objects\Clock -I ".\User\Objects\Start timer" -I .\User\Activity\Boot -I .\User\Temperature -I .\User\Memory -I .\User\Display -I .\User\Sensor -I .\User\Font -I .\User\Canvas -I .\User\Text -I .\User\Activity\System -I .\User\Activity\Search -I .\User\Activity\Error -I .\User\Activity\About -I .\User\Can -I .\User\Time --cpp  --diag_suppress 174-I.\RTE\_Target-IC:\Users\miai\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Firmware\Peripherals\inc-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Include-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Template-D__UVISION_VERSION="535" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER-o .\objects\search.o --omf_browse .\objects\search.crf --depend .\objects\search.d)
 I (.\User\Main\main.h)(0x6482CAC6)
 I (C:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Include\gd32f30x.h)(0x6454DEA6)
@@ -113,7 +113,7 @@ I (.\User\Temperature\temperature.h)(0x63A3D3A6)
 I (.\User\Can\can.h)(0x63A3D696)
 I (.\User\Can\gd32f30x_can.h)(0x61CC215E)
 I (.\User\Memory\memory.h)(0x6450DBF8)
-I (.\User\Display\display.h)(0x64958332)
+I (.\User\Display\display.h)(0x64994376)
 I (.\User\Sensor\sensor.h)(0x63A3D34E)
 I (.\User\Canvas\canvas.h)(0x63A3D6EE)
 I (.\User\Text\text.h)(0x63A3D6F0)
@@ -168,12 +168,12 @@ I (.\User\Temperature\temperature.h)(0x63A3D3A6)
 I (.\User\Can\can.h)(0x63A3D696)
 I (.\User\Can\gd32f30x_can.h)(0x61CC215E)
 I (.\User\Memory\memory.h)(0x6450DBF8)
-I (.\User\Display\display.h)(0x64958332)
+I (.\User\Display\display.h)(0x64994376)
 I (.\User\Sensor\sensor.h)(0x63A3D34E)
 I (.\User\Canvas\canvas.h)(0x63A3D6EE)
 I (.\User\Text\text.h)(0x63A3D6F0)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x60255BB8)
-F (.\User\Activity\System\system.cpp)(0x64958475)(--cpp -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork --split_sections -I ".\User\Activity\Setup clock" -I .\User\Activity\Setup -I .\User\Activity\Sleep -I ".\User\Activity\Start timers" -I .\User\Activity\Work -I .\User\Objects\Checkbox -I .\User\Objects\Slider -I .\User\Main -I .\User\Objects\Clock -I ".\User\Objects\Start timer" -I .\User\Activity\Boot -I .\User\Temperature -I .\User\Memory -I .\User\Display -I .\User\Sensor -I .\User\Font -I .\User\Canvas -I .\User\Text -I .\User\Activity\System -I .\User\Activity\Search -I .\User\Activity\Error -I .\User\Activity\About -I .\User\Can -I .\User\Time --cpp  --diag_suppress 174-I.\RTE\_Target-IC:\Users\miai\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Firmware\Peripherals\inc-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Include-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Template-D__UVISION_VERSION="535" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER-o .\objects\system.o --omf_browse .\objects\system.crf --depend .\objects\system.d)
+F (.\User\Activity\System\system.cpp)(0x649C229A)(--cpp -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork --split_sections -I ".\User\Activity\Setup clock" -I .\User\Activity\Setup -I .\User\Activity\Sleep -I ".\User\Activity\Start timers" -I .\User\Activity\Work -I .\User\Objects\Checkbox -I .\User\Objects\Slider -I .\User\Main -I .\User\Objects\Clock -I ".\User\Objects\Start timer" -I .\User\Activity\Boot -I .\User\Temperature -I .\User\Memory -I .\User\Display -I .\User\Sensor -I .\User\Font -I .\User\Canvas -I .\User\Text -I .\User\Activity\System -I .\User\Activity\Search -I .\User\Activity\Error -I .\User\Activity\About -I .\User\Can -I .\User\Time --cpp  --diag_suppress 174-I.\RTE\_Target-IC:\Users\miai\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Firmware\Peripherals\inc-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Include-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Template-D__UVISION_VERSION="535" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER-o .\objects\system.o --omf_browse .\objects\system.crf --depend .\objects\system.d)
 I (.\User\Main\main.h)(0x6482CAC6)
 I (C:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Include\gd32f30x.h)(0x6454DEA6)
 I (C:\Users\miai\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm4.h)(0x60D42122)
@@ -210,7 +210,7 @@ I (C:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Fi
 I (C:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Firmware\Peripherals\inc\gd32f30x_usart.h)(0x5BC6C28A)
 I (C:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Firmware\Peripherals\inc\gd32f30x_wwdgt.h)(0x5BC6C28A)
 I (.\User\Main\core.h)(0x6482CAC6)
-I (User\Activity\System\system.h)(0x63A3D560)
+I (User\Activity\System\system.h)(0x649C2228)
 I (.\User\Activity\Setup\setup.h)(0x63A3D6F0)
 I (.\User\Activity\Error\error.h)(0x63A3D6EE)
 I (.\User\Main\usart.h)(0x63A3DCA2)
@@ -225,11 +225,11 @@ I (.\User\Temperature\temperature.h)(0x63A3D3A6)
 I (.\User\Can\can.h)(0x63A3D696)
 I (.\User\Can\gd32f30x_can.h)(0x61CC215E)
 I (.\User\Memory\memory.h)(0x6450DBF8)
-I (.\User\Display\display.h)(0x64958332)
+I (.\User\Display\display.h)(0x64994376)
 I (.\User\Sensor\sensor.h)(0x63A3D34E)
 I (.\User\Canvas\canvas.h)(0x63A3D6EE)
 I (.\User\Text\text.h)(0x63A3D6F0)
-I (.\User\Can\rvc.h)(0x64957B19)
+I (.\User\Can\rvc.h)(0x649C1F93)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x60255BB8)
 F (.\User\Activity\Sleep\sleep.cpp)(0x6433E848)(--cpp -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork --split_sections -I ".\User\Activity\Setup clock" -I .\User\Activity\Setup -I .\User\Activity\Sleep -I ".\User\Activity\Start timers" -I .\User\Activity\Work -I .\User\Objects\Checkbox -I .\User\Objects\Slider -I .\User\Main -I .\User\Objects\Clock -I ".\User\Objects\Start timer" -I .\User\Activity\Boot -I .\User\Temperature -I .\User\Memory -I .\User\Display -I .\User\Sensor -I .\User\Font -I .\User\Canvas -I .\User\Text -I .\User\Activity\System -I .\User\Activity\Search -I .\User\Activity\Error -I .\User\Activity\About -I .\User\Can -I .\User\Time --cpp  --diag_suppress 174-I.\RTE\_Target-IC:\Users\miai\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Firmware\Peripherals\inc-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Include-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Template-D__UVISION_VERSION="535" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER-o .\objects\sleep.o --omf_browse .\objects\sleep.crf --depend .\objects\sleep.d)
 I (.\User\Main\main.h)(0x6482CAC6)
@@ -269,7 +269,7 @@ I (C:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Fi
 I (C:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Firmware\Peripherals\inc\gd32f30x_wwdgt.h)(0x5BC6C28A)
 I (.\User\Main\core.h)(0x6482CAC6)
 I (User\Activity\Sleep\sleep.h)(0x63A3D696)
-I (.\User\Activity\System\system.h)(0x63A3D560)
+I (.\User\Activity\System\system.h)(0x649C2228)
 I (.\User\Activity\Error\error.h)(0x63A3D6EE)
 I (.\User\Main\usart.h)(0x63A3DCA2)
 I (.\User\Main\hcu.h)(0x64953B33)
@@ -282,7 +282,7 @@ I (.\User\Temperature\temperature.h)(0x63A3D3A6)
 I (.\User\Can\can.h)(0x63A3D696)
 I (.\User\Can\gd32f30x_can.h)(0x61CC215E)
 I (.\User\Memory\memory.h)(0x6450DBF8)
-I (.\User\Display\display.h)(0x64958332)
+I (.\User\Display\display.h)(0x64994376)
 I (.\User\Sensor\sensor.h)(0x63A3D34E)
 I (.\User\Canvas\canvas.h)(0x63A3D6EE)
 I (.\User\Text\text.h)(0x63A3D6F0)
@@ -363,7 +363,7 @@ I (C:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Fi
 I (C:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Firmware\Peripherals\inc\gd32f30x_wwdgt.h)(0x5BC6C28A)
 I (.\User\Main\core.h)(0x6482CAC6)
 I (User\Activity\Setup\setup.h)(0x63A3D6F0)
-I (.\User\Activity\System\system.h)(0x63A3D560)
+I (.\User\Activity\System\system.h)(0x649C2228)
 I (.\User\Main\hcu.h)(0x64953B33)
 I (.\User\Objects\Start timer\start_timer.h)(0x63A3D6F0)
 I (.\User\Objects\Slider\slider.h)(0x63A3D6EE)
@@ -375,7 +375,7 @@ I (.\User\Main\usart.h)(0x63A3DCA2)
 I (.\User\Can\can.h)(0x63A3D696)
 I (.\User\Can\gd32f30x_can.h)(0x61CC215E)
 I (.\User\Memory\memory.h)(0x6450DBF8)
-I (.\User\Display\display.h)(0x64958332)
+I (.\User\Display\display.h)(0x64994376)
 I (.\User\Sensor\sensor.h)(0x63A3D34E)
 I (.\User\Canvas\canvas.h)(0x63A3D6EE)
 I (.\User\Text\text.h)(0x63A3D6F0)
@@ -425,7 +425,7 @@ I (.\User\Objects\Clock\clock.h)(0x6495B42E)
 I (.\User\Temperature\temperature.h)(0x63A3D3A6)
 I (.\User\Main\usart.h)(0x63A3DCA2)
 I (.\User\Memory\memory.h)(0x6450DBF8)
-I (.\User\Display\display.h)(0x64958332)
+I (.\User\Display\display.h)(0x64994376)
 I (.\User\Sensor\sensor.h)(0x63A3D34E)
 I (.\User\Canvas\canvas.h)(0x63A3D6EE)
 I (.\User\Text\text.h)(0x63A3D6F0)
@@ -479,7 +479,7 @@ I (.\User\Main\usart.h)(0x63A3DCA2)
 I (.\User\Can\can.h)(0x63A3D696)
 I (.\User\Can\gd32f30x_can.h)(0x61CC215E)
 I (.\User\Memory\memory.h)(0x6450DBF8)
-I (.\User\Display\display.h)(0x64958332)
+I (.\User\Display\display.h)(0x64994376)
 I (.\User\Sensor\sensor.h)(0x63A3D34E)
 I (.\User\Canvas\canvas.h)(0x63A3D6EE)
 I (.\User\Text\text.h)(0x63A3D6F0)
@@ -523,7 +523,7 @@ I (C:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Fi
 I (.\User\Main\core.h)(0x6482CAC6)
 I (User\Text\text.h)(0x63A3D6F0)
 I (.\User\Font\font.h)(0x5BCF24E0)
-I (.\User\Display\display.h)(0x64958332)
+I (.\User\Display\display.h)(0x64994376)
 I (.\User\Canvas\canvas.h)(0x63A3D6EE)
 I (.\User\Memory\memory.h)(0x6450DBF8)
 F (.\Version.txt)(0x649532CF)()
@@ -572,7 +572,7 @@ I (.\User\Main\usart.h)(0x63A3DCA2)
 I (.\User\Can\can.h)(0x63A3D696)
 I (.\User\Can\gd32f30x_can.h)(0x61CC215E)
 I (.\User\Memory\memory.h)(0x6450DBF8)
-I (.\User\Display\display.h)(0x64958332)
+I (.\User\Display\display.h)(0x64994376)
 I (.\User\Sensor\sensor.h)(0x63A3D34E)
 I (.\User\Canvas\canvas.h)(0x63A3D6EE)
 I (.\User\Text\text.h)(0x63A3D6F0)
@@ -621,7 +621,7 @@ I (.\User\Main\usart.h)(0x63A3DCA2)
 I (.\User\Can\can.h)(0x63A3D696)
 I (.\User\Can\gd32f30x_can.h)(0x61CC215E)
 I (.\User\Memory\memory.h)(0x6450DBF8)
-I (.\User\Display\display.h)(0x64958332)
+I (.\User\Display\display.h)(0x64994376)
 I (.\User\Sensor\sensor.h)(0x63A3D34E)
 I (.\User\Canvas\canvas.h)(0x63A3D6EE)
 I (.\User\Text\text.h)(0x63A3D6F0)
@@ -709,7 +709,7 @@ I (.\User\Temperature\temperature.h)(0x63A3D3A6)
 I (.\User\Main\usart.h)(0x63A3DCA2)
 I (.\User\Objects\Start timer\start_timer.h)(0x63A3D6F0)
 I (.\User\Memory\memory.h)(0x6450DBF8)
-I (.\User\Display\display.h)(0x64958332)
+I (.\User\Display\display.h)(0x64994376)
 I (.\User\Sensor\sensor.h)(0x63A3D34E)
 I (.\User\Canvas\canvas.h)(0x63A3D6EE)
 I (.\User\Text\text.h)(0x63A3D6F0)
@@ -794,10 +794,10 @@ I (C:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Fi
 I (C:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Firmware\Peripherals\inc\gd32f30x_wwdgt.h)(0x5BC6C28A)
 I (.\User\Main\core.h)(0x6482CAC6)
 I (User\Canvas\canvas.h)(0x63A3D6EE)
-I (.\User\Display\display.h)(0x64958332)
+I (.\User\Display\display.h)(0x64994376)
 I (.\User\Memory\memory.h)(0x6450DBF8)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x60255BB8)
-F (.\User\Can\can.cpp)(0x6495A776)(--cpp -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork --split_sections -I ".\User\Activity\Setup clock" -I .\User\Activity\Setup -I .\User\Activity\Sleep -I ".\User\Activity\Start timers" -I .\User\Activity\Work -I .\User\Objects\Checkbox -I .\User\Objects\Slider -I .\User\Main -I .\User\Objects\Clock -I ".\User\Objects\Start timer" -I .\User\Activity\Boot -I .\User\Temperature -I .\User\Memory -I .\User\Display -I .\User\Sensor -I .\User\Font -I .\User\Canvas -I .\User\Text -I .\User\Activity\System -I .\User\Activity\Search -I .\User\Activity\Error -I .\User\Activity\About -I .\User\Can -I .\User\Time --cpp  --diag_suppress 174-I.\RTE\_Target-IC:\Users\miai\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Firmware\Peripherals\inc-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Include-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Template-D__UVISION_VERSION="535" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER-o .\objects\can.o --omf_browse .\objects\can.crf --depend .\objects\can.d)
+F (.\User\Can\can.cpp)(0x649C03B6)(--cpp -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork --split_sections -I ".\User\Activity\Setup clock" -I .\User\Activity\Setup -I .\User\Activity\Sleep -I ".\User\Activity\Start timers" -I .\User\Activity\Work -I .\User\Objects\Checkbox -I .\User\Objects\Slider -I .\User\Main -I .\User\Objects\Clock -I ".\User\Objects\Start timer" -I .\User\Activity\Boot -I .\User\Temperature -I .\User\Memory -I .\User\Display -I .\User\Sensor -I .\User\Font -I .\User\Canvas -I .\User\Text -I .\User\Activity\System -I .\User\Activity\Search -I .\User\Activity\Error -I .\User\Activity\About -I .\User\Can -I .\User\Time --cpp  --diag_suppress 174-I.\RTE\_Target-IC:\Users\miai\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Firmware\Peripherals\inc-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Include-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Template-D__UVISION_VERSION="535" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER-o .\objects\can.o --omf_browse .\objects\can.crf --depend .\objects\can.d)
 I (User\Can\can.h)(0x63A3D696)
 I (C:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Include\gd32f30x.h)(0x6454DEA6)
 I (C:\Users\miai\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm4.h)(0x60D42122)
@@ -835,9 +835,9 @@ I (C:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Fi
 I (C:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Firmware\Peripherals\inc\gd32f30x_wwdgt.h)(0x5BC6C28A)
 I (User\Can\gd32f30x_can.h)(0x61CC215E)
 I (.\User\Main\core.h)(0x6482CAC6)
-I (User\Can\rvc.h)(0x64957B19)
-F (.\User\Can\rvc.cpp)(0x6495B499)(--cpp -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork --split_sections -I ".\User\Activity\Setup clock" -I .\User\Activity\Setup -I .\User\Activity\Sleep -I ".\User\Activity\Start timers" -I .\User\Activity\Work -I .\User\Objects\Checkbox -I .\User\Objects\Slider -I .\User\Main -I .\User\Objects\Clock -I ".\User\Objects\Start timer" -I .\User\Activity\Boot -I .\User\Temperature -I .\User\Memory -I .\User\Display -I .\User\Sensor -I .\User\Font -I .\User\Canvas -I .\User\Text -I .\User\Activity\System -I .\User\Activity\Search -I .\User\Activity\Error -I .\User\Activity\About -I .\User\Can -I .\User\Time --cpp  --diag_suppress 174-I.\RTE\_Target-IC:\Users\miai\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Firmware\Peripherals\inc-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Include-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Template-D__UVISION_VERSION="535" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER-o .\objects\rvc.o --omf_browse .\objects\rvc.crf --depend .\objects\rvc.d)
-I (User\Can\rvc.h)(0x64957B19)
+I (User\Can\rvc.h)(0x649C1F93)
+F (.\User\Can\rvc.cpp)(0x649C2D88)(--cpp -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork --split_sections -I ".\User\Activity\Setup clock" -I .\User\Activity\Setup -I .\User\Activity\Sleep -I ".\User\Activity\Start timers" -I .\User\Activity\Work -I .\User\Objects\Checkbox -I .\User\Objects\Slider -I .\User\Main -I .\User\Objects\Clock -I ".\User\Objects\Start timer" -I .\User\Activity\Boot -I .\User\Temperature -I .\User\Memory -I .\User\Display -I .\User\Sensor -I .\User\Font -I .\User\Canvas -I .\User\Text -I .\User\Activity\System -I .\User\Activity\Search -I .\User\Activity\Error -I .\User\Activity\About -I .\User\Can -I .\User\Time --cpp  --diag_suppress 174-I.\RTE\_Target-IC:\Users\miai\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Firmware\Peripherals\inc-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Include-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Template-D__UVISION_VERSION="535" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER-o .\objects\rvc.o --omf_browse .\objects\rvc.crf --depend .\objects\rvc.d)
+I (User\Can\rvc.h)(0x649C1F93)
 I (C:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Include\gd32f30x.h)(0x6454DEA6)
 I (C:\Users\miai\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm4.h)(0x60D42122)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x60255BBE)
@@ -878,12 +878,12 @@ I (User\Can\gd32f30x_can.h)(0x61CC215E)
 I (User\Can\pgn_rvc.h)(0x64956305)
 I (.\User\Main\hcu.h)(0x64953B33)
 I (.\User\Time\unix_time.h)(0x63A3D6EE)
-I (.\User\Activity\System\system.h)(0x63A3D560)
-I (.\User\Display\display.h)(0x64958332)
+I (.\User\Activity\System\system.h)(0x649C2228)
+I (.\User\Display\display.h)(0x64994376)
 I (.\User\Objects\Slider\slider.h)(0x63A3D6EE)
 I (.\User\Font\font.h)(0x5BCF24E0)
 I (.\User\Temperature\temperature.h)(0x63A3D3A6)
-F (.\User\Can\pgn_rvc.cpp)(0x6495873E)(--cpp -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork --split_sections -I ".\User\Activity\Setup clock" -I .\User\Activity\Setup -I .\User\Activity\Sleep -I ".\User\Activity\Start timers" -I .\User\Activity\Work -I .\User\Objects\Checkbox -I .\User\Objects\Slider -I .\User\Main -I .\User\Objects\Clock -I ".\User\Objects\Start timer" -I .\User\Activity\Boot -I .\User\Temperature -I .\User\Memory -I .\User\Display -I .\User\Sensor -I .\User\Font -I .\User\Canvas -I .\User\Text -I .\User\Activity\System -I .\User\Activity\Search -I .\User\Activity\Error -I .\User\Activity\About -I .\User\Can -I .\User\Time --cpp  --diag_suppress 174-I.\RTE\_Target-IC:\Users\miai\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Firmware\Peripherals\inc-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Include-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Template-D__UVISION_VERSION="535" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER-o .\objects\pgn_rvc.o --omf_browse .\objects\pgn_rvc.crf --depend .\objects\pgn_rvc.d)
+F (.\User\Can\pgn_rvc.cpp)(0x649C22FC)(--cpp -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork --split_sections -I ".\User\Activity\Setup clock" -I .\User\Activity\Setup -I .\User\Activity\Sleep -I ".\User\Activity\Start timers" -I .\User\Activity\Work -I .\User\Objects\Checkbox -I .\User\Objects\Slider -I .\User\Main -I .\User\Objects\Clock -I ".\User\Objects\Start timer" -I .\User\Activity\Boot -I .\User\Temperature -I .\User\Memory -I .\User\Display -I .\User\Sensor -I .\User\Font -I .\User\Canvas -I .\User\Text -I .\User\Activity\System -I .\User\Activity\Search -I .\User\Activity\Error -I .\User\Activity\About -I .\User\Can -I .\User\Time --cpp  --diag_suppress 174-I.\RTE\_Target-IC:\Users\miai\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Firmware\Peripherals\inc-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Include-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Template-D__UVISION_VERSION="535" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER-o .\objects\pgn_rvc.o --omf_browse .\objects\pgn_rvc.crf --depend .\objects\pgn_rvc.d)
 I (User\Can\pgn_rvc.h)(0x64956305)
 I (C:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Include\gd32f30x.h)(0x6454DEA6)
 I (C:\Users\miai\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm4.h)(0x60D42122)
@@ -923,12 +923,12 @@ I (.\User\Main\core.h)(0x6482CAC6)
 I (User\Can\can.h)(0x63A3D696)
 I (User\Can\gd32f30x_can.h)(0x61CC215E)
 I (.\User\Main\hcu.h)(0x64953B33)
-I (.\User\Display\display.h)(0x64958332)
-I (.\User\Activity\System\system.h)(0x63A3D560)
+I (.\User\Display\display.h)(0x64994376)
+I (.\User\Activity\System\system.h)(0x649C2228)
 I (.\User\Temperature\temperature.h)(0x63A3D3A6)
-I (User\Can\rvc.h)(0x64957B19)
+I (User\Can\rvc.h)(0x649C1F93)
 I (.\User\Main\main.h)(0x6482CAC6)
-F (.\User\Temperature\temperature.cpp)(0x643E8544)(--cpp -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork --split_sections -I ".\User\Activity\Setup clock" -I .\User\Activity\Setup -I .\User\Activity\Sleep -I ".\User\Activity\Start timers" -I .\User\Activity\Work -I .\User\Objects\Checkbox -I .\User\Objects\Slider -I .\User\Main -I .\User\Objects\Clock -I ".\User\Objects\Start timer" -I .\User\Activity\Boot -I .\User\Temperature -I .\User\Memory -I .\User\Display -I .\User\Sensor -I .\User\Font -I .\User\Canvas -I .\User\Text -I .\User\Activity\System -I .\User\Activity\Search -I .\User\Activity\Error -I .\User\Activity\About -I .\User\Can -I .\User\Time --cpp  --diag_suppress 174-I.\RTE\_Target-IC:\Users\miai\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Firmware\Peripherals\inc-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Include-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Template-D__UVISION_VERSION="535" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER-o .\objects\temperature.o --omf_browse .\objects\temperature.crf --depend .\objects\temperature.d)
+F (.\User\Temperature\temperature.cpp)(0x64994439)(--cpp -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork --split_sections -I ".\User\Activity\Setup clock" -I .\User\Activity\Setup -I .\User\Activity\Sleep -I ".\User\Activity\Start timers" -I .\User\Activity\Work -I .\User\Objects\Checkbox -I .\User\Objects\Slider -I .\User\Main -I .\User\Objects\Clock -I ".\User\Objects\Start timer" -I .\User\Activity\Boot -I .\User\Temperature -I .\User\Memory -I .\User\Display -I .\User\Sensor -I .\User\Font -I .\User\Canvas -I .\User\Text -I .\User\Activity\System -I .\User\Activity\Search -I .\User\Activity\Error -I .\User\Activity\About -I .\User\Can -I .\User\Time --cpp  --diag_suppress 174-I.\RTE\_Target-IC:\Users\miai\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Firmware\Peripherals\inc-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Include-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Template-D__UVISION_VERSION="535" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER-o .\objects\temperature.o --omf_browse .\objects\temperature.crf --depend .\objects\temperature.d)
 I (User\Temperature\temperature.h)(0x63A3D3A6)
 I (C:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Include\gd32f30x.h)(0x6454DEA6)
 I (C:\Users\miai\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm4.h)(0x60D42122)
@@ -965,7 +965,7 @@ I (C:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Fi
 I (C:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Firmware\Peripherals\inc\gd32f30x_usart.h)(0x5BC6C28A)
 I (C:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Firmware\Peripherals\inc\gd32f30x_wwdgt.h)(0x5BC6C28A)
 I (.\User\Main\core.h)(0x6482CAC6)
-I (.\User\Display\display.h)(0x64958332)
+I (.\User\Display\display.h)(0x64994376)
 I (.\User\Activity\Sleep\sleep.h)(0x63A3D696)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x60255BB8)
 I (.\User\Main\main.h)(0x6482CAC6)
@@ -1008,7 +1008,7 @@ I (C:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Fi
 I (C:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Firmware\Peripherals\inc\gd32f30x_wwdgt.h)(0x5BC6C28A)
 I (.\User\Main\core.h)(0x6482CAC6)
 F (.\User\Display\display.cpp)(0x64914031)(--cpp -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork --split_sections -I ".\User\Activity\Setup clock" -I .\User\Activity\Setup -I .\User\Activity\Sleep -I ".\User\Activity\Start timers" -I .\User\Activity\Work -I .\User\Objects\Checkbox -I .\User\Objects\Slider -I .\User\Main -I .\User\Objects\Clock -I ".\User\Objects\Start timer" -I .\User\Activity\Boot -I .\User\Temperature -I .\User\Memory -I .\User\Display -I .\User\Sensor -I .\User\Font -I .\User\Canvas -I .\User\Text -I .\User\Activity\System -I .\User\Activity\Search -I .\User\Activity\Error -I .\User\Activity\About -I .\User\Can -I .\User\Time --cpp  --diag_suppress 174-I.\RTE\_Target-IC:\Users\miai\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Firmware\Peripherals\inc-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Include-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Template-D__UVISION_VERSION="535" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER-o .\objects\display.o --omf_browse .\objects\display.crf --depend .\objects\display.d)
-I (User\Display\display.h)(0x64958332)
+I (User\Display\display.h)(0x64994376)
 I (C:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Include\gd32f30x.h)(0x6454DEA6)
 I (C:\Users\miai\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm4.h)(0x60D42122)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x60255BBE)
@@ -1161,7 +1161,7 @@ I (C:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Fi
 I (C:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Firmware\Peripherals\inc\gd32f30x_usart.h)(0x5BC6C28A)
 I (C:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Firmware\Peripherals\inc\gd32f30x_wwdgt.h)(0x5BC6C28A)
 I (User\Time\unix_time.h)(0x63A3D6EE)
-F (.\User\Main\hcu.cpp)(0x6495871B)(--cpp -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork --split_sections -I ".\User\Activity\Setup clock" -I .\User\Activity\Setup -I .\User\Activity\Sleep -I ".\User\Activity\Start timers" -I .\User\Activity\Work -I .\User\Objects\Checkbox -I .\User\Objects\Slider -I .\User\Main -I .\User\Objects\Clock -I ".\User\Objects\Start timer" -I .\User\Activity\Boot -I .\User\Temperature -I .\User\Memory -I .\User\Display -I .\User\Sensor -I .\User\Font -I .\User\Canvas -I .\User\Text -I .\User\Activity\System -I .\User\Activity\Search -I .\User\Activity\Error -I .\User\Activity\About -I .\User\Can -I .\User\Time --cpp  --diag_suppress 174-I.\RTE\_Target-IC:\Users\miai\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Firmware\Peripherals\inc-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Include-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Template-D__UVISION_VERSION="535" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER-o .\objects\hcu.o --omf_browse .\objects\hcu.crf --depend .\objects\hcu.d)
+F (.\User\Main\hcu.cpp)(0x649C2340)(--cpp -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork --split_sections -I ".\User\Activity\Setup clock" -I .\User\Activity\Setup -I .\User\Activity\Sleep -I ".\User\Activity\Start timers" -I .\User\Activity\Work -I .\User\Objects\Checkbox -I .\User\Objects\Slider -I .\User\Main -I .\User\Objects\Clock -I ".\User\Objects\Start timer" -I .\User\Activity\Boot -I .\User\Temperature -I .\User\Memory -I .\User\Display -I .\User\Sensor -I .\User\Font -I .\User\Canvas -I .\User\Text -I .\User\Activity\System -I .\User\Activity\Search -I .\User\Activity\Error -I .\User\Activity\About -I .\User\Can -I .\User\Time --cpp  --diag_suppress 174-I.\RTE\_Target-IC:\Users\miai\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Firmware\Peripherals\inc-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Include-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Template-D__UVISION_VERSION="535" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER-o .\objects\hcu.o --omf_browse .\objects\hcu.crf --depend .\objects\hcu.d)
 I (User\Main\hcu.h)(0x64953B33)
 I (C:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Include\gd32f30x.h)(0x6454DEA6)
 I (C:\Users\miai\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm4.h)(0x60D42122)
@@ -1198,16 +1198,16 @@ I (C:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Fi
 I (C:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Firmware\Peripherals\inc\gd32f30x_usart.h)(0x5BC6C28A)
 I (C:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Firmware\Peripherals\inc\gd32f30x_wwdgt.h)(0x5BC6C28A)
 I (User\Main\usart.h)(0x63A3DCA2)
-I (.\User\Activity\System\system.h)(0x63A3D560)
+I (.\User\Activity\System\system.h)(0x649C2228)
 I (.\User\Activity\Error\error.h)(0x63A3D6EE)
 I (.\User\Temperature\temperature.h)(0x63A3D3A6)
-I (.\User\Display\display.h)(0x64958332)
+I (.\User\Display\display.h)(0x64994376)
 I (.\User\Objects\Slider\slider.h)(0x63A3D6EE)
 I (.\User\Font\font.h)(0x5BCF24E0)
 I (User\Main\main.h)(0x6482CAC6)
 I (User\Main\core.h)(0x6482CAC6)
 I (.\User\Can\pgn_rvc.h)(0x64956305)
-I (.\User\Can\rvc.h)(0x64957B19)
+I (.\User\Can\rvc.h)(0x649C1F93)
 F (.\User\Main\usart.cpp)(0x63A3D1B6)(--cpp -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork --split_sections -I ".\User\Activity\Setup clock" -I .\User\Activity\Setup -I .\User\Activity\Sleep -I ".\User\Activity\Start timers" -I .\User\Activity\Work -I .\User\Objects\Checkbox -I .\User\Objects\Slider -I .\User\Main -I .\User\Objects\Clock -I ".\User\Objects\Start timer" -I .\User\Activity\Boot -I .\User\Temperature -I .\User\Memory -I .\User\Display -I .\User\Sensor -I .\User\Font -I .\User\Canvas -I .\User\Text -I .\User\Activity\System -I .\User\Activity\Search -I .\User\Activity\Error -I .\User\Activity\About -I .\User\Can -I .\User\Time --cpp  --diag_suppress 174-I.\RTE\_Target-IC:\Users\miai\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Firmware\Peripherals\inc-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Include-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Template-D__UVISION_VERSION="535" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER-o .\objects\usart.o --omf_browse .\objects\usart.crf --depend .\objects\usart.d)
 I (User\Main\usart.h)(0x63A3DCA2)
 I (C:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Include\gd32f30x.h)(0x6454DEA6)
@@ -2051,7 +2051,7 @@ I (C:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Fi
 I (C:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Firmware\Peripherals\inc\gd32f30x_timer.h)(0x5BC6C28A)
 I (C:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Firmware\Peripherals\inc\gd32f30x_usart.h)(0x5BC6C28A)
 F (RTE\Device\GD32F303CC\startup_gd32f30x_hd.s)(0x5BC6C28C)(--cpu Cortex-M4.fp.sp -g --apcs=interwork -I.\RTE\_Target-IC:\Users\miai\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Firmware\Peripherals\inc-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Include-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Template--pd "__UVISION_VERSION SETA 535" --pd "_RTE_ SETA 1" --pd "GD32F30X_HD SETA 1" --pd "_RTE_ SETA 1"--list .\listings\startup_gd32f30x_hd.lst --xref -o .\objects\startup_gd32f30x_hd.o --depend .\objects\startup_gd32f30x_hd.d)
-F (RTE\Device\GD32F303CC\system_gd32f30x.c)(0x64959CCD)(--c99 -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork --split_sections -I ".\User\Activity\Setup clock" -I .\User\Activity\Setup -I .\User\Activity\Sleep -I ".\User\Activity\Start timers" -I .\User\Activity\Work -I .\User\Objects\Checkbox -I .\User\Objects\Slider -I .\User\Main -I .\User\Objects\Clock -I ".\User\Objects\Start timer" -I .\User\Activity\Boot -I .\User\Temperature -I .\User\Memory -I .\User\Display -I .\User\Sensor -I .\User\Font -I .\User\Canvas -I .\User\Text -I .\User\Activity\System -I .\User\Activity\Search -I .\User\Activity\Error -I .\User\Activity\About -I .\User\Can -I .\User\Time --cpp  --diag_suppress 174-I.\RTE\_Target-IC:\Users\miai\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Firmware\Peripherals\inc-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Include-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Template-D__UVISION_VERSION="535" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER-o .\objects\system_gd32f30x.o --omf_browse .\objects\system_gd32f30x.crf --depend .\objects\system_gd32f30x.d)
+F (RTE\Device\GD32F303CC\system_gd32f30x.c)(0x649BE29E)(--c99 -c --cpu Cortex-M4.fp.sp -g -O0 --apcs=interwork --split_sections -I ".\User\Activity\Setup clock" -I .\User\Activity\Setup -I .\User\Activity\Sleep -I ".\User\Activity\Start timers" -I .\User\Activity\Work -I .\User\Objects\Checkbox -I .\User\Objects\Slider -I .\User\Main -I .\User\Objects\Clock -I ".\User\Objects\Start timer" -I .\User\Activity\Boot -I .\User\Temperature -I .\User\Memory -I .\User\Display -I .\User\Sensor -I .\User\Font -I .\User\Canvas -I .\User\Text -I .\User\Activity\System -I .\User\Activity\Search -I .\User\Activity\Error -I .\User\Activity\About -I .\User\Can -I .\User\Time --cpp  --diag_suppress 174-I.\RTE\_Target-IC:\Users\miai\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Firmware\Peripherals\inc-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Include-IC:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Template-D__UVISION_VERSION="535" -D_RTE_ -DGD32F30X_HD -D_RTE_ -DUSE_STDPERIPH_DRIVER-o .\objects\system_gd32f30x.o --omf_browse .\objects\system_gd32f30x.crf --depend .\objects\system_gd32f30x.d)
 I (C:\Users\miai\AppData\Local\Arm\Packs\GigaDevice\GD32F30x_DFP\2.0.0\Device\Include\gd32f30x.h)(0x6454DEA6)
 I (C:\Users\miai\AppData\Local\Arm\Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm4.h)(0x60D42122)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x60255BBE)

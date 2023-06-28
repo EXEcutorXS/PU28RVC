@@ -57,7 +57,7 @@ void Hcu::handler(void)
             usart.packetOut[i++] = air.isFHeaterOn;
             usart.packetOut[i++] = air.isEHeaterOn;
             usart.packetOut[i++] = air.isWaterOn;
-            usart.packetOut[i++] = air.isAirOn[(air.isDay|air.isSelectDay)&(!air.isSelectNight)];
+            usart.packetOut[i++] = air.isAirOn;
             if (display.setup.celsius & 0x01){
                 usart.packetOut[i++] = airHeaterTSetPoint[(air.isDay|air.isSelectDay)&(!air.isSelectNight)];
             }
@@ -77,7 +77,7 @@ void Hcu::handler(void)
 			uint8_t rvcTemp=255;
 			if (rvc.externalTemperatureProvided)
 			{
-				rvcTemp=rvc.externalTemperature-75;
+				rvcTemp=rvc.externalTemperature+75;
 				if (rvcTemp==255) rvcTemp=254;
 			}
 			usart.packetOut[i++] = rvcTemp;
@@ -135,14 +135,14 @@ void Hcu::parsing(void)
                         }
                         i++;
                         
-                        if (air.isAirOn[(air.isDay|air.isSelectDay)&(!air.isSelectNight)] != usart.packetIn[i]){
-                            air.isAirOn[(air.isDay|air.isSelectDay)&(!air.isSelectNight)] = usart.packetIn[i];
+                        if (air.isAirOn != usart.packetIn[i]){
+                            air.isAirOn = usart.packetIn[i];
                             
-                            if (air.isAirOn[(air.isDay|air.isSelectDay)&(!air.isSelectNight)] && !usart.packetIn[i]){
+                            if (air.isAirOn && !usart.packetIn[i]){
                                 slider.position = 0;
                                 hcu.airHeaterTSetPoint[(air.isDay|air.isSelectDay)&(!air.isSelectNight)] = slider.values[slider.position];
                             }
-                            air.isAirOn[(air.isDay|air.isSelectDay)&(!air.isSelectNight)] = usart.packetIn[i];
+                            air.isAirOn = usart.packetIn[i];
                         }
                         i++;
                         
@@ -243,7 +243,7 @@ void Hcu::parsing(void)
                         
                         hcu.voltage = usart.packetIn[i]/10.0;
 						i++;
-						rvc.newState.FanSpeed=usart.packetIn[i];
+						rvc.newState.FanCurrentSpeed=usart.packetIn[i];
                     }
 					   usart.linkCnt=0;
                     break;

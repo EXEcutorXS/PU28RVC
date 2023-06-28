@@ -141,7 +141,7 @@ class Display
         static const int COLOR_BACK = BLACK;
         static const int COLOR_TEXT = 0xD0D0D0;
         static const int COLOR_TEMP = WHITE;
-		static const int COLOR_TEMP_RVC = 0xB0FFB0;
+		static const int COLOR_TEMP_RVC = 0xCEF2F2;
         static const int COLOR_ERROR = ORANGE; // RED LIGHTGREY
         static const int COLOR_MESSAGE = LIGHTGREY;
     
