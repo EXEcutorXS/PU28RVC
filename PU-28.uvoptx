@@ -497,7 +497,7 @@
   </Group>
 
   <Group>
-    <GroupName>Objects</GroupName>
+    <GroupName>VisualObjects</GroupName>
     <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>

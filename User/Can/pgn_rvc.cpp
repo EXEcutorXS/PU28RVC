@@ -286,7 +286,7 @@ void CAN_PGN_RVC::msgExtMessage()
     uint32_t pgn = generateAID(6, 0x1EF65, 101);
     can.SendMessage(pgn,
                     0x84,
-                    0xFC | (rvc.newState.Solenoid&3),
+                    0xF0 | (rvc.newState.Solenoid&1) | ((rvc.newState.UsePanelSensor&1)<<2),
                     tankTemperature,
                     tankTemperature>>8,
                     heaterTemperature,

@@ -451,7 +451,7 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>Objects</GroupName>
+          <GroupName>VisualObjects</GroupName>
           <Files>
             <File>
               <FileName>checkbox.cpp</FileName>

@@ -13,6 +13,7 @@ bool ElementState;
 bool DomesticWaterPriority;
 bool Solenoid;
 bool ZoneEnabled;
+bool UsePanelSensor;
 	
 uint8_t PumpState;
 uint8_t errorCode;

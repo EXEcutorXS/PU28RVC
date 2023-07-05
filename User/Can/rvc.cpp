@@ -52,13 +52,14 @@ void RVCModule::handler(void)
     newState.DomesticWaterPriority = air.isWaterOn;
     newState.errorCode = hcu.faultCode;
     newState.Solenoid = hcu.stateZone0;
-	newState.DayStartHour = air.dayTimeH;
-	newState.DayStartMinute = air.dayTimeM;
-	newState.NightStartHour = air.nightTimeH;
-	newState.NightStartMinute = air.nightTimeM;
-	newState.WaterDuration = hcu.durationDomesticWater;
-	newState.SystemDuration = hcu.durationSystem;
-	newState.ZoneEnabled = air.isAirOn;
+		newState.DayStartHour = air.dayTimeH;
+		newState.DayStartMinute = air.dayTimeM;
+		newState.NightStartHour = air.nightTimeH;
+		newState.NightStartMinute = air.nightTimeM;
+		newState.WaterDuration = hcu.durationDomesticWater;
+		newState.SystemDuration = hcu.durationSystem;
+		newState.ZoneEnabled = air.isAirOn;
+		newState.UsePanelSensor = air.isPanelSensor;
 	
 	
     int16_t setpoint, temp;
@@ -153,20 +154,18 @@ void RVCModule::handler(void)
         canPGNRVC.msgThermostatSchedule1(0);
     }
 
-    if (oldState.Solenoid!=newState.Solenoid || oldState.FanManualSpeed!=newState.FanManualSpeed) //0x84
+    if (oldState.Solenoid!=newState.Solenoid 
+			|| oldState.FanManualSpeed!=newState.FanManualSpeed
+			|| oldState.UsePanelSensor!=newState.UsePanelSensor) //0x84
     {
         oldState.Solenoid = newState.Solenoid;
-		oldState.FanManualSpeed = newState.FanManualSpeed;
+				oldState.FanManualSpeed = newState.FanManualSpeed;
+				oldState.UsePanelSensor = newState.UsePanelSensor;
 
         canPGNRVC.msgExtMessage();
-
     }
 
-    if (core.getTick()-lastExtTempGetTick > 60000)
-	{
-        externalTemperatureProvided = false;
-		externalTemperatureProvidedChanged = true;
-	}
+
 	
 	if (newState.DayStartHour!=oldState.DayStartHour||newState.DayStartMinute!=oldState.DayStartMinute)
 	{
@@ -190,6 +189,14 @@ void RVCModule::handler(void)
 		
 		canPGNRVC.msgThermostat1();
 	}
+	
+		//Disabling temperature override after 1 minute
+	    if (core.getTick()-lastExtTempGetTick > 60000)
+	{
+        externalTemperatureProvided = false;
+				externalTemperatureProvidedChanged = true;
+	}
+	
 }
 //-----------------------------------------------------
 void RVCModule::TransmitMessage(void)
@@ -475,17 +482,11 @@ void RVCModule::ProcessMessage(uint8_t MsgNum)
             break;
 
         case 0x83:
-            if((D[1] & 3)!=3)
-            {
-                if ((D[1] & 3) == 0)
-                    air.isWaterOn = false;
-                if ((D[1] & 3) == 1)
-                {
-                    air.isWaterOn = true;
-                    hcu.timerOffDomesticWater = core.getTick();
-                }
-            }
-			canPGNRVC.msgWaterHeater2();
+            if((D[1] & 3) < 2)
+                air.isWaterOn = D[1] & 3;
+						
+						if (((D[1]>>2) & 3) < 2)
+                air.isPanelSensor = ((D[1]>>2) & 3);
             break;
         case 0x89:
             if ((D[1]+D[2]*256)!=0xFFFF)
