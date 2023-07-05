@@ -38,8 +38,9 @@
 #include "can.h"
 #include "pgn_rvc.h"
 #include "rvc.h"
-
+#include "bluetooth.h"
 #include "hcu.h"
+#include "ble_connect.h"
 
 /* Prototypes ------------------------------------------------------------------*/
 void initAll(void);
@@ -51,6 +52,7 @@ void activitySetup(void);
 void activityStartTimers(void);
 void activitySetupClock(void);
 void activitySleep(void);
+void activityBleConnect(void);
 void handlerSleep(void);
 void handlerSensor(void);
 void handlerUsart(void);
@@ -63,6 +65,7 @@ void setNewKey(void);
 void writeSetup(void);
 void readSetup(void);
 void minuteHandler(void);
+void handlerBluetooth(void);
 
 /* Variables ------------------------------------------------------------------*/
 uint8_t screen_visible=SCREEN_VISIBLE_SEARCH, screen_visible_old=SCREEN_VISIBLE_AIR;
@@ -85,7 +88,7 @@ const uint8_t _CRC[11]  __attribute__((at(0x0803F800 ))) =
 {
     0x55, 0x55, 0x55, 0x55,     // длина ПО
     0x55, 0x55,                 // CRC ПО
-    9, 0, 100, 21,              // версия ПО
+    9, 0, 100, 22,              // версия ПО
     0x00                        // резерв
 };
 
@@ -160,7 +163,7 @@ int main(void)
         handlerTimer();                                                         // отсчет ограничений по времени работы
 		minuteHandler();
         air.checkDayNight();                                                    // проверка дневного/ночного режима
-		
+		handlerBluetooth();
 		if (isTest)
 			usart.linkCnt=0;  
 		
@@ -206,6 +209,7 @@ void initAll(void)
     //***********************************
     sensor.initialize();
     //***********************************
+	bluetooth.initialize((char*)"Timberline 1.5");
 }
 //-----------------------------------------------------
 void activitySearch(void)
@@ -352,76 +356,6 @@ void activityAir(void)
                 }
             }
         }
-        if (display.setup.celsius & 0x01){
-            if (air.isAirOn == true && hcu.airHeaterTSetPoint[0] < 10.0){
-                //??//hcu.airHeaterTSetPoint[0] = 10.0;
-                res = true;
-            }
-            if (air.isAirOn == true && hcu.airHeaterTSetPoint[1] < 10.0){
-                //??//hcu.airHeaterTSetPoint[1] = 10.0;
-                res = true;
-            }
-            if (air.isAirOn == false && hcu.airHeaterTSetPoint[0] >= 10.0){
-                //??//hcu.airHeaterTSetPoint[0] = 7.0;
-                res = true;
-            }
-            if (air.isAirOn == false && hcu.airHeaterTSetPoint[1] >= 10.0){
-                //??//hcu.airHeaterTSetPoint[1] = 7.0;
-                res = true;
-            }
-        }
-        else{
-            if (air.isAirOn == true && hcu.airHeaterTSetPoint[0] < 50.0){
-                //??//hcu.airHeaterTSetPoint[0] = 50.0;
-                res = true;
-            }
-            if (air.isAirOn == true && hcu.airHeaterTSetPoint[1] < 50.0){
-                //??//hcu.airHeaterTSetPoint[1] = 50.0;
-                res = true;
-            }
-            if (air.isAirOn == false && hcu.airHeaterTSetPoint[0] >= 50.0){
-                //??//hcu.airHeaterTSetPoint[0] = 45.0;
-                res = true;
-            }
-            if (air.isAirOn == false && hcu.airHeaterTSetPoint[1] >= 50.0){
-                //??//hcu.airHeaterTSetPoint[1] = 45.0;
-                res = true;
-            }
-        }
-        
-        if (res == true && false){
-            if ((air.isDay|air.isSelectDay)&(!air.isSelectNight)){
-                // Day
-                if (air.isAirOn){
-                    // On
-                    if (hcu.airHeaterTSetPoint[1] != slider.values[slider.position]){
-                        slider.setPosition(hcu.airHeaterTSetPoint[1]);
-                    }
-                }
-                else{
-                    // Off
-                    if (slider.position != 0){
-                        slider.position = 0;
-                    }
-                }
-            }
-            else{
-                // Night
-                if (air.isAirOn){
-                    // On
-                    if (hcu.airHeaterTSetPoint[0] != slider.values[slider.position]){
-                        slider.setPosition(hcu.airHeaterTSetPoint[0]);
-                    }
-                }
-                else{
-                    // Off
-                    if (slider.position != 0){
-                        slider.position = 0;
-                    }
-                }
-            }
-        }
-        
         result = air.viewHandler();
         switch(result){
             case 1:     // about
@@ -562,6 +496,47 @@ void activitySleep(void)
         }
     }
 }
+
+void activityBleConnect(void)
+{
+    uint8_t result;
+    
+    if (screen_visible == SCREEN_VISIBLE_BLE_CONNECT){                            // экран запроса подключения по Bluetooth
+        result = bleConnect.viewHandler();
+
+        switch(result){
+            case 1: // подтверждение
+                isBleAccept = true;
+                isBleCancel = false;
+                timerCancel = core.getTick();
+                addNewId(newId); // было ///
+                isBleSendKey = true;
+                screen_visible = screen_visible_old;
+                if (screen_visible == SCREEN_VISIBLE_WORK) air.viewScreen(1);       // показываем тот экран, который был до отключения
+                else if (screen_visible == SCREEN_VISIBLE_SETUP) setup.viewScreen();
+                else{
+                    screen_visible = SCREEN_VISIBLE_WORK;
+                    screen_visible_old = screen_visible;
+                    air.viewScreen(1);
+                }
+                break;
+            case 2: // отмена
+                isBleAccept = false;
+                isBleCancel = true;
+                timerCancel = core.getTick();
+                screen_visible = screen_visible_old;
+                if (screen_visible == SCREEN_VISIBLE_WORK) air.viewScreen(1);       // показываем тот экран, который был до отключения
+                else if (screen_visible == SCREEN_VISIBLE_SETUP) setup.viewScreen();
+                else{
+                    screen_visible = SCREEN_VISIBLE_WORK;
+                    screen_visible_old = screen_visible;
+                    air.viewScreen(1);
+                }
+                break;
+        }
+    }
+}
+
 //-----------------------------------------------------
 void handlerSleep(void)
 {
@@ -934,5 +909,28 @@ if (core.getTick()-lastTick>60000)
 	lastTick+=60000;
 	canPGNRVC.minutesSinceStart++;
 }
+}
+//-----------------------------------------------------
+void handlerBluetooth(void)
+{
+    uint8_t group;
+    uint8_t buf[20], i, x;
+    bool isAnswer = false;
+    static uint8_t heater_device_old = 0xFF;
+    static uint8_t dataNumb=0;
+    static uint8_t fastSendCount=0;
+    
+    static uint32_t timer1000=0;
+	
+	bluetooth.handler();
+    if ((core.getTick()-timer1000) > 1000){
+        timer1000 = core.getTick();
+        counterBle = counterBleTemp;
+        counterBleTemp = 0;
+        counterBleSend = counterBleSendTemp;
+        counterBleSendTemp = 0;
+    }
+    counterBleTemp++;
+   
 }
 //-----------------------------------------------------

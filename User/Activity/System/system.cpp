@@ -137,7 +137,7 @@ uint8_t System::viewHandler(void)
     a = slider.viewPosition();                      // программа визуализации настроечной шкалы
     if (a == 0){                                   // ползунок дополз до места назначения
         value = slider.values[slider.position];
-        if (sensor.status){
+        if (sensor.status==1){
             isAirOn = (slider.position != 0);
         }
         this->viewMode();                           // вывод на экран режима работы хоз.воды
@@ -314,7 +314,7 @@ void System::viewTemperature(bool isReset)
 			if (display.setup.celsius & 0x01)
 				temp = rvc.externalTemperature;
 			else
-				temp = core.celToFar(rvc.externalTemperature);
+				temp = core.celToFar(rvc.externalTemperature)+0.5f;
 		}
         else if (air.isPanelSensor & 0x01){
             temp = temperature.panel;

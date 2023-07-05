@@ -90,9 +90,9 @@ void CAN_PGN_RVC::msgDiagnosticMessage(void)
     uint8_t yellowLampStatus;
     uint8_t redLampStatus;
     uint8_t dsa;
-    uint8_t spnMsb;
-	uint8_t spnIsb;
-	uint8_t spnLsb;
+    uint8_t spnMsb = 0xFF;
+	uint8_t spnIsb = 0xFF;
+	uint8_t spnLsb = 0xFF;
     uint8_t fmi;
     uint8_t occurenceCount;
     uint8_t reserved;
@@ -115,11 +115,11 @@ void CAN_PGN_RVC::msgDiagnosticMessage(void)
     if (hcu.faultCode!=0)
 	{
         spnMsb = hcu.faultCode;
-		spnMsb = 1;   //Instance
+		spnIsb = 1;   //Instance
 	}
 	
-    
-        dsaExtension = 101;//Water heater address
+    dsa = 101;//Water heater address
+    dsaExtension = 0xFF;//Water heater address
     bankSelect = 0xFF;
     uint32_t pgn = generateAID(6, 0x1FECA, 101);
     can.SendMessage(pgn,
@@ -127,7 +127,7 @@ void CAN_PGN_RVC::msgDiagnosticMessage(void)
                     dsa,
                     spnMsb,
                     spnIsb,
-                    (spnLsb<<5) | fmi,
+                    ((spnLsb&7)<<5) | fmi,
                     occurenceCount | (reserved<<7),
                     dsaExtension,
                     bankSelect);
@@ -256,14 +256,14 @@ void CAN_PGN_RVC::msgAmbientTemp()
 
     instance = 1;
     int16_t temp;
-    if (air.isPanelSensor & 0x01) {
-        temp = canPGNRVC.panelSensorx10C;
+    if (!air.isPanelSensor && airTemperaturex10C>-200 && airTemperaturex10C<600) {
+		temp = canPGNRVC.airTemperaturex10C;
     }
     else
     {
-        temp = canPGNRVC.airTemperaturex10C;
+		temp = canPGNRVC.panelSensorx10C;
     }
-
+	
     temperatureAmbient = (temp+2730)*3.2;
     uint32_t pgn = generateAID(6, 0x1FF9C, 101);
     can.SendMessage(pgn,

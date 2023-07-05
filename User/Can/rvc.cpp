@@ -292,8 +292,11 @@ void RVCModule::ProcessMessage(uint8_t MsgNum)
     if (mesLen!=8) return;
     hcu.lockTimer = core.getTick();
     uint8_t* D = can.RxMsgBuf[MsgNum].RxMsg.rx_data;
+	uint32_t timer;
+	uint16_t temp;
     switch(DGN) {
     case 0x1FFFF: //Date time
+	
         unixTime.year = D[0]+2000;
         if (D[1]>0&&D[1]<13) unixTime.mon = D[1];
         if (D[2]>0&&D[2]<32) unixTime.mday = D[2];
@@ -310,7 +313,7 @@ void RVCModule::ProcessMessage(uint8_t MsgNum)
     // wait until last write operation on RTC registers has finished
     rtc_lwoff_wait();
     
-    uint32_t timer = unixTime.calToTimer();
+    timer = unixTime.calToTimer();
     rtc_counter_set(timer);
     bkp_write_data(BKP_DATA_0, BKP_VALUE);
         break;
@@ -364,6 +367,7 @@ void RVCModule::ProcessMessage(uint8_t MsgNum)
         }
         break;
     case 0x1FEF9: //Thermostat Command
+		temp = (D[4]<<8)+D[3];
         if (D[0] != 1) return;
         if ((D[1]&0xF)==0) 
 			air.isAirOn = false;
@@ -371,9 +375,8 @@ void RVCModule::ProcessMessage(uint8_t MsgNum)
 			air.isAirOn = true;
         redrawSlider=true;
             
-            uint16_t temp = (D[4]<<8)+D[3];
+            
             if( temp != 0xFFFF) {
-                //If it's day we change day time setpoint,otherwise - night time
 
                 double precisionTemp = temp;
 
@@ -503,8 +506,8 @@ void RVCModule::ProcessMessage(uint8_t MsgNum)
 			canPGNRVC.msgTimersSetupStatus();
             break;
         }
-
     }
     if (redrawSlider)
-        slider.setPosition(hcu.airHeaterTSetPoint[(air.isDay|air.isSelectDay)&(!air.isSelectNight)]);
+			slider.setPosition(hcu.airHeaterTSetPoint[(air.isDay|air.isSelectDay)&(!air.isSelectNight)]);
+
 }

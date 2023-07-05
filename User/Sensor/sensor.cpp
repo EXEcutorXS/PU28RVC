@@ -75,6 +75,8 @@ uint8_t Sensor::handler(void)
             result = 1;
         }
     }
+	if (status==255) //DEBUG Костыль для выкючения зоны по RV-C
+		status=0;
     return result;
 }
 //-----------------------------------------------------
