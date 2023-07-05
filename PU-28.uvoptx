@@ -509,8 +509,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\User\Objects\Start timer\start_timer.cpp</PathWithFileName>
-      <FilenameWithoutPath>start_timer.cpp</FilenameWithoutPath>
+      <PathWithFileName>.\User\VisualObjects\Checkbox\checkbox.cpp</PathWithFileName>
+      <FilenameWithoutPath>checkbox.cpp</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -521,8 +521,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\User\Objects\Slider\slider.cpp</PathWithFileName>
-      <FilenameWithoutPath>slider.cpp</FilenameWithoutPath>
+      <PathWithFileName>.\User\VisualObjects\Clock\clock.cpp</PathWithFileName>
+      <FilenameWithoutPath>clock.cpp</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -533,8 +533,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\User\Objects\Checkbox\checkbox.cpp</PathWithFileName>
-      <FilenameWithoutPath>checkbox.cpp</FilenameWithoutPath>
+      <PathWithFileName>.\User\VisualObjects\Slider\slider.cpp</PathWithFileName>
+      <FilenameWithoutPath>slider.cpp</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -545,8 +545,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\User\Objects\Clock\clock.cpp</PathWithFileName>
-      <FilenameWithoutPath>clock.cpp</FilenameWithoutPath>
+      <PathWithFileName>.\User\VisualObjects\Start timer\start_timer.cpp</PathWithFileName>
+      <FilenameWithoutPath>start_timer.cpp</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

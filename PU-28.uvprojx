@@ -339,7 +339,7 @@
               <MiscControls>--cpp  --diag_suppress 174</MiscControls>
               <Define>USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>.\User\Activity\Setup clock;.\User\Activity\Setup;.\User\Activity\Sleep;.\User\Activity\Start timers;.\User\Activity\Work;.\User\Objects\Checkbox;.\User\Objects\Slider;.\User\Main;.\User\Objects\Clock;.\User\Objects\Start timer;.\User\Activity\Boot;.\User\Temperature;.\User\Memory;.\User\Display;.\User\Sensor;.\User\Font;.\User\Canvas;.\User\Text;.\User\Activity\System;.\User\Activity\Search;.\User\Activity\Error;.\User\Activity\About;.\User\Can;.\User\Time;.\User\Bluetooth;.\User\Activity\Ble connect</IncludePath>
+              <IncludePath>.\User\Activity\Setup clock;.\User\Activity\Setup;.\User\Activity\Sleep;.\User\Activity\Start timers;.\User\Activity\Work;.\User\VisualObjects\Checkbox;.\User\VisualObjects\Slider;.\User\Main;.\User\VisualObjects\Clock;.\User\VisualObjects\Start timer;.\User\Activity\Boot;.\User\Temperature;.\User\Memory;.\User\Display;.\User\Sensor;.\User\Font;.\User\Canvas;.\User\Text;.\User\Activity\System;.\User\Activity\Search;.\User\Activity\Error;.\User\Activity\About;.\User\Can;.\User\Time;.\User\Bluetooth;.\User\Activity\Ble connect</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -454,24 +454,24 @@
           <GroupName>Objects</GroupName>
           <Files>
             <File>
-              <FileName>start_timer.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\User\Objects\Start timer\start_timer.cpp</FilePath>
-            </File>
-            <File>
-              <FileName>slider.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\User\Objects\Slider\slider.cpp</FilePath>
-            </File>
-            <File>
               <FileName>checkbox.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\User\Objects\Checkbox\checkbox.cpp</FilePath>
+              <FilePath>.\User\VisualObjects\Checkbox\checkbox.cpp</FilePath>
             </File>
             <File>
               <FileName>clock.cpp</FileName>
               <FileType>8</FileType>
-              <FilePath>.\User\Objects\Clock\clock.cpp</FilePath>
+              <FilePath>.\User\VisualObjects\Clock\clock.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>slider.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\User\VisualObjects\Slider\slider.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>start_timer.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\User\VisualObjects\Start timer\start_timer.cpp</FilePath>
             </File>
           </Files>
         </Group>
