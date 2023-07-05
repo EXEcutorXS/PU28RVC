@@ -30,5 +30,8 @@
 *.exe
 *.out
 *.app
-Objects/about.crf
 *.crf
+Objects/
+Listings/
+RTE/
+JLinkLog.txt
