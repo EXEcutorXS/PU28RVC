@@ -33,7 +33,7 @@ enum
 //-----------------------------------------------------
 Temperature::Temperature(void)
 {
-    
+    	core.ClassInit(this,sizeof(this));
 }
 //-----------------------------------------------------
 void Temperature::initialize(void)

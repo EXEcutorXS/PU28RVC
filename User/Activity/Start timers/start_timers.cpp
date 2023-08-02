@@ -12,12 +12,13 @@
 #include "start_timer.h"
 #include "clock.h"
 #include "hcu.h"
+#include "core.h"
 
 StartTimers startTimers;
 //-----------------------------------------------------
 StartTimers::StartTimers(void)
 {
-    
+    core.ClassInit(this,sizeof(this));
 }
 //-----------------------------------------------------
 void StartTimers::viewScreen(void)

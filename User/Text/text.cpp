@@ -19,7 +19,7 @@ Text text;
 //-----------------------------------------------------
 Text::Text(void)
 {
-    
+    core.ClassInit(this,sizeof(this));
 }
 //-----------------------------------------------------
 void Text::writeChar(uint16_t x, uint16_t y, char ch, FontDef font, uint32_t color, uint32_t bgcolor)

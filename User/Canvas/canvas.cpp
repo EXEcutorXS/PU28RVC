@@ -18,7 +18,7 @@ Canvas canvas;
 //-----------------------------------------------------
 Canvas::Canvas(void)
 {
-    
+    core.ClassInit(this,sizeof(this));
 }
 //-----------------------------------------------------
 void Canvas::writePixel(int16_t x, int16_t y, uint32_t color)

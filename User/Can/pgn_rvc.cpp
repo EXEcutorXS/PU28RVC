@@ -23,7 +23,7 @@ CAN_PGN_RVC canPGNRVC;
 //-----------------------------------------------------
 CAN_PGN_RVC::CAN_PGN_RVC(void)
 {
-	minutesSinceStart=0;
+	core.ClassInit(this,sizeof(this));
 }
 //-----------------------------------------------------
 uint32_t CAN_PGN_RVC::generateAID(uint8_t priority, uint32_t DGN, uint8_t SA)

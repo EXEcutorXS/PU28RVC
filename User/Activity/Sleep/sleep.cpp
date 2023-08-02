@@ -35,7 +35,7 @@ Sleep sleep;
 //-----------------------------------------------------
 Sleep::Sleep(void)
 {
-    
+    core.ClassInit(this,sizeof(this));
 }
 //-----------------------------------------------------
 uint8_t Sleep::checkSleepMode(void)

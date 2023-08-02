@@ -17,7 +17,7 @@ Checkbox checkbox;
 //-----------------------------------------------------
 Checkbox::Checkbox(void)
 {
-    
+    core.ClassInit(this,sizeof(this));
 }
 //-----------------------------------------------------
 void Checkbox::draw(uint16_t x, uint16_t y, const char* str, char* flag)

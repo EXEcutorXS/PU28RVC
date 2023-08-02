@@ -40,6 +40,7 @@ System air(45, 50, 90, 45, BUTTON_CENTRAL_IMAGE, BUTTON_CENTRAL_IMAGE, 5, 10);
 //-----------------------------------------------------
 System::System(uint8_t offVal, uint8_t minVal, uint8_t maxVal, uint8_t startVal, uint8_t offImage, uint8_t onImage, uint8_t smallStep, uint8_t bigStep)
 {
+		core.ClassInit(this,sizeof(this));
     OFF_VALUE = offVal;
     MIN_VALUE = minVal;
     MAX_VALUE = maxVal;

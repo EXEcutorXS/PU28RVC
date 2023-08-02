@@ -35,7 +35,7 @@ Error error;
 //-----------------------------------------------------
 Error::Error(void)
 {
-    
+    core.ClassInit(this,sizeof(this));
 }
 //-----------------------------------------------------
 void Error::viewScreen(void)

@@ -26,6 +26,7 @@
 
 Slider slider;
 //-----------------------------------------------------
+
 void Slider::initialize(void)
 {
     uint32_t i;

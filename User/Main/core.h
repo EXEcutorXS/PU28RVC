@@ -37,6 +37,8 @@ class Core
         void moveAddress(uint32_t address);
         void handler(void);
         void checkWarning(void);
+				
+				void ClassInit(void* address,uint32_t size);
     
         uint8_t command;
         uint8_t faultCode;//ToDelete  временна€ переменна€ с кодом неисправности

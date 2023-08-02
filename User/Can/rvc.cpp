@@ -26,6 +26,7 @@ RVCModule rvc;
 //-----------------------------------------------------
 RVCModule::RVCModule(void)
 {
+	core.ClassInit(this,sizeof(this));
 }
 //-----------------------------------------------------
 void RVCModule::handler(void)
@@ -483,7 +484,10 @@ void RVCModule::ProcessMessage(uint8_t MsgNum)
 
         case 0x83:
             if((D[1] & 3) < 2)
+						{
                 air.isWaterOn = D[1] & 3;
+								if (air.isWaterOn) hcu.timerOffDomesticWater = core.getTick();
+						}
 						
 						if (((D[1]>>2) & 3) < 2)
                 air.isPanelSensor = ((D[1]>>2) & 3);

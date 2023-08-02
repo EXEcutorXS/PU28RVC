@@ -36,7 +36,7 @@ Search search;
 //-----------------------------------------------------
 Search::Search(void)
 {
-    
+ core.ClassInit(this,sizeof(this));   
 }
 //-----------------------------------------------------
 void Search::viewScreen(void)

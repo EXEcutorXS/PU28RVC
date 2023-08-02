@@ -37,6 +37,7 @@ Clock clock;
 //-----------------------------------------------------
 Clock::Clock(void)
 {
+		core.ClassInit(this,sizeof(this));
     this->mode = this->MODE_TIME;
     this->setupClock=1;
     canvas.color0 = 0x000000;

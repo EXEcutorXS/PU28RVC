@@ -12,11 +12,12 @@
 #include "temperature.h"
 #include "core.h"
 #include "main.h"
-
+#include "string.h"
 Core core;
 //-----------------------------------------------------
 Core::Core(void)
 {
+		ClassInit(this,sizeof(this));
     this->timePhase=0xFFFFFFFF;
     this->command=0;
     
@@ -160,6 +161,12 @@ void Core::paramToProtocol(volatile uint8_t* array, volatile uint8_t group, vola
     
     return;
 }
+
+void Core::ClassInit(void* address,uint32_t size)
+{
+	memset(address,0,size);
+}
+
 //-----------------------------------------------------
 extern "C" void SysTick_Handler(void)
 {

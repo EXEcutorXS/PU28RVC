@@ -17,6 +17,7 @@ Can can;
 //-------------------------------------------------------------------
 Can::Can(void)
 {
+		core.ClassInit(this,sizeof(this));
     for (uint8_t i=0; i<MSG_BUF_SIZE; i++) {
         this->RxMsgBuf[i].Received_f=false;
         this->TxMsgBuf[i].Transmitted_f=true;

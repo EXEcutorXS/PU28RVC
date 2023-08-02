@@ -32,7 +32,7 @@ SetupClock setupClock;
 //-----------------------------------------------------
 SetupClock::SetupClock(void)
 {
-    
+    core.ClassInit(this,sizeof(this));
 }
 //-----------------------------------------------------
 void SetupClock::viewScreen(void)

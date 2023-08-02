@@ -35,7 +35,7 @@ BleConnect bleConnect;
 //-----------------------------------------------------
 BleConnect::BleConnect(void)
 {
-    
+    core.ClassInit(this,sizeof(this));
 }
 //-----------------------------------------------------
 void BleConnect::viewScreen(void)

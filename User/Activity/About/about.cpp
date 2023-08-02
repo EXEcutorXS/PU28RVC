@@ -35,7 +35,7 @@ About about;
 //-----------------------------------------------------
 About::About(void)
 {
-    
+    core.ClassInit(this,sizeof(this));
 }
 //-----------------------------------------------------
 void About::viewScreen(void)

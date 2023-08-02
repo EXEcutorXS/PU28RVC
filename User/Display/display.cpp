@@ -17,6 +17,8 @@ Display display;
 //-----------------------------------------------------
 Display::Display(void)
 {
+	core.ClassInit(this,sizeof(this));
+	
     this->setTimer(60 * 1000);
     this->setup.resolution = this->RESOLUTION_16;
 }

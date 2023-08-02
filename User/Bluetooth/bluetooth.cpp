@@ -16,7 +16,7 @@ Bluetooth bluetooth;
 //-----------------------------------------------------
 Bluetooth::Bluetooth(void)
 {
-    
+    core.ClassInit(this,sizeof(this));
 }
 //-----------------------------------------------------
 void Bluetooth::initSpi(void)

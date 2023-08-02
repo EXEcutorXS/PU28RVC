@@ -33,6 +33,7 @@ Setup setup;
 //-----------------------------------------------------
 Setup::Setup(void)
 {
+		core.ClassInit(this,sizeof(this));
     ///readSetup();
     this->numberScreen = 1;
     this->isChange = true;
