@@ -88,7 +88,7 @@ const uint8_t _CRC[11]  __attribute__((at(0x0803F800 ))) =
 {
     0x55, 0x55, 0x55, 0x55,     // длина ПО
     0x55, 0x55,                 // CRC ПО
-    9, 0, 100, 24,              // версия ПО
+    9, 0, 100, 25,              // версия ПО
     0x00                        // резерв
 };
 
@@ -336,10 +336,10 @@ void activityAbout(void)
 void activityAir(void)
 {
     uint8_t result;
-    bool res;
+    //bool res;
     
     if (screen_visible == SCREEN_VISIBLE_AIR) {                            // экран управления воздушным отоплением
-        res = false;
+        //res = false;
         if ((core.getTick() - hcu.lockTimer) <= 1000){
             if (sensor.status == 0){
                 if (air.isAirOn){
@@ -913,6 +913,7 @@ if (core.getTick()-lastTick>60000)
 //-----------------------------------------------------
 void handlerBluetooth(void)
 {
+	/*
     uint8_t group;
     uint8_t buf[20], i, x;
     bool isAnswer = false;
@@ -931,6 +932,6 @@ void handlerBluetooth(void)
         counterBleSendTemp = 0;
     }
     counterBleTemp++;
-   
+   */
 }
-//-----------------------------------------------------
+
