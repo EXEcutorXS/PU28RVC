@@ -456,11 +456,11 @@ void RVCModule::ProcessMessage(uint8_t MsgNum)
         {
             if ((D[1]&0xF)==0)
             {
-                hcu.pumpOn = 0;
+                hcu.pumpOn = 2;
             }
             if ((D[1]&0xF)==5)
             {
-                hcu.pumpOn = 1;
+                hcu.pumpOn = 3;
                 hcu.timerPumpOn = core.getTick();
             }
         }

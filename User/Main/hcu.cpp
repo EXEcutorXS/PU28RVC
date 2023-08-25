@@ -105,6 +105,7 @@ void Hcu::handler(void)
         val = (core.getTick() - timerLinkError)/1000;
         if (val > secondsLink) secondsLink = val;
     }
+		checkPump();
 }
 //-----------------------------------------------------
 void Hcu::parsing(void)
@@ -263,7 +264,7 @@ void Hcu::parsing(void)
     }
 }
 //-----------------------------------------------------
-void Hcu::checkPump(void)
+void Hcu::checkPump(void) 
 {
     if (hcu.pumpOn == 1){
         if ((core.getTick() - hcu.timerPumpOn) > 600000){
