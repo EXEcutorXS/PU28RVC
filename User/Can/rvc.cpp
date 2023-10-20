@@ -8,6 +8,7 @@
 * Описание:
 *******************************************************************************/
 /* Includes ------------------------------------------------------------------*/
+#include "main.h"
 #include "rvc.h"
 #include "core.h"
 #include "can.h"
@@ -19,14 +20,17 @@
 #include "slider.h"
 #include "hcu.h"
 #include "temperature.h"
+#include "canvas.h"
 
-#define BKP_VALUE    0x32F0 
+#define BKP_VALUE    0x32F0
+
+extern bool saveSetupFlag;
 
 RVCModule rvc;
 //-----------------------------------------------------
 RVCModule::RVCModule(void)
 {
-	core.ClassInit(this,sizeof(this));
+    core.ClassInit(this,sizeof(this));
 }
 //-----------------------------------------------------
 void RVCModule::handler(void)
@@ -41,43 +45,44 @@ void RVCModule::handler(void)
     }
 
     //updating newState
-	newState.PumpState = 0x00;
-	if (hcu.statePump)
-		newState.PumpState = 0x01;
-    if (hcu.pumpOn)
+    newState.PumpState = 0x00;
+    if (hcu.statePump)
+        newState.PumpState = 0x01;
+    if (hcu.pumpOn&1)
         newState.PumpState = 0x05;
-    
+
 
     newState.HeaterState = air.isFHeaterOn;
     newState.ElementState = air.isEHeaterOn;
     newState.DomesticWaterPriority = air.isWaterOn;
     newState.errorCode = hcu.faultCode;
     newState.Solenoid = hcu.stateZone0;
-		newState.DayStartHour = air.dayTimeH;
-		newState.DayStartMinute = air.dayTimeM;
-		newState.NightStartHour = air.nightTimeH;
-		newState.NightStartMinute = air.nightTimeM;
-		newState.WaterDuration = hcu.durationDomesticWater;
-		newState.SystemDuration = hcu.durationSystem;
-		newState.ZoneEnabled = air.isAirOn;
-		newState.UsePanelSensor = air.isPanelSensor;
-	
-	
+    newState.DayStartHour = air.dayTimeH;
+    newState.DayStartMinute = air.dayTimeM;
+    newState.NightStartHour = air.nightTimeH;
+    newState.NightStartMinute = air.nightTimeM;
+    newState.WaterDuration = hcu.durationDomesticWater;
+    newState.SystemDuration = hcu.durationSystem;
+    newState.ZoneEnabled = air.isAirOn;
+    newState.UsePanelSensor = air.isPanelSensor;
+    newState.scheduleMode = display.setup.scheduleMode&1;
+
+
     int16_t setpoint, temp;
     setpoint = hcu.airHeaterTSetPoint[(air.isDay|air.isSelectDay)&(!air.isSelectNight)];
     if(display.setup.celsius)
         newState.currentSetpoint=setpoint;
     else
         newState.currentSetpoint=core.farToCel(setpoint);
-	
-	if (newState.SystemDuration!=oldState.SystemDuration || newState.WaterDuration!=oldState.WaterDuration)
-	{
-		oldState.WaterDuration = newState.WaterDuration;
-		oldState.SystemDuration = newState.SystemDuration;
-		
-		canPGNRVC.msgTimersSetupStatus();
-	}
-	
+
+    if (newState.SystemDuration!=oldState.SystemDuration || newState.WaterDuration!=oldState.WaterDuration)
+    {
+        oldState.WaterDuration = newState.WaterDuration;
+        oldState.SystemDuration = newState.SystemDuration;
+
+        canPGNRVC.msgTimersSetupStatus();
+    }
+
     if (display.setup.celsius & 0x01)
     {
         newState.setpointNight = hcu.airHeaterTSetPoint[0];
@@ -95,8 +100,8 @@ void RVCModule::handler(void)
         temp = air.temperatureActual;
     }
 
-    newState.FanManualMode = hcu.fanManual;
-	newState.FanManualSpeed = hcu.fanPower;
+    newState.FanManualMode = hcu.fanManual&1;
+    newState.FanManualSpeed = hcu.fanPower;
 
     if (!(display.setup.celsius & 0x01)) {
         setpoint = core.farToCel(setpoint);
@@ -155,49 +160,51 @@ void RVCModule::handler(void)
         canPGNRVC.msgThermostatSchedule1(0);
     }
 
-    if (oldState.Solenoid!=newState.Solenoid 
-			|| oldState.FanManualSpeed!=newState.FanManualSpeed
-			|| oldState.UsePanelSensor!=newState.UsePanelSensor) //0x84
+    if (oldState.Solenoid!=newState.Solenoid
+            || oldState.FanManualSpeed!=newState.FanManualSpeed
+            || oldState.UsePanelSensor!=newState.UsePanelSensor) //0x84
     {
         oldState.Solenoid = newState.Solenoid;
-				oldState.FanManualSpeed = newState.FanManualSpeed;
-				oldState.UsePanelSensor = newState.UsePanelSensor;
+        oldState.FanManualSpeed = newState.FanManualSpeed;
+        oldState.UsePanelSensor = newState.UsePanelSensor;
 
         canPGNRVC.msgExtMessage();
     }
 
 
-	
-	if (newState.DayStartHour!=oldState.DayStartHour||newState.DayStartMinute!=oldState.DayStartMinute)
-	{
-		oldState.DayStartHour=newState.DayStartHour;
-		oldState.DayStartMinute=newState.DayStartMinute;
-		
-		canPGNRVC.msgThermostatSchedule1(1);
-	}
-	
-	if (newState.NightStartHour!=oldState.NightStartHour||newState.NightStartMinute!=oldState.NightStartMinute)
-	{
-		oldState.NightStartHour=newState.NightStartHour;
-		oldState.NightStartMinute=newState.NightStartMinute;
-		
-		canPGNRVC.msgThermostatSchedule1(0);
-	}
-	
-	if (newState.ZoneEnabled !=oldState.ZoneEnabled)
-	{
-		oldState.ZoneEnabled = newState.ZoneEnabled;
-		
-		canPGNRVC.msgThermostat1();
-	}
-	
-		//Disabling temperature override after 1 minute
-	    if (core.getTick()-lastExtTempGetTick > 60000)
-	{
+
+    if (newState.DayStartHour!=oldState.DayStartHour||newState.DayStartMinute!=oldState.DayStartMinute)
+    {
+        oldState.DayStartHour=newState.DayStartHour;
+        oldState.DayStartMinute=newState.DayStartMinute;
+
+        canPGNRVC.msgThermostatSchedule1(1);
+    }
+
+    if (newState.NightStartHour!=oldState.NightStartHour||newState.NightStartMinute!=oldState.NightStartMinute)
+    {
+        oldState.NightStartHour=newState.NightStartHour;
+        oldState.NightStartMinute=newState.NightStartMinute;
+
+        canPGNRVC.msgThermostatSchedule1(0);
+    }
+
+    if (newState.ZoneEnabled !=oldState.ZoneEnabled ||
+            newState.scheduleMode != oldState.scheduleMode)
+    {
+        oldState.ZoneEnabled = newState.ZoneEnabled;
+        oldState.scheduleMode = newState.scheduleMode;
+
+        canPGNRVC.msgThermostat1();
+    }
+
+    //Disabling temperature override after 1 minute
+    if (core.getTick()-lastExtTempGetTick > 60000)
+    {
         externalTemperatureProvided = false;
-				externalTemperatureProvidedChanged = true;
-	}
-	
+        externalTemperatureProvidedChanged = true;
+    }
+
 }
 //-----------------------------------------------------
 void RVCModule::TransmitMessage(void)
@@ -244,10 +251,12 @@ void RVCModule::TransmitMessage(void)
             canPGNRVC.msgThermostat2();
             break;
         case 6:
-            canPGNRVC.msgThermostatSchedule1(0);
+            if (display.setup.scheduleMode)
+                canPGNRVC.msgThermostatSchedule1(0);
             break;
         case 7:
-            canPGNRVC.msgThermostatSchedule1(1);
+            if (display.setup.scheduleMode)
+                canPGNRVC.msgThermostatSchedule1(1);
             break;
         case 8:
             canPGNRVC.msgCirculationPumpStatus();
@@ -258,7 +267,7 @@ void RVCModule::TransmitMessage(void)
         case 10:
             canPGNRVC.msgExtMessage();
             break;
-		case 11:
+        case 11:
             canPGNRVC.msgTimersSetupStatus();
             break;
 
@@ -300,11 +309,11 @@ void RVCModule::ProcessMessage(uint8_t MsgNum)
     if (mesLen!=8) return;
     hcu.lockTimer = core.getTick();
     uint8_t* D = can.RxMsgBuf[MsgNum].RxMsg.rx_data;
-	uint32_t timer;
-	uint16_t temp;
+    uint32_t timer;
+    uint16_t temp;
     switch(DGN) {
     case 0x1FFFF: //Date time
-	
+
         unixTime.year = D[0]+2000;
         if (D[1]>0&&D[1]<13) unixTime.mon = D[1];
         if (D[2]>0&&D[2]<32) unixTime.mday = D[2];
@@ -312,26 +321,26 @@ void RVCModule::ProcessMessage(uint8_t MsgNum)
         if (D[4]<24) unixTime.hour = D[4];
         if (D[5]<60) unixTime.min = D[5];
         if (D[6]<60) unixTime.sec = D[6];
-		    // allow access to BKP domain
-    rcu_periph_clock_enable(RCU_PMU);
-    pmu_backup_write_enable();
-    // wait for RTC registers synchronization
-    rtc_register_sync_wait();
-    rtc_lwoff_wait();
-    // wait until last write operation on RTC registers has finished
-    rtc_lwoff_wait();
-    
-    timer = unixTime.calToTimer();
-    rtc_counter_set(timer);
-    bkp_write_data(BKP_DATA_0, BKP_VALUE);
+        // allow access to BKP domain
+        rcu_periph_clock_enable(RCU_PMU);
+        pmu_backup_write_enable();
+        // wait for RTC registers synchronization
+        rtc_register_sync_wait();
+        rtc_lwoff_wait();
+        // wait until last write operation on RTC registers has finished
+        rtc_lwoff_wait();
+
+        timer = unixTime.calToTimer();
+        rtc_counter_set(timer);
+        bkp_write_data(BKP_DATA_0, BKP_VALUE);
         break;
 
     case 0x1FF9C: //Ambient temperature
         if (D[0]!=1) return;
-		if (!externalTemperatureProvided)
-			externalTemperatureProvidedChanged = true;    
-		externalTemperatureProvided = true;
-		
+        if (!externalTemperatureProvided)
+            externalTemperatureProvidedChanged = true;
+        externalTemperatureProvided = true;
+
         externalTemperature = (D[1]+D[2]*256)/32.0-273.0;
         lastExtTempGetTick = core.getTick();
         break;
@@ -368,46 +377,61 @@ void RVCModule::ProcessMessage(uint8_t MsgNum)
             B = D[1]&3;
             if (B < 2) {
                 hcu.fanManual = B | 2;
-                hcu.fanAuto = !B | 2;}
-			if (D[2] < 201) {
-                    hcu.fanPower = D[2]/2;
+                hcu.fanAuto = !B | 2;
+            }
+            if (D[2] < 201) {
+                hcu.fanPower = D[2]/2;
             }
         }
         break;
     case 0x1FEF9: //Thermostat Command
-		temp = (D[4]<<8)+D[3];
+        temp = (D[4]<<8)+D[3];
         if (D[0] != 1) return;
-        if ((D[1]&0xF)==0) 
-			air.isAirOn = false;
-		if ((D[1]&0xF)==2 || (D[1]&0xF)==3) 
-			air.isAirOn = true;
+        if ((D[1]&0xF)==0)
+            air.isAirOn = false;
+        if ((D[1]&0xF)==2 || (D[1]&0xF)==3)
+            air.isAirOn = true;
         redrawSlider=true;
-            
-            
-            if( temp != 0xFFFF) {
 
-                double precisionTemp = temp;
 
-                precisionTemp = (precisionTemp/32.0-273.0);
-                if (!(display.setup.celsius & 0x01)) {
-                    precisionTemp = core.celToFar(precisionTemp)+0.5f;
-                }
-                Ts = (uint16_t)precisionTemp;
+        if( temp != 0xFFFF) {
 
-                if (!air.isDay) {
-                    hcu.airHeaterTSetPoint[0]=Ts;
-                    if (air.isAirOn) {
-                        redrawSlider=true;
-                    }
-                }
-                else {
-                    hcu.airHeaterTSetPoint[1]=Ts;
-                    if (air.isAirOn) {
-                        redrawSlider=true;
-                    }
+            double precisionTemp = temp;
+
+            precisionTemp = (precisionTemp/32.0-273.0);
+            if (!(display.setup.celsius & 0x01)) {
+                precisionTemp = core.celToFar(precisionTemp)+0.5f;
+            }
+            Ts = (uint16_t)precisionTemp;
+
+            if (!air.isDay) {
+                hcu.airHeaterTSetPoint[0]=Ts;
+                if (air.isAirOn) {
+                    redrawSlider=true;
                 }
             }
-        
+            else {
+                hcu.airHeaterTSetPoint[1]=Ts;
+                if (air.isAirOn) {
+                    redrawSlider=true;
+                }
+            }
+        }
+        if (((D[1]>>6)&3)<2 && ((display.setup.scheduleMode&1)!=((D[1]>>6)&1)))
+        {
+            display.setup.scheduleMode = ((D[1]>>6)&3)|2;
+            saveSetupFlag=1;
+			if (screen_visible != SCREEN_VISIBLE_AIR) break;
+            if (display.setup.scheduleMode&1)
+            {
+                if ((air.isDay|air.isSelectDay)&(!air.isSelectNight))
+                    canvas.loadImageEffect(BUTTON_DAY_NIGHT_X,BUTTON_DAY_NIGHT_Y,TEXT_DAY_IMAGE,BUTTON_SETUP_STEP,0);
+                else
+                    canvas.loadImageEffect(BUTTON_DAY_NIGHT_X,BUTTON_DAY_NIGHT_Y,TEXT_NIGHT_IMAGE,BUTTON_SETUP_STEP,0);
+            }
+            else
+                canvas.writeFillRect(BUTTON_DAY_NIGHT_X,BUTTON_DAY_NIGHT_Y,30,30,0);
+        }
         break;
 
 
@@ -484,12 +508,12 @@ void RVCModule::ProcessMessage(uint8_t MsgNum)
 
         case 0x83:
             if((D[1] & 3) < 2)
-						{
+            {
                 air.isWaterOn = D[1] & 3;
-								if (air.isWaterOn) hcu.timerOffDomesticWater = core.getTick();
-						}
-						
-						if (((D[1]>>2) & 3) < 2)
+                if (air.isWaterOn) hcu.timerOffDomesticWater = core.getTick();
+            }
+
+            if (((D[1]>>2) & 3) < 2)
                 air.isPanelSensor = ((D[1]>>2) & 3);
             break;
         case 0x89:
@@ -508,11 +532,11 @@ void RVCModule::ProcessMessage(uint8_t MsgNum)
                 if (waterDuration>60) waterDuration=60;
                 hcu.durationDomesticWater = waterDuration;
             }
-			canPGNRVC.msgTimersSetupStatus();
+            canPGNRVC.msgTimersSetupStatus();
             break;
         }
     }
     if (redrawSlider)
-			slider.setPosition(hcu.airHeaterTSetPoint[(air.isDay|air.isSelectDay)&(!air.isSelectNight)]);
+        slider.setPosition(hcu.airHeaterTSetPoint[(air.isDay|air.isSelectDay)&(!air.isSelectNight)]);
 
 }

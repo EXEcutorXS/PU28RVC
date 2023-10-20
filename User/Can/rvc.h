@@ -14,6 +14,7 @@ bool DomesticWaterPriority;
 bool Solenoid;
 bool ZoneEnabled;
 bool UsePanelSensor;
+bool scheduleMode;
 	
 uint8_t PumpState;
 uint8_t errorCode;
@@ -50,6 +51,7 @@ class RVCModule
 		bool externalTemperatureProvided;
 		bool externalTemperatureProvidedChanged;
 		float externalTemperature;
+		
 		
     private:
 		uint32_t lastExtTempGetTick;		

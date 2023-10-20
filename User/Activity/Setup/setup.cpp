@@ -1394,7 +1394,14 @@ void Setup::viewScreen16(uint8_t mode)   // настройки системные
 		else
 			temp = display.setup.tempShift*1.8;
     checkbox.draw(CHECKBOX1_X, CHECKBOX1_Y, "Schedule mode", &display.setup.scheduleMode);
-		result = slider.drawSlim(SLIDER1_X, SLIDER1_Y, posShift, display.setup.celsius?"Temperature shift,~C":"Temperature shift,~F", temp ,'~', mode, &this->isSlider1, 1, SLIDER_COLOR_3, 7);
+		uint32_t color;
+		if (display.setup.tempShift>0)
+			color = SLIDER_COLOR_3;
+		else if (display.setup.tempShift<0)
+			color = SLIDER_COLOR_2;
+		else color = SLIDER_COLOR_1;
+		
+		result = slider.drawSlim(SLIDER1_X, SLIDER1_Y, posShift, display.setup.celsius?"Temperature shift,~C":"Temperature shift,~F", temp ,'~', mode, &this->isSlider1, 1,color , 7);
     
     
     if (sensor.status == 1){   // касание сенсорного экрана

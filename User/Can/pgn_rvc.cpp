@@ -169,7 +169,7 @@ void CAN_PGN_RVC::msgThermostat1()
         operatingMode = 0;
     }
     fanMode = 3;
-    scheduleMode = 1;
+    scheduleMode = display.setup.scheduleMode&1;
     fanSpeed = 0xFF;
 
     setpointHeat = (uint16_t)((rvc.newState.currentSetpoint+273.0f)*32.0f);

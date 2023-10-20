@@ -75,6 +75,8 @@ bool isBleSendKey = false;
 
 bool isTest = 0;
 
+bool saveSetupFlag = 0;
+
 uint8_t newId[16];
 uint32_t timerCancel;
 uint32_t counterBleTemp, counterBleSendTemp;
@@ -88,7 +90,7 @@ const uint8_t _CRC[11]  __attribute__((at(0x0803F800 ))) =
 {
   0x55, 0x55, 0x55, 0x55,     // длина ПО
   0x55, 0x55,                 // CRC ПО
-  9, 0, 100, 26,              // версия ПО
+  9, 0, 100, 27,              // версия ПО
   0x00                        // резерв
 };
 
@@ -168,6 +170,11 @@ int main(void)
       handlerBluetooth();
       if (isTest)
         usart.linkCnt=0;
+	  if (saveSetupFlag)
+	  {
+	      saveSetupFlag=0;
+		  writeSetup();
+	  }
 
     }
 }
@@ -856,8 +863,8 @@ void writeSetup(void)
 
   array[256+16+16+26] = hcu.airHeaterTSetPoint[0];
   array[256+16+16+27] = hcu.airHeaterTSetPoint[1];
-	array[256+16+16+28] = display.setup.scheduleMode&1;
-	array[256+16+16+29] = display.setup.tempShift;
+  array[256+16+16+28] = display.setup.scheduleMode&1;
+  array[256+16+16+29] = display.setup.tempShift;
 
   x = 0;
   for (a=0; a<63; a++)
