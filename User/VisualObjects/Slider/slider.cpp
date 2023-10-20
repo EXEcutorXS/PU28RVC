@@ -801,7 +801,67 @@ void Slider::draw(uint16_t x, uint16_t y, uint8_t z, char* txt, uint16_t value, 
     }
 }
 //-----------------------------------------------------
+/*
 int16_t Slider::drawSlim(uint16_t x, uint16_t y, float z, const char* txt, uint16_t value, char unit, bool isDrawText, bool* isValue, bool isVisible, uint32_t color, uint8_t id)
+{
+    uint8_t n;
+    uint32_t x_pos;
+    char str[8];
+    int16_t result = -3;
+    static uint8_t modeBtn=0;
+    
+    const int SLIDER_H = 50;
+    const int SLIDER_W = 200;
+    
+    if (isDrawText == TRUE) text.writeString(x,y,txt,Font_11x18,display.COLOR_TEXT,display.COLOR_BACK);
+    x = 35;
+    if (*isValue == TRUE){
+        *isValue = FALSE;
+        canvas.drawSliderSlim(x,y,z,isVisible, color);
+        
+        canvas.writeMinus(x-10, y+29);
+        canvas.writePlus(x+235, y+29);
+        
+        for (n=0; n<8; n++) str[n] = 0;
+        n = 0;
+        str[n++] = ' ';
+        n += text.decToString(&str[n], value);
+        if (unit != NULL) str[n++] = unit; 
+        x_pos = 320 - (Font_11x18.width * n + 2);
+        text.writeString(x_pos,y+21,str,Font_11x18,display.COLOR_TEXT,display.COLOR_BACK);
+    }
+    
+    if (sensor.status == 1){   // касание сенсорного экрана
+        if ((sensor.x1>=x && sensor.x1<=(x+SLIDER_W) && sensor.y1>=y && sensor.y1<=(y+SLIDER_H) && sensor.touch==0) || sensor.touch==id){ // касание ползунка
+            sensor.touch = id;
+            result = sensor.x1-x;
+        }
+        if ((sensor.x1<x && sensor.y1>=y && sensor.y1<=(y+SLIDER_H) && sensor.touch==0) || sensor.touch==(id|0x80)){ // касание декремента
+            sensor.touch = (id|0x80);
+            if (core.getTimer() == 0){
+                if (modeBtn == 0) core.setTimer(500);
+                modeBtn = 1;
+                result = -1;
+            }
+        }  
+        if ((sensor.x1>(x+SLIDER_W) && sensor.y1>=y && sensor.y1<=(y+SLIDER_H) && sensor.touch==0) || sensor.touch==(id|0x40)){ // касание инкремента
+            sensor.touch = (id|0x40);
+            if (core.getTimer() == 0){
+                if (modeBtn == 0) core.setTimer(500);
+                modeBtn = 1;
+                result = -2;
+            }
+        }  
+    }
+    else{
+        modeBtn = 0;
+        sensor.touch = 0;
+    }
+    
+    return result;
+}
+*/
+int16_t Slider::drawSlim(uint16_t x, uint16_t y, float z, const char* txt, int16_t value, char unit, bool isDrawText, bool* isValue, bool isVisible, uint32_t color, uint8_t id)
 {
     uint8_t n;
     uint32_t x_pos;

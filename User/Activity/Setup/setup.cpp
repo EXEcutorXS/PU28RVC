@@ -119,7 +119,7 @@ uint8_t Setup::viewPage(uint8_t number, uint8_t mode)
 {
     uint8_t result = 0;
     
-    this->maxNumberScreen = 7;
+    this->maxNumberScreen = 8;
     if (this->numberScreen == 100){
         this->viewScreen100(mode); // секретный экран
     }
@@ -135,6 +135,7 @@ uint8_t Setup::viewPage(uint8_t number, uint8_t mode)
         if (number == 5) this->viewScreen13(mode);
         if (number == 6) this->viewScreen14(mode); //экран версий и моточасов
         if (number == 7) this->viewScreen15(mode);
+				if (number == 8) this->viewScreen16(mode); //Schedule mode screen + temp shift
     }
     
     return result;
@@ -1365,6 +1366,69 @@ void Setup::viewScreen15(uint8_t mode)   // настройки системные
             this->isChange = true;
         } 
     }
+}
+
+void Setup::viewScreen16(uint8_t mode)   // настройки системные
+{
+    const int CHECKBOXS_S = 20;
+    
+    const int CHECKBOX1_X = 25;
+    const int CHECKBOX1_Y = 65;
+    const int CHECKBOX1_H = 40;
+    const int CHECKBOX1_W = 200;
+    
+	  const int SLIDER1_X = 25;
+    const int SLIDER1_Y = (CHECKBOX1_Y+50);
+    
+	int result;
+	int posShift=(display.setup.tempShift+10)*5;
+    if (mode){
+        text.writeString(160-11*3,10,"Misc",Font_11x18,display.WHITE,display.COLOR_BACK);
+        display.setup.scheduleMode |= 2;
+				isSlider1 = true;
+    }
+		
+		int temp;
+		if (display.setup.celsius)
+			temp = display.setup.tempShift;
+		else
+			temp = display.setup.tempShift*1.8;
+    checkbox.draw(CHECKBOX1_X, CHECKBOX1_Y, "Schedule mode", &display.setup.scheduleMode);
+		result = slider.drawSlim(SLIDER1_X, SLIDER1_Y, posShift, display.setup.celsius?"Temperature shift,~C":"Temperature shift,~F", temp ,'~', mode, &this->isSlider1, 1, SLIDER_COLOR_3, 7);
+    
+    
+    if (sensor.status == 1){   // касание сенсорного экрана
+        //sensor.touch = 1;
+        if ((sensor.x1>=(CHECKBOX1_X-20) && sensor.x1<=(CHECKBOX1_X+CHECKBOX1_W) && sensor.y1>=(CHECKBOX1_Y-CHECKBOXS_S) && sensor.y1<=(CHECKBOX1_Y+CHECKBOX1_H-CHECKBOXS_S) && sensor.touch==0)){ // касание чекбокса 1
+            sensor.touch = 1;
+            display.setup.scheduleMode = !display.setup.scheduleMode+2;
+                hcu.airHeaterTSetPoint[0] = hcu.airHeaterTSetPoint[1]; //Equalizing setpoints. day one is master
+            this->isChange = true;
+        }
+    }
+		
+		if (result == -1)
+		{			
+				posShift-=10;
+				if (posShift<0) posShift=0;
+				display.setup.tempShift=posShift/10-10;
+				isSlider1=true;
+		}
+		else if (result == -2)
+		{
+				posShift+=10;
+				if (posShift>200) posShift=200;
+				display.setup.tempShift=posShift/10-10;
+				isSlider1=true;
+		}
+			else if (result != -3){
+				
+				posShift=result;
+				if (posShift>200) posShift=200;
+				if (posShift<0) posShift=0;
+				display.setup.tempShift = posShift/10-10;
+				isSlider1=true;
+		}
 }
 //-----------------------------------------------------
 void Setup::viewScreen100(uint8_t mode)   // секретный экран

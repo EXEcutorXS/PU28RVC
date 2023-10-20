@@ -1,3 +1,7 @@
+9.0.100.26
+	Page 16 menu added
+	Temperature shift func added
+	Single setpoint mode added
 9.0.100.25
 	Water pump bug was fixed
 9.0.100.24

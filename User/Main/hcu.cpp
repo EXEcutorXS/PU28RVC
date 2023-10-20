@@ -81,6 +81,7 @@ void Hcu::handler(void)
 				if (rvcTemp==255) rvcTemp=254;
 			}
 			usart.packetOut[i++] = rvcTemp;
+			usart.packetOut[i++] = display.setup.tempShift; //Temperature Adjustment
             
             usart.packetOut[2] = i-5;      //длина
             usart.startTransmission();

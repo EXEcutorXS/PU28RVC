@@ -39,7 +39,8 @@ class Slider
         bool viewGridSens(uint16_t pos, uint32_t N, bool isClear);
         void setVal(uint16_t pos);
         void draw(uint16_t x, uint16_t y, uint8_t z, char* text, uint16_t value, char unit, bool isDrawText, bool* isValue, bool isVisible);
-        int16_t drawSlim(uint16_t x, uint16_t y, float z, const char* txt, uint16_t value, char unit, bool isDrawText, bool* isValue, bool isVisible, uint32_t color, uint8_t id);
+        //int16_t drawSlim(uint16_t x, uint16_t y, float z, const char* txt, uint16_t value, char unit, bool isDrawText, bool* isValue, bool isVisible, uint32_t color, uint8_t id);
+				int16_t drawSlim(uint16_t x, uint16_t y, float z, const char* txt, int16_t value, char unit, bool isDrawText, bool* isValue, bool isVisible, uint32_t color, uint8_t id);
         int16_t drawSlim(uint16_t x, uint16_t y, float z, const char* txt, bool isDrawText, bool* isValue, bool isVisible, uint32_t color, uint8_t id);
         void drawDouble(uint16_t x, uint16_t y, uint8_t z1, uint8_t z2, const char* txt, bool isDrawText, bool* isValue, uint8_t numSelectSlider);
         void draw(uint16_t x, uint16_t y, uint8_t z, const char* txt, bool isDrawText, bool* isValue, bool isVisible);

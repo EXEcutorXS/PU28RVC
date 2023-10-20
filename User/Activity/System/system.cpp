@@ -93,13 +93,13 @@ void System::viewScreen(bool isFirst)
         }
         slider.drawDigGrid();
         canvas.loadImageEffect(275,5,BUTTON_SETUP_IMAGE,BUTTON_SETUP_STEP,1);               // отображение значка настроек
-        
-        if ((isDay|isSelectDay)&(!isSelectNight)){
+        if (display.setup.scheduleMode)
+				{
+        if ((isDay|isSelectDay)&(!isSelectNight))
             canvas.loadImageEffect(BUTTON_DAY_NIGHT_X,BUTTON_DAY_NIGHT_Y,TEXT_DAY_IMAGE,BUTTON_SETUP_STEP,0);
-        }
-        else{
+        else
             canvas.loadImageEffect(BUTTON_DAY_NIGHT_X,BUTTON_DAY_NIGHT_Y,TEXT_NIGHT_IMAGE,BUTTON_SETUP_STEP,0);
-        }
+			}
         if (isBleAccept == true){
             canvas.loadImageEffect(BUTTON_BLE_X,BUTTON_BLE_Y,TEXT_BLE_IMAGE,BUTTON_SETUP_STEP,0);
         }
@@ -548,7 +548,8 @@ uint8_t System::sensorCheck(void)
             }
             else if (slider.touch==0 && 
                 sensor.x1>(BUTTON_DAY_NIGHT_X) && sensor.x1<(BUTTON_DAY_NIGHT_X+BUTTON_DAY_NIGHT_X_SIZE) && 
-                sensor.y1>(BUTTON_DAY_NIGHT_Y) && sensor.y1<(BUTTON_DAY_NIGHT_Y+BUTTON_DAY_NIGHT_Y_SIZE)){  // касание кнопки дня/ночи
+                sensor.y1>(BUTTON_DAY_NIGHT_Y) && sensor.y1<(BUTTON_DAY_NIGHT_Y+BUTTON_DAY_NIGHT_Y_SIZE)
+								&& display.setup.scheduleMode){  // касание кнопки дня/ночи
                 sensor.touch = 4;
                 isResetSelectDayNight = true;
                 timerResetSelectDayNight = core.getTick();
@@ -634,7 +635,13 @@ uint8_t System::sensorCheck(void)
         
         if (slider.mode == 1 || slider.touch == 1){
             if (slider.values[slider.position] > OFF_VALUE){
+							if (display.setup.scheduleMode)
                 hcu.airHeaterTSetPoint[(air.isDay|air.isSelectDay)&(!air.isSelectNight)] = slider.values[slider.position];
+							else
+							{
+								  hcu.airHeaterTSetPoint[0] = slider.values[slider.position]; //Without chedule apply change to both setpoints
+									hcu.airHeaterTSetPoint[1] = slider.values[slider.position];
+							}
                 air.isAirOn = true;
             }
             else{

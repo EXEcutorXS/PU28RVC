@@ -110,6 +110,8 @@ class Display
             char celsius;
             char fahrenheit;
             char h12;
+						char scheduleMode; //2 Setpoint mode day/night
+						int8_t tempShift;  //External temperature sensor shift
         }; Setup setup;
         
         static const int RESOLUTION_12 = 1;

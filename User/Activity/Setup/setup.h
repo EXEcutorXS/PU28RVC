@@ -31,6 +31,7 @@ class Setup
         void viewScreen13(uint8_t mode);
         void viewScreen14(uint8_t mode);
         void viewScreen15(uint8_t mode);
+				void viewScreen16(uint8_t mode); //ScheduleMode + TimeAdjusting
         void viewScreen100(uint8_t mode);
         
         uint8_t numberScreen;
