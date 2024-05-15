@@ -36,6 +36,8 @@
 JLinkLog.txt
 Objects/
 Listings/
+*.bin/
+*.bin
 *.ini
 *.uvgui.*
 *.uvguix.*
@@ -43,6 +45,7 @@ Listings/
 *.jar
 *.zip
 *.rar
+*.scvd
 
 TEST*.xml
 
