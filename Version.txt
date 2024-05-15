@@ -1,3 +1,7 @@
+9.0.100.27
+	Thermostat schedule DGN masked when schedule mode is off
+	RV-C support improved
+	pump status and timer bug fixed
 9.0.100.26
 	Page 16 menu added
 	Temperature shift func added

@@ -404,13 +404,14 @@ void RVCModule::ProcessMessage(uint8_t MsgNum)
             }
             Ts = (uint16_t)precisionTemp;
 
-            if (!air.isDay) {
+            if (!air.isDay || !display.setup.scheduleMode) {
                 hcu.airHeaterTSetPoint[0]=Ts;
                 if (air.isAirOn) {
                     redrawSlider=true;
                 }
             }
-            else {
+            if (air.isDay || !display.setup.scheduleMode)
+				{
                 hcu.airHeaterTSetPoint[1]=Ts;
                 if (air.isAirOn) {
                     redrawSlider=true;
