@@ -1,3 +1,6 @@
+9.0.100.28
+Both bootloader support added (added 0x0801C000 CRC and version)
+
 9.0.100.27
 	Thermostat schedule DGN masked when schedule mode is off
 	RV-C support improved
