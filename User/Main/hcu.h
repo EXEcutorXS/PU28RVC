@@ -71,6 +71,8 @@ class Hcu
         uint32_t heaterTotalOperatingTime; //время наработки подогревателя, с
 		
 		bool clearErrorRequest;
+		
+		uint32_t reinitialisationCounter;   			//Счётчик переинициализации уарта
     private:
         
 };

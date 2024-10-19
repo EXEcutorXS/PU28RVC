@@ -1,3 +1,11 @@
+
+
+9.0.100.29
+memory mam shifted by 4 bytes
+15.3 bootloader enter fixed
+uart receiving 10 seconds watchdog added (uart reinitializes after 10 seonds without messages)
+Usrt command checking added with reinitialisation.
+
 9.0.100.28
 Both bootloader support added (added 0x0801C000 CRC and version)
 
@@ -12,7 +20,7 @@ Both bootloader support added (added 0x0801C000 CRC and version)
 9.0.100.25
 	Water pump bug was fixed
 9.0.100.24
-	Water priority timber bug fixed
+	Water priority timer bug fixed
 9.0.100.23
 	RV-C command to control sensor type added
 9.0.100.21

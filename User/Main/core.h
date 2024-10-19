@@ -9,6 +9,7 @@
 #define MAIN_PROGRAM_START_ADDRESS  0x0800C000
 #define NVIC_VectTab_RAM            0x20000000
 #define BOOT_FLAG_SHIFT             0xA000
+#define BOOT_FLAG_SHIFT2            0xBFFC
 
 /* Classes ------------------------------------------------------------------*/
 class Core
@@ -47,6 +48,8 @@ class Core
         uint8_t stage, phase;//ToDelete
         
         int16_t calibrationValue;
+		
+		
     
     private:
         uint32_t msTick;

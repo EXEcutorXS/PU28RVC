@@ -1472,16 +1472,16 @@ void Setup::viewScreen100(uint8_t mode)   // секретный экран
         for (x=0; x<32; x++) str[x] = 0;
         if ((counterOld!=hcu.counterLink)||(mode)) {
             counterOld=hcu.counterLink;
-            n = text.charToString(str, "Fault Link Counter: ");
-            n += text.decToString(&str[n], hcu.counterLink);
+            n = text.charToString(str, "Fault Com Counter: ");
+            n += text.decToString(&str[n], usart.faultedCommandCounter);
             text.writeString(10,125,str,Font_11x18,checkbox.COLOR_OFF,display.COLOR_BACK);
         }
         
         for (x=0; x<32; x++) str[x] = 0;
         if ((secondsOld!=hcu.secondsLink)||(mode)) {
             secondsOld=hcu.secondsLink;
-            n = text.charToString(str, "Fault Link Seconds: ");
-            n += text.decToString(&str[n], hcu.secondsLink);
+            n = text.charToString(str, "Uart reinit cnt: ");
+            n += text.decToString(&str[n], hcu.reinitialisationCounter);
             text.writeString(10,160,str,Font_11x18,checkbox.COLOR_OFF,display.COLOR_BACK);
         }
     }

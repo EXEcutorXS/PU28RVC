@@ -22,9 +22,9 @@ class Usart
         void send(uint8_t* buf, uint32_t len);
         void usartIrqHandler(void);
 
-        static const int DATA_FIELD_MAX_LENGTH = 245;   //максимальный размер поля данных исходящего пакета (90)
-        static const int PACKET_IN_MAX_LENGTH = 254;    //максимальный размер входящего пакета без заголовка (60)
-        static const int PACKET_OUT_MAX_LENGTH = 254;   //максимальный размер исходящего пакета с заголовком и без контрольной суммы (99)
+        #define DATA_FIELD_MAX_LENGTH 245   //максимальный размер поля данных исходящего пакета (90)
+        #define PACKET_IN_MAX_LENGTH 254    //максимальный размер входящего пакета без заголовка (60)
+        #define PACKET_OUT_MAX_LENGTH 254   //максимальный размер исходящего пакета с заголовком и без контрольной суммы (99)
         uint8_t packetIn[PACKET_IN_MAX_LENGTH];         // принятый пакет
         uint8_t packetOut[PACKET_OUT_MAX_LENGTH];       // массив для формирования пакета отправки
         uint8_t sendedCmd1, sendedCmd2;                 // переданная команда
@@ -38,6 +38,13 @@ class Usart
         uint16_t badCrcCounter;
         
         bool isTransmission;                            // в процессе отправки
+		
+		uint32_t lastReceivedTick;						//Тик последнего принятого сообщения
+		
+		
+		uint32_t faultedCommandCounter;         //Счётчик непринятых комманд. Если принятое состояние кнопок не соответствует недавно переданному.
+		uint32_t lastCommandSendTick;
+		uint8_t lastSendedState; //0 бит - Подогреватель, 1 бит - ТЭН, 2 - разбор воды. 3 - ручной вент. 5 - помпа
 
     private:
         static const int PACKET_HEADER = 170;           //заголовок пакета

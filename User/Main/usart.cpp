@@ -6,6 +6,8 @@
 /* Includes ------------------------------------------------------------------*/
 #include "usart.h"
 #include "core.h"
+#include "string.h"
+#include "hcu.h"
 
 Usart usart;
 /* Defines ------------------------------------------------------------------*/
@@ -24,6 +26,17 @@ Usart::Usart(void)
 //-----------------------------------------------------
 void Usart::initialize(void)
 {
+	memset(this,0,sizeof(Usart));
+	//Initialising basic values
+	linkCnt = 1;
+    isWaitHeaderByte=1;
+    this->verProtocol = 3;     // 3
+    this->baudrate = 9600;     // 4800-9600-19200-38400-57600-76800
+    commandProtocol1 = 15;
+	hcu.reinitialisationCounter++;
+	
+	//Initialising periph
+	
     // Enable the GPIO Clock
     rcu_periph_clock_enable(RCU_GPIOA);
     // Enable the USART Clock
@@ -59,6 +72,14 @@ void Usart::handler(void)
         
         this->processTimeOut();
     }
+	
+	//Anti glitch
+	
+	if (core.getTick()-lastReceivedTick>10000)
+	{
+		lastReceivedTick = core.getTick();
+		initialize();
+	}
 }
 //-----------------------------------------------------
 void Usart::changeBaudrate(uint32_t baudrate)
@@ -135,7 +156,7 @@ void Usart::processReceivedData(void)
                 if (AByte==this->PACKET_HEADER) {                        //принят заголовок пакета
                     this->isWaitHeaderByte=0;
                     this->packetCounter=0;
-                    this->packetLength=this->PACKET_IN_MAX_LENGTH;       //пока не знаем размер пакета. принимаем его максимальным.
+                    this->packetLength=PACKET_IN_MAX_LENGTH;       //пока не знаем размер пакета. принимаем его максимальным.
                     this->crc=0xFFFF;
                     for(j=1;j<=8;j++) {
                         bt=this->crc & 1;

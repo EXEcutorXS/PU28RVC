@@ -78,16 +78,21 @@ void Hcu::handler(void)
 			if (rvc.externalTemperatureProvided)
 			{
 				rvcTemp=rvc.externalTemperature+75;
-				if (rvcTemp==255) rvcTemp=254;
+				if (rvcTemp==255) rvcTemp=254; // 255 - no data
 			}
 			usart.packetOut[i++] = rvcTemp;
 			usart.packetOut[i++] = display.setup.tempShift; //Temperature Adjustment
             
             usart.packetOut[2] = i-5;      //длина
+			
+			//Запоминаем последнюю команду и всемё её выдачи
+			usart.lastSendedState = (air.isFHeaterOn!=0) | ((air.isEHeaterOn!=0)<<1) | ((air.isWaterOn!=0)<<2) | ((air.isAirOn!=0)<<3) | ((fanManual!=0)<<4) | ((pumpOn!=0)<<5);
+			usart.lastCommandSendTick = core.getTick();
+			//Начинаем передачу
             usart.startTransmission();
-        }
-    }
-    usart.processReceivedData();
+		}
+	}    
+    usart.processReceivedData();    
     parsing();
     
     if (faultCodeHcu) faultCode = faultCodeHcu;
@@ -117,6 +122,7 @@ void Hcu::parsing(void)
     bool unlocked = (core.getTick()-lockTimer) > 1000;
     if (usart.isProcessPacket){
         Command = usart.packetIn[2]*256+usart.packetIn[3];
+		usart.lastReceivedTick=core.getTick();
         
             switch(Command) {
                 case 15:
@@ -246,6 +252,16 @@ void Hcu::parsing(void)
                         hcu.voltage = usart.packetIn[i]/10.0;
 						i++;
 						rvc.newState.FanCurrentSpeed=usart.packetIn[i];
+						
+						uint8_t receivedState = (air.isFHeaterOn!=0) | ((air.isEHeaterOn!=0)<<1) | ((air.isWaterOn!=0)<<2) | ((air.isAirOn!=0)<<3) | ((fanManual!=0)<<4) | ((pumpOn!=0)<<5);
+						
+						if (core.getTick() - usart.lastCommandSendTick<2000)
+							if (receivedState!=usart.lastSendedState)
+								usart.faultedCommandCounter++;
+							if (usart.faultedCommandCounter>3)
+								usart.initialize();
+							
+						
                     }
 					   usart.linkCnt=0;
                     break;
@@ -254,12 +270,14 @@ void Hcu::parsing(void)
                      && usart.packetIn[4] == 0xAA
                      && usart.packetIn[5] == 0x55) {
                         *(__IO uint32_t*) (NVIC_VectTab_RAM+BOOT_FLAG_SHIFT) = 0x0016AA55;
+						 *(__IO uint32_t*) (NVIC_VectTab_RAM+BOOT_FLAG_SHIFT2) = 0x0016AA55;
                         NVIC_SystemReset();
                     }
                     break;
                 default:
                     break;
             }
+		
         
         usart.isProcessPacket = false;
     }
