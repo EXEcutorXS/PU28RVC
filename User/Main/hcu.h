@@ -12,6 +12,7 @@ class Hcu
 {
     public:
         Hcu(void);
+		void initialise(void);
         void handler(void);
         void parsing(void);
         void checkPump(void);
@@ -73,7 +74,14 @@ class Hcu
 		bool clearErrorRequest;
 		
 		uint32_t reinitialisationCounter;   			//Счётчик переинициализации уарта
+		uint32_t uptime;
+		uint32_t ReceivedByHCUPacketCounter;
+		uint32_t ReceivedByPanelPacketCounter;
+		//uint32_t faultedCommandCounter;         //Счётчик непринятых комманд. Если принятое состояние кнопок не соответствует недавно переданному.
+		uint32_t restartCounter;
     private:
+			uint32_t LastRecPackCheckTick;
+		  uint32_t LastReceivedPacketTick;
         
 };
 extern Hcu hcu;

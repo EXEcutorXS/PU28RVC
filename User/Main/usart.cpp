@@ -74,7 +74,6 @@ void Usart::handler(void)
     }
 	
 	//Anti glitch
-	
 	if (core.getTick()-lastReceivedTick>10000)
 	{
 		lastReceivedTick = core.getTick();

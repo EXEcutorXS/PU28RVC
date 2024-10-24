@@ -1445,8 +1445,13 @@ void Setup::viewScreen100(uint8_t mode)   // секретный экран
     static uint32_t timer=0;
     static float pressureOld = 0;
     static float voltageOld = 0;
-    static uint32_t counterOld = 0;
-    static uint32_t secondsOld = 0;
+   // static uint32_t faultLinkCounterOld = 0;
+    static uint32_t reinitCounterOld = 0;
+	static uint32_t HCUuptimeOld = 0;
+	static uint32_t PanelUptimeOld = 0;
+	static uint32_t PacketToHCUCounterOld = 0;
+	static uint32_t PacketToPanelCounterOld = 0;
+		static uint32_t RestartCounterOld = 0;
     
     if (((core.getTick()-timer)>1000)||mode){
         timer=core.getTick();
@@ -1458,7 +1463,7 @@ void Setup::viewScreen100(uint8_t mode)   // секретный экран
             pressureOld=hcu.pressure;
             n = text.charToString(str, "Pressure: ");
             n += text.floatToString(&str[n], hcu.pressure, 1);
-            text.writeString(10,55,str,Font_11x18,checkbox.COLOR_OFF,display.COLOR_BACK);
+            text.writeString(10,60,str,Font_7x10,checkbox.COLOR_OFF,display.COLOR_BACK);
         }
         
         for (x=0; x<32; x++) str[x] = 0;
@@ -1466,23 +1471,66 @@ void Setup::viewScreen100(uint8_t mode)   // секретный экран
             voltageOld=hcu.voltage;
             n = text.charToString(str, "Voltage: ");
             n += text.floatToString(&str[n], hcu.voltage, 1);
-            text.writeString(10,90,str,Font_11x18,checkbox.COLOR_OFF,display.COLOR_BACK);
+            text.writeString(10,75,str,Font_7x10,checkbox.COLOR_OFF,display.COLOR_BACK);
         }
-        
+        /*
         for (x=0; x<32; x++) str[x] = 0;
-        if ((counterOld!=hcu.counterLink)||(mode)) {
-            counterOld=hcu.counterLink;
+        if ((faultLinkCounterOld!=hcu.faultedCommandCounter)||(mode)) {
+            faultLinkCounterOld=hcu.faultedCommandCounter;
             n = text.charToString(str, "Fault Com Counter: ");
-            n += text.decToString(&str[n], usart.faultedCommandCounter);
-            text.writeString(10,125,str,Font_11x18,checkbox.COLOR_OFF,display.COLOR_BACK);
+            n += text.decToString(&str[n], hcu.faultedCommandCounter);
+            text.writeString(10,75,str,Font_7x10,checkbox.COLOR_OFF,display.COLOR_BACK);
         }
-        
+        */
         for (x=0; x<32; x++) str[x] = 0;
-        if ((secondsOld!=hcu.secondsLink)||(mode)) {
-            secondsOld=hcu.secondsLink;
-            n = text.charToString(str, "Uart reinit cnt: ");
+        if ((reinitCounterOld!=hcu.reinitialisationCounter)||(mode)) {
+            reinitCounterOld=hcu.reinitialisationCounter;
+            n = text.charToString(str, "UART init cnt: ");
             n += text.decToString(&str[n], hcu.reinitialisationCounter);
-            text.writeString(10,160,str,Font_11x18,checkbox.COLOR_OFF,display.COLOR_BACK);
+            text.writeString(10,90,str,Font_7x10,checkbox.COLOR_OFF,display.COLOR_BACK);
         }
+		
+		for (x=0; x<32; x++) str[x] = 0;
+        if ((HCUuptimeOld!=hcu.uptime)||(mode)) {
+            HCUuptimeOld=hcu.uptime;
+            n = text.charToString(str, "HCU uptime: ");
+            n += text.decToString(&str[n], hcu.uptime);
+            text.writeString(10,105,str,Font_7x10,checkbox.COLOR_OFF,display.COLOR_BACK);
+        }
+		
+		for (x=0; x<32; x++) str[x] = 0;
+        if ((PanelUptimeOld!=(core.getTick()/60000))||(mode)) {
+            PanelUptimeOld=(core.getTick()/60000);
+            n = text.charToString(str, "Panel uptime: ");
+            n += text.decToString(&str[n], (core.getTick()/60000));
+            text.writeString(10,120,str,Font_7x10,checkbox.COLOR_OFF,display.COLOR_BACK);
+        }
+		for (x=0; x<32; x++) str[x] = 0;
+        if ((PacketToHCUCounterOld!=hcu.ReceivedByHCUPacketCounter)||(mode)) {
+            PacketToHCUCounterOld=hcu.ReceivedByHCUPacketCounter;
+            n = text.charToString(str, "PU->HCU: ");
+            n += text.decToString(&str[n], hcu.ReceivedByHCUPacketCounter);
+	
+            text.writeString(10,135,str,Font_7x10,checkbox.COLOR_OFF,display.COLOR_BACK);
+				}
+				
+					for (x=0; x<32; x++) str[x] = 0;
+				if (PacketToPanelCounterOld!=hcu.ReceivedByPanelPacketCounter||(mode))
+				{
+					PacketToPanelCounterOld=hcu.ReceivedByPanelPacketCounter;
+				    n = text.charToString(str, "HCU->PU: ");
+            n += text.decToString(&str[n], hcu.ReceivedByPanelPacketCounter);
+						text.writeString(10,150,str,Font_7x10,checkbox.COLOR_OFF,display.COLOR_BACK);
+				}
+				
+						for (x=0; x<32; x++) str[x] = 0;
+								if (RestartCounterOld!=hcu.restartCounter||(mode))
+				{
+					RestartCounterOld=hcu.restartCounter;
+				    n = text.charToString(str, "HCU restart: ");
+            n += text.decToString(&str[n], hcu.restartCounter);
+						text.writeString(10,165,str,Font_7x10,checkbox.COLOR_OFF,display.COLOR_BACK);
+				}
+
     }
 }

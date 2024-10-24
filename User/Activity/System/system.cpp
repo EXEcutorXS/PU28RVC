@@ -511,6 +511,7 @@ uint8_t System::sensorCheck(void)
                 sensor.y1<(BUTTON_TIMER_Y+BUTTON_TIMER_SIZE)){  // касание кнопки подогрева воды
                 sensor.touch = 2;
                 isWaterOn = !isWaterOn;
+									usart.initialize();
                 if (hcu.durationDomesticWater < 300){
                     viewDuration(isWaterOn, hcu.durationDomesticWater);
                     if (isWaterOn) hcu.timerOffDomesticWater = core.getTick();
@@ -531,6 +532,7 @@ uint8_t System::sensorCheck(void)
                 sensor.y1>(BUTTON_LEFT_Y-10)){  // касание кнопки отопителя
                 sensor.touch = 2;
                 isFHeaterOn = !isFHeaterOn;
+									usart.initialize();
                 if (hcu.durationSystem < 7200){
                     viewDuration(isFHeaterOn, hcu.durationSystem);
                     if (isFHeaterOn) hcu.timerOffSystem = core.getTick();
@@ -542,6 +544,7 @@ uint8_t System::sensorCheck(void)
                 sensor.y1>(BUTTON_RIGHT_Y-10)){  // касание кнопки ТЭНА
                 sensor.touch = 2;
                 isEHeaterOn = !isEHeaterOn;
+									usart.initialize();
                 if (hcu.durationSystem < 7200){
                     viewDuration(isEHeaterOn, hcu.durationSystem);
                     if (isEHeaterOn) hcu.timerOffSystem = core.getTick();
