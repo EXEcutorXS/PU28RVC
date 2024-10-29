@@ -68,8 +68,6 @@ void Clock::config(void)
     rcu_periph_clock_enable(RCU_PMU);
     // allow access to BKP domain
     pmu_backup_write_enable();
-    // reset backup domain
-    bkp_deinit();
     // select HSE/128 as RTC clock source
     rcu_rtc_clock_config(RCU_RTCSRC_HXTAL_DIV_128);
     // enable RTC Clock */

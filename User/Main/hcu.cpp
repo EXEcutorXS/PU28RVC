@@ -93,14 +93,6 @@ void Hcu::handler(void)
             
             usart.packetOut[2] = i-5;      //длина
 			
-			//Запоминаем последнюю команду и всемё её выдачи
-			usart.lastSendedState = (air.isFHeaterOn!=0) | 
-                                    ((air.isEHeaterOn!=0)<<1) | 
-                                    ((air.isWaterOn!=0)<<2) | 
-                                    ((air.isAirOn!=0)<<3) | 
-                                    ((fanManual!=0)<<4) | 
-                                    ((pumpOn!=0)<<5);
-			usart.lastCommandSendTick = core.getTick();
 			//Начинаем передачу
             usart.startTransmission();
 		}
@@ -138,7 +130,6 @@ void Hcu::handler(void)
 			
 				if (ReceivedByHCUPacketCounter==ReceivedPacketCounterOld){
 					  NVIC_SystemReset();
-				    //usart.initialize();
 				}
 				else{
 					  ReceivedPacketCounterOld=ReceivedByHCUPacketCounter;
@@ -168,30 +159,16 @@ void Hcu::parsing(void)
 						          hcu.ReceivedByPanelPacketCounter++;
                         if (unlocked){
                             i = 4;
-                            if (air.isFHeaterOn != usart.packetIn[i] ){
-                                air.isFHeaterOn = usart.packetIn[i];
-                            }
-                            i++;
-                            
-                            if (air.isEHeaterOn != usart.packetIn[i]){
-                                air.isEHeaterOn = usart.packetIn[i];
-                            }
-                            i++;
-                            
-                            if (air.isWaterOn != usart.packetIn[i]){
-                                air.isWaterOn = usart.packetIn[i];
-                            }
-                            i++;
-                            
-                            if (air.isAirOn != usart.packetIn[i]){
-                                air.isAirOn = usart.packetIn[i];
-                                
+                            air.isFHeaterOn = usart.packetIn[i++];
+                            air.isEHeaterOn = usart.packetIn[i++];
+                            air.isWaterOn = usart.packetIn[i++];
+                            air.isAirOn = usart.packetIn[i++];
                                 if (air.isAirOn && !usart.packetIn[i]){
                                     slider.position = 0;
                                     hcu.airHeaterTSetPoint[(air.isDay|air.isSelectDay)&(!air.isSelectNight)] = slider.values[slider.position];
                                 }
                                 air.isAirOn = usart.packetIn[i];
-                            }
+                            
                             i++;
                             
                             if (display.setup.celsius & 0x01){
@@ -238,36 +215,22 @@ void Hcu::parsing(void)
                             }
                             
                             
-                            hcu.stateHeater = usart.packetIn[i] ;
-                            i++;
-                            
-                            hcu.stateAch = usart.packetIn[i];
-                            i++;
-                            
-                            hcu.statePump = usart.packetIn[i];
-                            i++;
-                            
-                            hcu.stateZone0 = usart.packetIn[i];
-                            i++;
-                            
+                            hcu.stateHeater = usart.packetIn[i++] ;
+                            hcu.stateAch = usart.packetIn[i++];
+                            hcu.statePump = usart.packetIn[i++];
+                            hcu.stateZone0 = usart.packetIn[i++];
                             hcu.stateFuelPump = usart.packetIn[i];
-                            i++;
                             
-                            hcu.fanManual = usart.packetIn[i];
+                            hcu.fanManual = usart.packetIn[i++];
                             hcu.fanAuto = !hcu.fanManual;
-                            i++;
-                            
-                            hcu.fanPower = usart.packetIn[i];
-                            i++;
+                            hcu.fanPower = usart.packetIn[i++];
                             
                             //hcu.pumpOn = usart.packetIn[i];
                             i++;
                             
-                            hcu.faultCodeHcu = usart.packetIn[i];
-                            i++;
+                            hcu.faultCodeHcu = usart.packetIn[i++];
                             
-                            hcu.faultCodeHeater = usart.packetIn[i];
-                            i++;
+                            hcu.faultCodeHeater = usart.packetIn[i++];
                             
                             hcu.heaterVersion[0] = usart.packetIn[i++];
                             hcu.heaterVersion[1] = usart.packetIn[i++];
@@ -286,114 +249,17 @@ void Hcu::parsing(void)
                             hcu.version[3] = usart.packetIn[i++];
                             hcu.isVersion=true;
                             
-                            hcu.pressure = usart.packetIn[i];
-                            i++;
+                            hcu.pressure = usart.packetIn[i++];
                             
-                            hcu.voltage = usart.packetIn[i]/10.0;
-                            i++;
-                            rvc.newState.FanCurrentSpeed=usart.packetIn[i];
-							i++;
+                            hcu.voltage = usart.packetIn[i++]/10.0;
+                            rvc.newState.FanCurrentSpeed=usart.packetIn[i++];
 							uptime = usart.packetIn[i]*256+usart.packetIn[i+1];
-							i++;
-							i++;
+							i+=2;
 							ReceivedByHCUPacketCounter = usart.packetIn[i]*256+usart.packetIn[i+1];
-							i++;
-							i++;				
+							i+=2;
 							restartCounter=usart.packetIn[i]*256+usart.packetIn[i+1];				
                         }
-												/*
-                        else{
-                            
-                            i = 4;
-                            //if (air.isFHeaterOn != usart.packetIn[i] ){
-                            //    air.isFHeaterOn = usart.packetIn[i];
-                            //}
-                            tempF = usart.packetIn[i];
-                            i++;
-                            
-                            //if (air.isEHeaterOn != usart.packetIn[i]){
-                            //    air.isEHeaterOn = usart.packetIn[i];
-                            //}
-                            tempE = usart.packetIn[i];
-                            i++;
-                            
-                            //if (air.isWaterOn != usart.packetIn[i]){
-                            //    air.isWaterOn = usart.packetIn[i];
-                            //}
-                            tempW = usart.packetIn[i];
-                            i++;
-                            
-                            if (air.isAirOn != usart.packetIn[i]){
-                            //    air.isAirOn = usart.packetIn[i];
-                            //    
-                            //    if (air.isAirOn && !usart.packetIn[i]){
-                            //        slider.position = 0;
-                            //        hcu.airHeaterTSetPoint[(air.isDay|air.isSelectDay)&(!air.isSelectNight)] = slider.values[slider.position];
-                            //    }
-                            //    air.isAirOn = usart.packetIn[i];
-                            }
-                            tempA = usart.packetIn[i];
-                            i++;
-                            
-                            //val = (usart.packetIn[i]<<8)+usart.packetIn[i+1];
-                            //canPGNRVC.tankTemperaturex10C = val;
-                            //hcu.temperatureTank = val/10.0;
-                            i+=2;
-                            
-                            //val = (usart.packetIn[i]<<8)+usart.packetIn[i+1];
-                            //canPGNRVC.heatExchangerTemperaturex10C = val;
-                            //hcu.temperatureExchanger = val/10.0;
-                            i+=2;
-                            
-                            //val = (usart.packetIn[i]<<8)+usart.packetIn[i+1];
-                            //canPGNRVC.airTemperaturex10C = val;
-                            //air.temperatureActual = val/10.0;
-                            i+=2;
-                            
-                            //val = (usart.packetIn[i]<<8)+usart.packetIn[i+1];
-                            //canPGNRVC.heaterTemperaturex10C = val;
-                            //hcu.temperatureHeater = val/10.0;
-                            i+=2;
-                                
-                            //hcu.stateHeater = usart.packetIn[i] ;
-                            i++;
-                            
-                            //hcu.stateAch = usart.packetIn[i];
-                            i++;
-                            
-                            //hcu.statePump = usart.packetIn[i];
-                            i++;
-                            
-                            //hcu.stateZone0 = usart.packetIn[i];
-                            i++;
-                            
-                            //hcu.stateFuelPump = usart.packetIn[i];
-                            i++;
-                            
-                            //hcu.fanManual = usart.packetIn[i];
-                            //hcu.fanAuto = !hcu.fanManual;
-                            tempM = usart.packetIn[i];
-                            i++;
-                            
-                            //hcu.fanPower = usart.packetIn[i];
-                            i++;
-                            
-                            //hcu.pumpOn = usart.packetIn[i];
-                            tempP = usart.packetIn[i];
-                            i++;
-                            
-                                
-                            
-                            uint8_t receivedState = (tempF!=0) | 
-                                                    ((tempE!=0)<<1) | 
-                                                    ((tempW!=0)<<2) | 
-                                                    ((tempA!=0)<<3) | 
-                                                    ((tempM)<<4) | 
-                                                    ((tempP!=0)<<5);
-                
-
-                        }
-												*/
+						
 						
                     }
 					   usart.linkCnt=0;

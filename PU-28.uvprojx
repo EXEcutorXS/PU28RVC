@@ -543,6 +543,11 @@
               <FileType>8</FileType>
               <FilePath>.\User\Bluetooth\bluetooth.cpp</FilePath>
             </File>
+            <File>
+              <FileName>backup.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\User\Main\backup.cpp</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

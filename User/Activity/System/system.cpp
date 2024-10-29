@@ -414,35 +414,6 @@ void System::viewTemperature(bool isReset)
             }
             for (i=0; i<6; i++) oldStr[i] = str[i];
         }
-        //*/
-        /*
-        if (temperatureActualOld != temp){
-            temperatureActualOld = temp;
-            n = text.decToString(str, (int32_t)temp);
-            str[n++] = '~';
-            str[n++] = unit;
-            str[n] = 0;
-            //n++;
-            w = n*16;
-            if (n < 6 && temp > -100 && temp < 127){
-                x = Font_16x26.width*n;
-                ///text.writeStringOver(160-oldLen/2,192,oldStr,Font_16x26,display.COLOR_BACK,display.COLOR_BACK,0);
-                text.writeDigit(160-oldLen/2,190,oldStr,display.COLOR_BACK, true);
-                oldLen = x;
-                for (i=0; i<6; i++) oldStr[i] = str[i];
-                ///text.writeStringOver(160-x/2,192,str,Font_16x26,display.COLOR_TEMP,display.COLOR_BACK,0);
-                text.writeDigit(160-x/2,190,str,display.COLOR_TEMP, false);
-            }
-            else{
-                text.writeDigit(160-oldLen/2,190,oldStr,display.COLOR_BACK, true);
-                text.writeDigit(160-16,190,"--",display.COLOR_TEMP, true);
-                oldLen = Font_16x26.width*2;
-                for (i=0; i<6; i++) oldStr[i] = 0;
-                oldStr[0] = '-';
-                oldStr[1] = '-';
-            }
-        }
-        */
     }
 }
 //-----------------------------------------------------

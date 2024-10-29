@@ -41,6 +41,7 @@
 #include "bluetooth.h"
 #include "hcu.h"
 #include "ble_connect.h"
+#include "backup.h"
 
 /* Prototypes ------------------------------------------------------------------*/
 void initAll(void);
@@ -183,13 +184,14 @@ int main(void)
 	      saveSetupFlag=0;
 		  writeSetup();
 	  }
+	  backup.handler();
 
     }
 }
 //-----------------------------------------------------
 void initAll(void)
 {
-
+  
   SystemInit();
   clock.initialize();
   rcu_apb2_clock_config(RCU_APB2_CKAHB_DIV2);
@@ -230,6 +232,9 @@ void initAll(void)
   bluetooth.initialize((char*)"Timberline 1.5");
   //***********************************
   hcu.initialise();
+  
+  backup.init();
+
 }
 //-----------------------------------------------------
 void activitySearch(void)
@@ -285,6 +290,7 @@ void activityError(void)
       //error.codeOld = hcu.error;
       if (hcu.faultCode != 0)
         {
+			backup.addErrorToLog(hcu.faultCode);
           if (screen_visible != SCREEN_VISIBLE_ERROR)
             {
               if (screen_visible == SCREEN_VISIBLE_SLEEP)
@@ -298,7 +304,7 @@ void activityError(void)
               screen_visible_old = screen_visible;
               screen_visible = SCREEN_VISIBLE_ERROR;
               error.viewScreen();
-              air.isFHeaterOn = false;
+              //air.isFHeaterOn = false;
             }
         }
     }
@@ -940,8 +946,8 @@ void readSetup(void)
       hcu.airHeaterTSetPoint[0] = array[26];
       hcu.airHeaterTSetPoint[1] = array[27];
 			
-			display.setup.scheduleMode = array[28];
-			display.setup.tempShift = array[29];
+	  display.setup.scheduleMode = array[28];
+	  display.setup.tempShift = array[29];
 
       if (display.setup.brightness < 10 || display.setup.brightness > 100) result = false;
       if (display.setup.timeout < 20 || display.setup.timeout > 300) result = false;

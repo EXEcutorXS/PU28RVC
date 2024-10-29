@@ -1,5 +1,18 @@
-
-
+9.0.100.33
+TODO Backup via registers
+//Error history
+Reload counter
+9.0.100.32
+Watchdog activated
+Backup and restoring function added
+Panel reset counter added
+9.0.100.31
+uart initialises after every heater,element or water button press.
+HCU reboot data support added
+HCU uptime data support added
+Additional data on hidden screen
+auto reboot after no messages in 30 seconds
+auto reboot after no changing in HCU received messages in 30 seconds
 9.0.100.29
 memory mam shifted by 4 bytes
 15.3 bootloader enter fixed
