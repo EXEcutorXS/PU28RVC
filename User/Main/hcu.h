@@ -79,6 +79,7 @@ class Hcu
 		uint32_t ReceivedByPanelPacketCounter;
 		//uint32_t faultedCommandCounter;         //Счётчик непринятых комманд. Если принятое состояние кнопок не соответствует недавно переданному.
 		uint32_t restartCounter;
+		uint8_t code14Counter;
     private:
 			uint32_t LastRecPackCheckTick;
 		  uint32_t LastReceivedPacketTick;

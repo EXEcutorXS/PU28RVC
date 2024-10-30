@@ -33,12 +33,19 @@ void Hcu::handler(void)
 {
     static uint32_t timerTimeOut = 0;
     static uint32_t timerRequest = 0;
+	static uint32_t Code14Timer = 0;
     static bool isLinkError = false;
     static uint32_t timerLinkError = 0;
 	  static uint32_t ReceivedPacketCounterOld = 0;
     uint8_t i;
     uint32_t val;
 
+	
+	if ((core.getTick() - Code14Timer) >= 3600000) {
+        timerTimeOut = core.getTick();
+        if(code14Counter) code14Counter--;
+    }
+	
     if ((core.getTick() - timerTimeOut) >= 200) {
         timerTimeOut = core.getTick();
         usart.processTimeOut();

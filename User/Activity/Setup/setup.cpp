@@ -1455,6 +1455,7 @@ void Setup::viewScreen100(uint8_t mode)   // секретный экран
 	static uint32_t PacketToPanelCounterOld = 0;
 	static uint32_t HcuRestartCounterOld = 0;
 	static uint32_t PanelRestartCounterOld = 0;
+	static uint32_t Code14CounterOld = 0;
     
     if (((core.getTick()-timer)>1000)||mode){
         timer=core.getTick();
@@ -1525,6 +1526,13 @@ void Setup::viewScreen100(uint8_t mode)   // секретный экран
 				{
 				    sprintf(str,"Error log: %d,%d,%d,%d,%d",*backup.lastErrors1,*backup.lastErrors2,*backup.lastErrors3,*backup.lastErrors4,*backup.lastErrors5);
 					text.writeString(10,195,str,Font_7x10,checkbox.COLOR_OFF,display.COLOR_BACK);
+				}
+				
+				if (Code14CounterOld!=hcu.code14Counter||(mode))
+				{
+					Code14CounterOld=hcu.code14Counter;
+					sprintf(str,"Code 14 cnt: %d",hcu.code14Counter);
+					text.writeString(10,210,str,Font_7x10,checkbox.COLOR_OFF,display.COLOR_BACK);
 				}
 
     }

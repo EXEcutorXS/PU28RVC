@@ -304,7 +304,16 @@ void activityError(void)
               screen_visible_old = screen_visible;
               screen_visible = SCREEN_VISIBLE_ERROR;
               error.viewScreen();
-              //air.isFHeaterOn = false;
+				
+
+              if (hcu.faultCode != 14) 
+				  air.isFHeaterOn = false;
+			  hcu.code14Counter++;
+			  if (hcu.code14Counter>5)
+			  {
+				 hcu.code14Counter=0;
+				 air.isFHeaterOn = false;
+			  }
             }
         }
     }
