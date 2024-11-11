@@ -1524,14 +1524,14 @@ void Setup::viewScreen100(uint8_t mode)   // секретный экран
 				
 					if (mode)
 				{
-				    sprintf(str,"Error log: %d,%d,%d,%d,%d",*backup.lastErrors1,*backup.lastErrors2,*backup.lastErrors3,*backup.lastErrors4,*backup.lastErrors5);
+				    sprintf(str,"Error log: %02d-%02d-%02d-%02d-%02d",*backup.lastErrors1,*backup.lastErrors2,*backup.lastErrors3,*backup.lastErrors4,*backup.lastErrors5);
 					text.writeString(10,195,str,Font_7x10,checkbox.COLOR_OFF,display.COLOR_BACK);
 				}
 				
 				if (Code14CounterOld!=hcu.code14Counter||(mode))
 				{
 					Code14CounterOld=hcu.code14Counter;
-					sprintf(str,"Code 14 cnt: %d",hcu.code14Counter);
+					sprintf(str,"Code 14 cnt: %d/%d",hcu.code14Counter,hcu.Code14CounterTotal);
 					text.writeString(10,210,str,Font_7x10,checkbox.COLOR_OFF,display.COLOR_BACK);
 				}
 

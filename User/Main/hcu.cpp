@@ -41,8 +41,8 @@ void Hcu::handler(void)
     uint32_t val;
 
 	
-	if ((core.getTick() - Code14Timer) >= 3600000) {
-        timerTimeOut = core.getTick();
+	if ((core.getTick() - Code14Timer) >= 1800000) {
+        Code14Timer = core.getTick();
         if(code14Counter) code14Counter--;
     }
 	

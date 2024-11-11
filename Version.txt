@@ -1,11 +1,12 @@
-9.0.100.33
-TODO Backup via registers
-//Error history
-Reload counter
 9.0.100.32
+Panel reload counter
+Backup via registers
+Error history added
 Watchdog activated
 Backup and restoring function added
 Panel reset counter added
+Code 14 counter added. After 5 codes heater turns off; counter decrements every hour
+code 41 description added
 9.0.100.31
 uart initialises after every heater,element or water button press.
 HCU reboot data support added
