@@ -33,6 +33,7 @@
 #include "text.h"
 #include "font.h"
 #include "rvc.h"
+#include "BluetoothHandler.h"
 // Library
 #include <math.h>
 
@@ -42,7 +43,7 @@ System air(45, 50, 90, 45, BUTTON_CENTRAL_IMAGE, BUTTON_CENTRAL_IMAGE, 5, 10);
 //-----------------------------------------------------
 System::System(uint8_t offVal, uint8_t minVal, uint8_t maxVal, uint8_t startVal, uint8_t offImage, uint8_t onImage, uint8_t smallStep, uint8_t bigStep)
 {
-		core.ClassInit(this,sizeof(this));
+	core.ClassInit(this,sizeof(this));
     OFF_VALUE = offVal;
     MIN_VALUE = minVal;
     MAX_VALUE = maxVal;
@@ -72,9 +73,7 @@ void System::viewScreen(bool isFirst)
     
     if (isFirst == true){
         canvas.writeFillRect(0,0,320,240,display.COLOR_BACK);   // вывод заднего фона
-        slider.viewScreen();
-        canvas.loadImageEffect(BUTTON_SYSTEM_X,BUTTON_SYSTEM_Y,ON_IMAGE,BUTTON_SYSTEM_STEP,0);      // отображение значка системы
-        viewMode();
+		viewMode();
         slider.setMinMax(OFF_VALUE, MIN_VALUE, MAX_VALUE, SMALL_STEP, BIG_STEP); // ставим пределы шкалы и шаг отрисовки сетки
         value = hcu.airHeaterTSetPoint[(air.isDay|air.isSelectDay)&(!air.isSelectNight)];
         if (air.isAirOn){
@@ -86,25 +85,19 @@ void System::viewScreen(bool isFirst)
         }
         else slider.position = 0;
         slider.positionTempOld = 0;
-        while(true){
-            result = slider.viewGridSens(slider.position,BACKGROUND_IMAGE,isClear);    // красная шкала
-            isClear = false;
-            if (result == false) a = sensorCheck();
-            else break;
-            if (a==3 || a==4) break;
-        }
+//        while(true){
+//            result = slider.viewGridSens(slider.position,BACKGROUND_IMAGE,isClear);    // красная шкала
+//            isClear = false;
+//            if (result == false) a = sensorCheck();
+//            else break;
+//            if (a==3 || a==4) break;
+//        }
+		slider.viewScreen();
         slider.drawDigGrid();
+		canvas.loadImageEffect(BUTTON_SYSTEM_X,BUTTON_SYSTEM_Y,ON_IMAGE,BUTTON_SYSTEM_STEP,0);      // отображение значка системы
         canvas.loadImageEffect(275,5,BUTTON_SETUP_IMAGE,BUTTON_SETUP_STEP,1);               // отображение значка настроек
-        if (display.setup.scheduleMode)
-				{
-        if ((isDay|isSelectDay)&(!isSelectNight))
-            canvas.loadImageEffect(BUTTON_DAY_NIGHT_X,BUTTON_DAY_NIGHT_Y,TEXT_DAY_IMAGE,BUTTON_SETUP_STEP,0);
-        else
-            canvas.loadImageEffect(BUTTON_DAY_NIGHT_X,BUTTON_DAY_NIGHT_Y,TEXT_NIGHT_IMAGE,BUTTON_SETUP_STEP,0);
-			}
-        if (isBleAccept == true){
-            canvas.loadImageEffect(BUTTON_BLE_X,BUTTON_BLE_Y,TEXT_BLE_IMAGE,BUTTON_SETUP_STEP,0);
-        }
+		BleStatusView();
+		ScheduleModeView();
     }
     else{
         viewMode();
@@ -130,12 +123,35 @@ void System::viewScreen(bool isFirst)
     }
     slider.timerSliderMin = core.getTick()+2500;
     viewTemperature(true);
+
 }
 //-----------------------------------------------------
+void System::BleStatusUpdater(void)
+{
+	static bool bleConnect_f = false;
+	
+	if (screen_visible == SCREEN_VISIBLE_AIR)
+	{
+		if (bleConnect_f != blt.isBleAccept)
+		{
+			bleConnect_f = blt.isBleAccept;
+			BleStatusView();
+		}
+	}
+}
+void System::BleStatusView(void)
+{
+	if (blt.isBleAccept){
+		canvas.loadImageEffect(BUTTON_BLE_X,BUTTON_BLE_Y,TEXT_BLE_IMAGE,BUTTON_SETUP_STEP,0);
+	} else {
+		canvas.writeFillRect(BUTTON_BLE_X, BUTTON_BLE_Y, 20, 20, 0);
+	}
+}
+//--------------------------------------------------------------------------
 uint8_t System::viewHandler(void)
 {
     uint8_t a, result;
-    
+    checkDayNight();                                                    // проверка дневного/ночного режима
     this->viewTemperature(false);                   // отображение температуры
     a = slider.viewPosition();                      // программа визуализации настроечной шкалы
     if (a == 0){                                   // ползунок дополз до места назначения
@@ -150,6 +166,7 @@ uint8_t System::viewHandler(void)
     }
     result = this->sensorCheck();                   // обработка касания сенсорного экрана
     startTimer.viewButton();                        // отображение кнопки таймеров
+	BleStatusUpdater();
     return result;
 }
 //-----------------------------------------------------
@@ -190,6 +207,7 @@ void System::viewMessage(char *txt)
 //-----------------------------------------------------
 void System::viewMode(void)
 {
+	static bool SheduleModeOld = false;
     if (isWaterOnOld != isWaterOn){
         isWaterOnOld = isWaterOn;
         isChange = true;
@@ -223,8 +241,28 @@ void System::viewMode(void)
             canvas.loadImageEffectRed(BUTTON_RIGHT_X,BUTTON_RIGHT_Y,BLUE_EHEAT_IMAGE,BUTTON_TIMER_STEP);                       // отображение значка ТЭНА
         }
     }
+	if (SheduleModeOld != display.setup.scheduleMode) // при смене настройки обновляем экран.
+	{
+		SheduleModeOld = display.setup.scheduleMode;
+		ScheduleModeView();
+	}
 }
 //-----------------------------------------------------
+void System::ScheduleModeView(void)
+{
+	if (display.setup.scheduleMode)
+	{
+		if ((isDay|isSelectDay)&(!isSelectNight))
+			canvas.loadImageEffect(BUTTON_DAY_NIGHT_X,BUTTON_DAY_NIGHT_Y,TEXT_DAY_IMAGE,BUTTON_SETUP_STEP,0);
+		else
+			canvas.loadImageEffect(BUTTON_DAY_NIGHT_X,BUTTON_DAY_NIGHT_Y,TEXT_NIGHT_IMAGE,BUTTON_SETUP_STEP,0);
+	}
+	else 
+	{
+		canvas.writeFillRect(BUTTON_DAY_NIGHT_X, BUTTON_DAY_NIGHT_Y, 30, 30, 0);
+	}
+}
+//----------------------------------------------------
 void System::viewDuration(void)
 {
     char str[21];
@@ -414,6 +452,7 @@ void System::viewTemperature(bool isReset)
             }
             for (i=0; i<6; i++) oldStr[i] = str[i];
         }
+
     }
 }
 //-----------------------------------------------------
@@ -487,6 +526,7 @@ uint8_t System::sensorCheck(void)
                     viewDuration(isWaterOn, hcu.durationDomesticWater);
                     if (isWaterOn) hcu.timerOffDomesticWater = core.getTick();
                 }
+				hcu.needUpdate_f = true; // для быстрой передачи
 				//canPGNRVC.msgWaterHeater2();
             }
             else if (slider.touch==0 && 
@@ -508,6 +548,7 @@ uint8_t System::sensorCheck(void)
                     viewDuration(isFHeaterOn, hcu.durationSystem);
                     if (isFHeaterOn) hcu.timerOffSystem = core.getTick();
                 }
+				hcu.needUpdate_f = true; // для быстрой передачи
                 canPGNRVC.msgWaterHeater();
             }
             else if (slider.touch==0 && 
@@ -520,6 +561,7 @@ uint8_t System::sensorCheck(void)
                     viewDuration(isEHeaterOn, hcu.durationSystem);
                     if (isEHeaterOn) hcu.timerOffSystem = core.getTick();
                 }
+				hcu.needUpdate_f = true; // для быстрой передачи
                 canPGNRVC.msgWaterHeater();
             }
             else if (slider.touch==0 && 
@@ -611,17 +653,16 @@ uint8_t System::sensorCheck(void)
         
         if (slider.mode == 1 || slider.touch == 1){
             if (slider.values[slider.position] > OFF_VALUE){
-							if (display.setup.scheduleMode)
-                hcu.airHeaterTSetPoint[(air.isDay|air.isSelectDay)&(!air.isSelectNight)] = slider.values[slider.position];
-							else
-							{
-								  hcu.airHeaterTSetPoint[0] = slider.values[slider.position]; //Without chedule apply change to both setpoints
-									hcu.airHeaterTSetPoint[1] = slider.values[slider.position];
-							}
-                air.isAirOn = true;
+				if (display.setup.scheduleMode) {
+					hcu.airHeaterTSetPoint[(air.isDay|air.isSelectDay)&(!air.isSelectNight)] = slider.values[slider.position];
+				} else {			
+					hcu.airHeaterTSetPoint[0] = slider.values[slider.position]; //Without chedule apply change to both setpoints
+					hcu.airHeaterTSetPoint[1] = slider.values[slider.position];	
+				}   
+				air.isAirOn = true;
             }
             else{
-                air.isAirOn = false;
+				air.isAirOn = false;
             }
             hcu.lockTimer = core.getTick();
         }
@@ -669,7 +710,7 @@ void System::buttonCheck(uint8_t mode)
 //-----------------------------------------------------
 void System::checkConnect(void)
 {
-    if (usart.linkCnt == 40){
+    if (usart.linkCnt == LINK_ERROR_TIME){
         if (hcu.isConnect != hcu.CONNECT_STATUS_ERROR){
             hcu.faultCodeHcu = 20;
         }
@@ -685,6 +726,10 @@ void System::checkConnect(void)
 //-----------------------------------------------------
 void System::checkDayNight(void)
 {
+	if ((display.setup.scheduleMode&1) == 0) {
+		isDay = true; // дневная уставка работает в режиме без расписания
+		return;
+	}
     uint16_t dayTime = dayTimeH*60+dayTimeM;
     uint16_t nightTime = nightTimeH*60+nightTimeM;
     uint16_t time = clock.hour*60+clock.minute;
@@ -695,13 +740,16 @@ void System::checkDayNight(void)
             isSelectDay = false;
             isSelectNight = false;
             if (isDay){
+				isSelectDay = true;
                 if (screen_visible == SCREEN_VISIBLE_AIR) canvas.loadImageEffect(BUTTON_DAY_NIGHT_X,BUTTON_DAY_NIGHT_Y,TEXT_DAY_IMAGE,BUTTON_SETUP_STEP,0);
                 slider.setPosition(hcu.airHeaterTSetPoint[(air.isDay|air.isSelectDay)&(!air.isSelectNight)]);
             }
             else{
+				isSelectNight = true;
                 if (screen_visible == SCREEN_VISIBLE_AIR) canvas.loadImageEffect(BUTTON_DAY_NIGHT_X,BUTTON_DAY_NIGHT_Y,TEXT_NIGHT_IMAGE,BUTTON_SETUP_STEP,0);
                 slider.setPosition(hcu.airHeaterTSetPoint[(air.isDay|air.isSelectDay)&(!air.isSelectNight)]);
             }
+
         }
     }
     
@@ -709,6 +757,9 @@ void System::checkDayNight(void)
         // дневной режим работы
         if (isDay == false){
             isDay = true;
+			isSelectDay = true;
+			isSelectNight = false;
+
             if (screen_visible == SCREEN_VISIBLE_AIR) canvas.loadImageEffect(BUTTON_DAY_NIGHT_X,BUTTON_DAY_NIGHT_Y,TEXT_DAY_IMAGE,BUTTON_SETUP_STEP,0);
             slider.setPosition(hcu.airHeaterTSetPoint[(air.isDay|air.isSelectDay)&(!air.isSelectNight)]);
         }
@@ -717,6 +768,9 @@ void System::checkDayNight(void)
         // ночной режим работы
         if (isDay == true){
             isDay = false;
+			isSelectDay = false;
+			isSelectNight = true;
+
             if (screen_visible == SCREEN_VISIBLE_AIR) canvas.loadImageEffect(BUTTON_DAY_NIGHT_X,BUTTON_DAY_NIGHT_Y,TEXT_NIGHT_IMAGE,BUTTON_SETUP_STEP,0);
             slider.setPosition(hcu.airHeaterTSetPoint[(air.isDay|air.isSelectDay)&(!air.isSelectNight)]);
         }

@@ -60,15 +60,8 @@ uint8_t Search::viewHandler(void)
 //-----------------------------------------------------
 void Search::viewConnect(bool isView)
 {
-    /*#define TAIL_NUM    20
-    int8_t a, b;
-    uint32_t c;
-    static uint8_t i=0, e=0;
-    static float x[TAIL_NUM], y[TAIL_NUM], f;
-    static float rad = 3.14;
-    float k;*/
-    
-    if (usart.linkCnt == 40){
+
+    if (usart.linkCnt == LINK_ERROR_TIME){
         if (hcu.isConnect != hcu.CONNECT_STATUS_ERROR){
             hcu.faultCodeHcu = 20;
         }
@@ -83,32 +76,7 @@ void Search::viewConnect(bool isView)
     
     if (hcu.isConnect != hcu.CONNECT_STATUS_SEARCH) return;
     if (!isView) return;
-    /*
-    if (hcu.answerTimeOut > 1) k = 1.0;
-    else k = 0.0;
-    
-    x[i] = sin(rad)*48+160-3;
-    y[i] = cos(rad)*48+130-3;
-    i++;
-    if (i >= TAIL_NUM) i = 0; 
-    a=i;
-    
-    if (e < TAIL_NUM) e++;
-    else
-    {
-        for (b=0; b<TAIL_NUM; b++){
-            f = ((float)b/(TAIL_NUM-1))*k;
-            c = (uint8_t)(0xFF*f)<<16;
-            c += (uint8_t)(0xFF*f)<<8;
-            c += (uint8_t)(0xFF*f);
-            text.writeStringOver(x[a],y[a],"~",Font_7x10,c,display.COLOR_BACK,0);
-            a++;
-            if (a >= TAIL_NUM) a = 0;
-        }
-    }
-    rad -= 0.3;
-    if (rad < -3.14) rad = 3.14;
-    */
+
 }
 //-----------------------------------------------------
 uint8_t Search::sensorCheck(void)

@@ -49,7 +49,7 @@ void BleConnect::viewScreen(void)
 //-----------------------------------------------------
 uint8_t BleConnect::viewHandler(void)
 {
-    uint8_t result;
+    uint8_t result = 0;
     
     if (sensor.status == 1){   // касание сенсорного экрана
         //sensor.touch = 1;

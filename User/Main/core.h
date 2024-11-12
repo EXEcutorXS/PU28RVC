@@ -48,8 +48,6 @@ class Core
         uint8_t stage, phase;//ToDelete
         
         int16_t calibrationValue;
-		
-		
     
     private:
         uint32_t msTick;

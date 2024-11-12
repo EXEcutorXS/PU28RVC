@@ -21,6 +21,7 @@ class Backup
 	 uint16_t* lastErrors3;
 	 uint16_t* lastErrors4;
 	 uint16_t* lastErrors5;
+	 uint16_t* isBleAccept;
 	
 	void init();
 	void handler();

@@ -42,49 +42,6 @@ void Bluetooth::initSpi(void)
     /* bluenrg132 reset */
     gpio_bit_set(GPIOB,  GPIO_PIN_12);
     
-    /*
-    spi_parameter_struct spi_init_struct;
-    
-    rcu_periph_clock_enable(RCU_AF);
-    // Enable the GPIO Clock
-    rcu_periph_clock_enable(RCU_GPIOA);
-    rcu_periph_clock_enable(RCU_GPIOB);
-    // Enable the SPI Clock
-    rcu_periph_clock_enable(RCU_SPI1);
-    // Configure the GPIO_SCLK pin
-    gpio_init(GPIOB, GPIO_MODE_AF_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_13);
-    // Configure the GPIO_MOSI pin
-    gpio_init(GPIOB, GPIO_MODE_AF_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_15);
-    // Configure the GPIO_MISO pin
-    gpio_init(GPIOB, GPIO_MODE_IN_FLOATING, GPIO_OSPEED_50MHZ, GPIO_PIN_14);
-    
-    // Configure the GPIO_RESET pin
-    gpio_init(GPIOB, GPIO_MODE_OUT_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_12);
-    gpio_bit_set(GPIOB, GPIO_PIN_12);
-    
-    // Configure the GPIO_CS pin
-    gpio_init(GPIOA, GPIO_MODE_OUT_PP, GPIO_OSPEED_50MHZ, GPIO_PIN_8);
-    gpio_bit_set(GPIOA, GPIO_PIN_8);
-    
-    // Configure the GPIO_IRQ pin
-    gpio_init(GPIOB, GPIO_MODE_IN_FLOATING, GPIO_OSPEED_50MHZ, GPIO_PIN_10);
-    
-    spi_init_struct.trans_mode           = SPI_TRANSMODE_FULLDUPLEX;
-    spi_init_struct.device_mode          = SPI_MASTER;
-    spi_init_struct.frame_size           = SPI_FRAMESIZE_8BIT;
-    spi_init_struct.clock_polarity_phase = SPI_CK_PL_LOW_PH_1EDGE;
-    spi_init_struct.nss                  = SPI_NSS_SOFT;
-    spi_init_struct.prescale             = SPI_PSC_16;
-    spi_init_struct.endian               = SPI_ENDIAN_MSB;
-    spi_init(SPI1, &spi_init_struct);
-    
-    spi_enable(SPI1);
-    
-    gpio_exti_source_select(GPIO_PORT_SOURCE_GPIOB, GPIO_PIN_SOURCE_10);
-    exti_init(EXTI_10, EXTI_INTERRUPT, EXTI_TRIG_RISING);
-    exti_interrupt_flag_clear(EXTI_10);
-    //nvic_irq_enable(EXTI10_15_IRQn, 3, 1);
-    */
 }
 //-----------------------------------------------------
 void Bluetooth::handler(void)

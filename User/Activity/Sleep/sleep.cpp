@@ -87,6 +87,9 @@ uint8_t Sleep::handler(void)
         stageTemp = hcu.stage;
         result = 1;
     }
+	if (screen_visible == SCREEN_VISIBLE_BLE_CONNECT){
+		result = 1;
+	}
     if (screen_visible == SCREEN_VISIBLE_SLEEP){
         if (this->isViewClock == true){
             clock.viewAnClockSecond();

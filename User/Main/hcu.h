@@ -16,7 +16,8 @@ class Hcu
         void handler(void);
         void parsing(void);
         void checkPump(void);
-        
+		void UpdateSetpoints(uint8_t airState, float daySetpoint, float nightSetpoint);
+//        void UpdateSetups(void);
         char fanAuto;
         char fanManual;
         char pumpOn;
@@ -27,7 +28,7 @@ class Hcu
         //uint8_t errorOld;
         uint8_t stage;
         uint8_t stageOld;
-        int16_t airHeaterTSetPoint[2];
+        float airHeaterTSetPoint[2];
     
         uint8_t faultCodeHcu, faultCodeHeater, faultCodePanel;
         
@@ -70,7 +71,7 @@ class Hcu
         uint8_t version[4];
         uint8_t heaterVersion[4];
         uint32_t heaterTotalOperatingTime; //время наработки подогревателя, с
-		
+		bool needUpdate_f;
 		bool clearErrorRequest;
 		
 		uint32_t reinitialisationCounter;   			//Счётчик переинициализации уарта
@@ -81,9 +82,11 @@ class Hcu
 		uint32_t restartCounter;
 		uint8_t code14Counter;
 		uint16_t Code14CounterTotal;
+		bool Ignore_ReceivedByHCUPacketCounter_f;
     private:
-			uint32_t LastRecPackCheckTick;
-		  uint32_t LastReceivedPacketTick;
+		uint32_t LastRecPackCheckTick;
+		uint32_t LastReceivedPacketTick;
+		void RestoreConnection(void);
         
 };
 extern Hcu hcu;
