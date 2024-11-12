@@ -1,3 +1,5 @@
+9.0.100.33
+Add Bluetooth
 9.0.100.32
 Panel reload counter
 Backup via registers

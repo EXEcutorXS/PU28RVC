@@ -129,9 +129,6 @@ int main(void)
 
 	search.viewScreen();
 	
-	if (display.setup.celsius & 0x01) air.changeScale(7, 10, 32, 7, BUTTON_CENTRAL_IMAGE, BUTTON_CENTRAL_IMAGE, 5, 5);
-	else air.changeScale(45, 50, 90, 45, BUTTON_CENTRAL_IMAGE, BUTTON_CENTRAL_IMAGE, 5, 10);
-
 	while(TRUE)
 	{
 	#ifndef NO_IWDG
@@ -215,6 +212,9 @@ void initAll(void)
 	hcu.initialise();
 
 	backup.init();
+	
+	if (display.setup.celsius & 0x01) air.changeScale(7, 10, 32, 7, BUTTON_CENTRAL_IMAGE, BUTTON_CENTRAL_IMAGE, 5, 5);
+	else air.changeScale(45, 50, 90, 45, BUTTON_CENTRAL_IMAGE, BUTTON_CENTRAL_IMAGE, 5, 10);
   
 }
 //-----------------------------------------------------
