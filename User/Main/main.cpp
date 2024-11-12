@@ -285,18 +285,22 @@ void activitySearch(void)
 void activityError(void)
 {
     uint8_t result;
+	static uint32_t lastCode14Tick=0;
 
     if (hcu.faultCode != error.codeOld)
     {
         //error.codeOld = hcu.error;
         if (hcu.faultCode != 0)
         {
-
-            backup.addErrorToLog(hcu.faultCode);
             if (hcu.faultCode != 14)
+			{
                 air.isFHeaterOn = false;
-            else
+				backup.addErrorToLog(hcu.faultCode);
+			}
+            else if (core.getTick()-lastCode14Tick>10000)
             {
+				backup.addErrorToLog(hcu.faultCode);
+				lastCode14Tick=core.getTick();
                 hcu.code14Counter++;
                 hcu.Code14CounterTotal++;
             }
@@ -306,6 +310,9 @@ void activityError(void)
                 hcu.code14Counter=0;
                 air.isFHeaterOn = false;
             }
+			else
+				return; //Not showing Error screen if code 14 counter not reached 10
+			
             if (screen_visible != SCREEN_VISIBLE_ERROR)
             {
                 if (screen_visible == SCREEN_VISIBLE_SLEEP)
