@@ -336,6 +336,10 @@ void BltHandler_C::handler(void)
 	//			else if (updateGroup == 9) packNum = 4;
 				updateGroup = 0;
 			}
+			int16_t tempr = air.temperatureActual; // температура зоны
+			if (air.isPanelSensor&0x01) { // если температура пульта, то передаем ее
+				tempr = temperature.panel;
+			}
 			switch(packNum)
 			{
 			case 0:
@@ -427,12 +431,13 @@ void BltHandler_C::handler(void)
 //					buf[1]= core.celToFar(hcu.airHeaterTSetPoint[0]);
 //					buf[6]= core.celToFar(hcu.airHeaterTSetPoint[1]);
 //				}
+				
 				if (display.setup.celsius & 0x01) {
-					buf[11] = air.temperatureActual+40;
-					buf[18] = air.temperatureActual+40;
+					buf[11] = tempr+40; //Температура (зона 1) (на +40 от фактического)
+					buf[18] = tempr+40; //Уличная температура + 40
 				} else {
-					buf[11] = core.farToCel(air.temperatureActual)+40;
-					buf[18] = core.farToCel(air.temperatureActual)+40;
+					buf[11] = core.farToCel(tempr)+40; //Температура (зона 1) (на +40 от фактического)
+					buf[18] = core.farToCel(tempr)+40; //Уличная температура + 40
 				}
 				
 				for(uint8_t i=0; i<4; i++) {
@@ -447,7 +452,6 @@ void BltHandler_C::handler(void)
 	//            buf[17] |= (Control.UnderfloorButtonState!=0)<<5;
 	//            buf[17] |= (Control.EnginePreheatButtonState!=0)<<6;
 
-				
 				buf[19] = display.setup.celsius; // 1-цельсии
 				break;
 			case 3:
@@ -482,8 +486,8 @@ void BltHandler_C::handler(void)
 				buf[15] = air.isAirOn; //(Zone.State[0]&3) | ((Zone.State[1]&3)<<2) | ((Zone.State[2]&3)<<4) | ((Zone.State[3]&3)<<6);
 				buf[16] = 0; //Zone.State[4]&3;
 				buf[17] = air.isDay + (air.isSelectDay<<1) +(air.isSelectNight<<2)+(display.setup.scheduleMode<<3);
-//				buf[18] = 0;
-//				buf[19] = 0;
+				buf[18] = 0;
+				buf[19] = 0;
 				break;
 			case 4:
 				if (isBleSendKey)
