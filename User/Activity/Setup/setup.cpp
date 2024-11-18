@@ -1456,6 +1456,7 @@ void Setup::viewScreen100(uint8_t mode)   // секретный экран
 	static uint32_t HcuRestartCounterOld = 0;
 	static uint32_t PanelRestartCounterOld = 0;
 	static uint32_t Code14CounterOld = 0;
+	static uint16_t codeHistoryOld[5] = {0,};
     
     if (((core.getTick()-timer)>1000)||mode){
         timer=core.getTick();
@@ -1522,7 +1523,19 @@ void Setup::viewScreen100(uint8_t mode)   // секретный экран
 					text.writeString(10,180,str,Font_7x10,checkbox.COLOR_OFF,display.COLOR_BACK);
 				}
 				
-					if (mode)
+				bool historyChanged = *backup.lastErrors1!=codeHistoryOld[0] || 
+					*backup.lastErrors2!=codeHistoryOld[1] || 
+					*backup.lastErrors3!=codeHistoryOld[2] || 
+					*backup.lastErrors4!=codeHistoryOld[3] || 
+					*backup.lastErrors5!=codeHistoryOld[4];
+				
+					codeHistoryOld[0]=*backup.lastErrors1;
+					codeHistoryOld[1]=*backup.lastErrors2;
+					codeHistoryOld[2]=*backup.lastErrors3;
+					codeHistoryOld[3]=*backup.lastErrors4;
+					codeHistoryOld[4]=*backup.lastErrors5;
+					
+					if (mode || historyChanged)
 				{
 				    sprintf(str,"Error log: %02d-%02d-%02d-%02d-%02d",*backup.lastErrors1,*backup.lastErrors2,*backup.lastErrors3,*backup.lastErrors4,*backup.lastErrors5);
 					text.writeString(10,195,str,Font_7x10,checkbox.COLOR_OFF,display.COLOR_BACK);

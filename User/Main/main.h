@@ -230,7 +230,6 @@ const char ERROR_28[] = "Motor self rotation";
 const char ERROR_29[] = "Flame break";
 const char ERROR_30[] = "No connect heater";
 const char ERROR_37[] = "Blocking by_non ignition";
-const char ERROR_41[] = "Air temp sens fault";
 const char ERROR_50[] = "No connect heater";
 const char ERROR_78[] = "Flame failure during";
 const char ERROR_100[] = "Wrong device";

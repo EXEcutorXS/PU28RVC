@@ -91,7 +91,7 @@ const uint8_t _CRC[11]  __attribute__((at(0x0803F800 ))) =
 {
     0x55, 0x55, 0x55, 0x55,     // длина ПО
     0x55, 0x55,                 // CRC ПО
-    9, 0, 100, 32,              // версия ПО
+    9, 0, 100, 33,              // версия ПО
     0x00                        // резерв
 };
 
@@ -99,11 +99,11 @@ const uint8_t _CRC2[11]  __attribute__((at(0x0801C000 ))) =
 {
     0x55, 0x55, 0x55, 0x55,     // длина ПО
     0x55, 0x55,                 // CRC ПО
-    9, 0, 100, 32,              // версия ПО
+    9, 0, 100, 33,              // версия ПО
     0x00                        // резерв
 };
 
-const Errors errors[29] =
+const Errors errors[28] =
 {
     {1, ERROR_1},
     {2, ERROR_2},
@@ -130,7 +130,6 @@ const Errors errors[29] =
     {29, ERROR_29},
     {30, ERROR_30},
     {37, ERROR_37},
-    {41, ERROR_41},
     {50, ERROR_50},
     {78, ERROR_78},
     {100, ERROR_100},
@@ -285,34 +284,29 @@ void activitySearch(void)
 void activityError(void)
 {
     uint8_t result;
-	static uint32_t lastCode14Tick=0;
 
     if (hcu.faultCode != error.codeOld)
     {
-        //error.codeOld = hcu.error;
         if (hcu.faultCode != 0)
         {
-            if (hcu.faultCode != 14)
-			{
-                air.isFHeaterOn = false;
-				backup.addErrorToLog(hcu.faultCode);
-			}
-            else if (core.getTick()-lastCode14Tick>10000)
+			backup.addErrorToLog(hcu.faultCode);
+            if (hcu.faultCode == 14)
             {
-				backup.addErrorToLog(hcu.faultCode);
-				lastCode14Tick=core.getTick();
                 hcu.code14Counter++;
                 hcu.Code14CounterTotal++;
+				
+                if (hcu.code14Counter<10)
+				{
+					error.codeOld = hcu.faultCode; //Blocking code showing
+                    return;
+				}
+                else
+                    hcu.code14Counter=0;
             }
 
-            if (hcu.code14Counter>10)
-            {
-                hcu.code14Counter=0;
-                air.isFHeaterOn = false;
-            }
-			else
-				return; //Not showing Error screen if code 14 counter not reached 10
-			
+            air.isFHeaterOn = false;
+
+
             if (screen_visible != SCREEN_VISIBLE_ERROR)
             {
                 if (screen_visible == SCREEN_VISIBLE_SLEEP)
@@ -326,9 +320,6 @@ void activityError(void)
                 screen_visible_old = screen_visible;
                 screen_visible = SCREEN_VISIBLE_ERROR;
                 error.viewScreen();
-
-
-
             }
         }
     }

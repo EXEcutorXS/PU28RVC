@@ -494,6 +494,11 @@
               <FilePath>.\User\Can\can.cpp</FilePath>
             </File>
             <File>
+              <FileName>unix_time.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\User\Time\unix_time.cpp</FilePath>
+            </File>
+            <File>
               <FileName>rvc.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\User\Can\rvc.cpp</FilePath>
@@ -532,11 +537,6 @@
               <FileName>gd32f30x_can.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\User\Can\gd32f30x_can.c</FilePath>
-            </File>
-            <File>
-              <FileName>unix_time.cpp</FileName>
-              <FileType>8</FileType>
-              <FilePath>.\User\Time\unix_time.cpp</FilePath>
             </File>
             <File>
               <FileName>bluetooth.cpp</FileName>
