@@ -1,9 +1,7 @@
-9.0.100.33
+9.0.100.32
 Fault code history updates in real time
 Code 14 counter format changed
 Fault code screen logic changed. Not it looks an code changind, not just code
-
-9.0.100.32
 Panel reload counter
 Backup via registers
 Error history added
