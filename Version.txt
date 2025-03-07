@@ -1,3 +1,5 @@
+9.0.100.33
+RV-C reboot bug fixed (now RV-C messages block only part of date, but not entire pack#15)
 9.0.100.32
 Fault code history updates in real time
 Code 14 counter format changed

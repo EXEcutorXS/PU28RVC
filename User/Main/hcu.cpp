@@ -158,7 +158,6 @@ void Hcu::handler(void)
 void Hcu::parsing(void)
 {
     uint16_t  Command;
-    uint8_t i;
     int16_t val;
     bool unlocked = (core.getTick()-lockTimer) > 5000;
     
@@ -174,234 +173,98 @@ void Hcu::parsing(void)
 											LastReceivedPacketTick=core.getTick();
 						          hcu.ReceivedByPanelPacketCounter++;
                         if (unlocked){
-                            i = 4;
-                            if (air.isFHeaterOn != usart.packetIn[i] ){
-                                air.isFHeaterOn = usart.packetIn[i];
-                            }
-                            i++;
                             
-                            if (air.isEHeaterOn != usart.packetIn[i]){
-                                air.isEHeaterOn = usart.packetIn[i];
+                            if (air.isFHeaterOn != usart.packetIn[4] ){
+                                air.isFHeaterOn = usart.packetIn[4];
                             }
-                            i++;
                             
-                            if (air.isWaterOn != usart.packetIn[i]){
-                                air.isWaterOn = usart.packetIn[i];
+                            if (air.isEHeaterOn != usart.packetIn[5]){
+                                air.isEHeaterOn = usart.packetIn[5];
                             }
-                            i++;
                             
-                            if (air.isAirOn != usart.packetIn[i]){
-                                air.isAirOn = usart.packetIn[i];
+                            if (air.isWaterOn != usart.packetIn[6]){
+                                air.isWaterOn = usart.packetIn[6];
+                            }
+                            
+                            if (air.isAirOn != usart.packetIn[7]){
+                                air.isAirOn = usart.packetIn[7];
                                 
-                                if (air.isAirOn && !usart.packetIn[i]){
+                                if (air.isAirOn && !usart.packetIn[7]){
                                     slider.position = 0;
                                     hcu.airHeaterTSetPoint[(air.isDay|air.isSelectDay)&(!air.isSelectNight)] = slider.values[slider.position];
                                 }
-                                air.isAirOn = usart.packetIn[i];
+                                air.isAirOn = usart.packetIn[7];
                             }
-                            i++;
                             
                             if (display.setup.celsius & 0x01){
-                                val = (usart.packetIn[i]<<8)+usart.packetIn[i+1];
+                                val = (usart.packetIn[8]<<8)+usart.packetIn[9];
                                 canPGNRVC.tankTemperaturex10C = val;
                                 hcu.temperatureTank = val/10.0;
-                                i+=2;
                                 
-                                val = (usart.packetIn[i]<<8)+usart.packetIn[i+1];
+                                val = (usart.packetIn[10]<<8)+usart.packetIn[11];
                                 canPGNRVC.heatExchangerTemperaturex10C = val;
                                 hcu.temperatureExchanger = val/10.0;
-                                i+=2;
                                 
-                                val = (usart.packetIn[i]<<8)+usart.packetIn[i+1];
+                                val = (usart.packetIn[12]<<8)+usart.packetIn[13];
                                 canPGNRVC.airTemperaturex10C = val;
                                 air.temperatureActual = val/10.0;
-                                i+=2;
                                 
-                                val = (usart.packetIn[i]<<8)+usart.packetIn[i+1];
+                                val = (usart.packetIn[14]<<8)+usart.packetIn[15];
                                 canPGNRVC.heaterTemperaturex10C = val;
                                 hcu.temperatureHeater = val/10.0;
-                                i+=2;
                             }
                             else{
-                                val = (usart.packetIn[i]<<8)+usart.packetIn[i+1];
+                                val = (usart.packetIn[8]<<8)+usart.packetIn[9];
                                 canPGNRVC.tankTemperaturex10C = val;
                                 hcu.temperatureTank = core.celToFar(val/10.0);
-                                i+=2;
                                 
-                                val = (usart.packetIn[i]<<8)+usart.packetIn[i+1];
+                                val = (usart.packetIn[10]<<8)+usart.packetIn[11];
                                 canPGNRVC.heatExchangerTemperaturex10C = val;
                                 hcu.temperatureExchanger = core.celToFar(val/10.0);
-                                i+=2;
                                 
-                                val = (usart.packetIn[i]<<8)+usart.packetIn[i+1];
+                                val = (usart.packetIn[12]<<8)+usart.packetIn[13];
                                 canPGNRVC.airTemperaturex10C = val;
                                 air.temperatureActual = core.celToFar(val/10.0);
-                                i+=2;
                                 
-                                val = (usart.packetIn[i]<<8)+usart.packetIn[i+1];
+                                val = (usart.packetIn[14]<<8)+usart.packetIn[15];
                                 canPGNRVC.heaterTemperaturex10C = val;
                                 hcu.temperatureHeater = core.celToFar(val/10.0);
-                                i+=2;
                             }
                             
                             
-                            hcu.stateHeater = usart.packetIn[i] ;
-                            i++;
-                            
-                            hcu.stateAch = usart.packetIn[i];
-                            i++;
-                            
-                            hcu.statePump = usart.packetIn[i];
-                            i++;
-                            
-                            hcu.stateZone0 = usart.packetIn[i];
-                            i++;
-                            
-                            hcu.stateFuelPump = usart.packetIn[i];
-                            i++;
-                            
-                            hcu.fanManual = usart.packetIn[i];
+                            hcu.stateHeater = usart.packetIn[16] ;
+                            hcu.stateAch = usart.packetIn[17];
+                            hcu.statePump = usart.packetIn[18];
+                            hcu.stateZone0 = usart.packetIn[19];
+                            hcu.stateFuelPump = usart.packetIn[20];
+                            hcu.fanManual = usart.packetIn[21];
                             hcu.fanAuto = !hcu.fanManual;
-                            i++;
-                            
-                            hcu.fanPower = usart.packetIn[i];
-                            i++;
-                            
-                            //hcu.pumpOn = usart.packetIn[i];
-                            i++;
-                            
-                            hcu.faultCodeHcu = usart.packetIn[i];
-                            i++;
-                            
-                            hcu.faultCodeHeater = usart.packetIn[i];
-                            i++;
-                            
-                            hcu.heaterVersion[0] = usart.packetIn[i++];
-                            hcu.heaterVersion[1] = usart.packetIn[i++];
-                            hcu.heaterVersion[2] = usart.packetIn[i++];
-                            hcu.heaterVersion[3] = usart.packetIn[i++];
+                            hcu.fanPower = usart.packetIn[22];
+						}
+                            //hcu.pumpOn = usart.packetIn[23];
+                            hcu.faultCodeHcu = usart.packetIn[24];
+                            hcu.faultCodeHeater = usart.packetIn[25];
+                            hcu.heaterVersion[0] = usart.packetIn[26];
+                            hcu.heaterVersion[1] = usart.packetIn[27];
+                            hcu.heaterVersion[2] = usart.packetIn[28];
+                            hcu.heaterVersion[3] = usart.packetIn[29];
                             hcu.isHeaterVersion=true;
-                            
-                            hcu.heaterTotalOperatingTime = usart.packetIn[i++]<<24;
-                            hcu.heaterTotalOperatingTime += usart.packetIn[i++]<<16;
-                            hcu.heaterTotalOperatingTime += usart.packetIn[i++]<<8;
-                            hcu.heaterTotalOperatingTime += usart.packetIn[i++];
-                            
-                            hcu.version[0] = usart.packetIn[i++];
-                            hcu.version[1] = usart.packetIn[i++];
-                            hcu.version[2] = usart.packetIn[i++];
-                            hcu.version[3] = usart.packetIn[i++];
+                            hcu.heaterTotalOperatingTime = usart.packetIn[30]<<24;
+                            hcu.heaterTotalOperatingTime += usart.packetIn[31]<<16;
+                            hcu.heaterTotalOperatingTime += usart.packetIn[32]<<8;
+                            hcu.heaterTotalOperatingTime += usart.packetIn[33];
+                            hcu.version[0] = usart.packetIn[34];
+                            hcu.version[1] = usart.packetIn[35];
+                            hcu.version[2] = usart.packetIn[36];
+                            hcu.version[3] = usart.packetIn[37];
                             hcu.isVersion=true;
-                            
-                            hcu.pressure = usart.packetIn[i];
-                            i++;
-                            
-                            hcu.voltage = usart.packetIn[i]/10.0;
-                            i++;
-                            rvc.newState.FanCurrentSpeed=usart.packetIn[i];
-							i++;
-							uptime = usart.packetIn[i]*256+usart.packetIn[i+1];
-							i++;
-							i++;
-							ReceivedByHCUPacketCounter = usart.packetIn[i]*256+usart.packetIn[i+1];
-							i++;
-							i++;				
-							restartCounter=usart.packetIn[i]*256+usart.packetIn[i+1];				
-                        }
-												/*
-                        else{
-                            
-                            i = 4;
-                            //if (air.isFHeaterOn != usart.packetIn[i] ){
-                            //    air.isFHeaterOn = usart.packetIn[i];
-                            //}
-                            tempF = usart.packetIn[i];
-                            i++;
-                            
-                            //if (air.isEHeaterOn != usart.packetIn[i]){
-                            //    air.isEHeaterOn = usart.packetIn[i];
-                            //}
-                            tempE = usart.packetIn[i];
-                            i++;
-                            
-                            //if (air.isWaterOn != usart.packetIn[i]){
-                            //    air.isWaterOn = usart.packetIn[i];
-                            //}
-                            tempW = usart.packetIn[i];
-                            i++;
-                            
-                            if (air.isAirOn != usart.packetIn[i]){
-                            //    air.isAirOn = usart.packetIn[i];
-                            //    
-                            //    if (air.isAirOn && !usart.packetIn[i]){
-                            //        slider.position = 0;
-                            //        hcu.airHeaterTSetPoint[(air.isDay|air.isSelectDay)&(!air.isSelectNight)] = slider.values[slider.position];
-                            //    }
-                            //    air.isAirOn = usart.packetIn[i];
-                            }
-                            tempA = usart.packetIn[i];
-                            i++;
-                            
-                            //val = (usart.packetIn[i]<<8)+usart.packetIn[i+1];
-                            //canPGNRVC.tankTemperaturex10C = val;
-                            //hcu.temperatureTank = val/10.0;
-                            i+=2;
-                            
-                            //val = (usart.packetIn[i]<<8)+usart.packetIn[i+1];
-                            //canPGNRVC.heatExchangerTemperaturex10C = val;
-                            //hcu.temperatureExchanger = val/10.0;
-                            i+=2;
-                            
-                            //val = (usart.packetIn[i]<<8)+usart.packetIn[i+1];
-                            //canPGNRVC.airTemperaturex10C = val;
-                            //air.temperatureActual = val/10.0;
-                            i+=2;
-                            
-                            //val = (usart.packetIn[i]<<8)+usart.packetIn[i+1];
-                            //canPGNRVC.heaterTemperaturex10C = val;
-                            //hcu.temperatureHeater = val/10.0;
-                            i+=2;
-                                
-                            //hcu.stateHeater = usart.packetIn[i] ;
-                            i++;
-                            
-                            //hcu.stateAch = usart.packetIn[i];
-                            i++;
-                            
-                            //hcu.statePump = usart.packetIn[i];
-                            i++;
-                            
-                            //hcu.stateZone0 = usart.packetIn[i];
-                            i++;
-                            
-                            //hcu.stateFuelPump = usart.packetIn[i];
-                            i++;
-                            
-                            //hcu.fanManual = usart.packetIn[i];
-                            //hcu.fanAuto = !hcu.fanManual;
-                            tempM = usart.packetIn[i];
-                            i++;
-                            
-                            //hcu.fanPower = usart.packetIn[i];
-                            i++;
-                            
-                            //hcu.pumpOn = usart.packetIn[i];
-                            tempP = usart.packetIn[i];
-                            i++;
-                            
-                                
-                            
-                            uint8_t receivedState = (tempF!=0) | 
-                                                    ((tempE!=0)<<1) | 
-                                                    ((tempW!=0)<<2) | 
-                                                    ((tempA!=0)<<3) | 
-                                                    ((tempM)<<4) | 
-                                                    ((tempP!=0)<<5);
-                
-
-                        }
-												*/
-						
+                            hcu.pressure = usart.packetIn[38];
+                            hcu.voltage = usart.packetIn[39]/10.0;
+                            rvc.newState.FanCurrentSpeed=usart.packetIn[40];
+							uptime = usart.packetIn[41]*256+usart.packetIn[42];
+							ReceivedByHCUPacketCounter = usart.packetIn[43]*256+usart.packetIn[44];
+							restartCounter=usart.packetIn[45]*256+usart.packetIn[46];				
+                        
                     }
 					   usart.linkCnt=0;
                     break;
