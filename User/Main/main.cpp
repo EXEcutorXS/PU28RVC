@@ -87,7 +87,7 @@ const uint8_t _CRC2[11]  __attribute__((at(0x0801C000 ))) =
   0x00                        // резерв
 };
 
-const Errors errors[29] =
+const Errors errors[28] =
 {
     {1, ERROR_1},
     {2, ERROR_2},
@@ -114,7 +114,7 @@ const Errors errors[29] =
     {29, ERROR_29},
     {30, ERROR_30},
     {37, ERROR_37},
-    {41, ERROR_41},
+//    {41, ERROR_41},
     {50, ERROR_50},
     {78, ERROR_78},
     {100, ERROR_100},
@@ -273,19 +273,21 @@ void activityError(void)
         {
 
             backup.addErrorToLog(hcu.faultCode);
-            if (hcu.faultCode != 14)
-                air.isFHeaterOn = false;
-            else
+            if (hcu.faultCode == 14)
             {
                 hcu.code14Counter++;
                 hcu.Code14CounterTotal++;
+				
+                if (hcu.code14Counter<10)
+				{
+					error.codeOld = hcu.faultCode; //Blocking code showing
+                    return;
+				}
+                else
+                    hcu.code14Counter=0;
             }
-
-            if (hcu.code14Counter>10)
-            {
-                hcu.code14Counter=0;
-                air.isFHeaterOn = false;
-            }
+			air.isFHeaterOn = false;
+			
             if (screen_visible != SCREEN_VISIBLE_ERROR)
             {
                 if (screen_visible == SCREEN_VISIBLE_SLEEP)
@@ -299,9 +301,6 @@ void activityError(void)
                 screen_visible_old = screen_visible;
                 screen_visible = SCREEN_VISIBLE_ERROR;
                 error.viewScreen();
-
-
-
             }
         }
     }
