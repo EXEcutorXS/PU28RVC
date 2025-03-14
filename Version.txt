@@ -1,4 +1,4 @@
-9.0.100.33
+9.0.100.34
 Add Bluetooth
 9.0.100.32
 Panel reload counter

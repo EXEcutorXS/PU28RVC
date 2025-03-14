@@ -31,7 +31,6 @@ lockTimer=100000;
 //-----------------------------------------------------
 void Hcu::handler(void)
 {
-    static uint32_t timerTimeOut = 0;
     static uint32_t timerRequest = 0;
 	static uint32_t timerReceiveHold = 0;
 	static uint32_t Code14Timer = 0;
@@ -207,7 +206,6 @@ void Hcu::parsing(void)
 
     int16_t val;
     bool unlocked = (core.getTick()-lockTimer) > 5000;
-    uint8_t tempF, tempE, tempW, tempA, tempM, tempP;
     
     if (usart.isProcessPacket){
         Command = usart.packetIn[2]*256+usart.packetIn[3];
