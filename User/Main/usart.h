@@ -6,6 +6,9 @@
 /* Includes ------------------------------------------------------------------*/
 #include "gd32f30x.h"
 
+
+#define	USART_TIMEOUT_PERIOD	10
+#define	LINK_ERROR_TIME		(30*1000/USART_TIMEOUT_PERIOD)
 /* Classes ------------------------------------------------------------------*/
 class Usart
 {
@@ -29,7 +32,7 @@ class Usart
         uint8_t packetOut[PACKET_OUT_MAX_LENGTH];       // массив для формирования пакета отправки
         uint8_t sendedCmd1, sendedCmd2;                 // переданная команда
         bool isProcessPacket;                           // пакет принят. можно обрабатывать
-        uint8_t  linkCnt;
+        uint16_t  linkCnt;
         uint8_t verProtocol;
         uint32_t baudrate;
         
@@ -42,26 +45,26 @@ class Usart
 		uint32_t lastReceivedTick;						//Тик последнего принятого сообщения
 		
 		
-		
+		uint32_t faultedCommandCounter;         //Счётчик непринятых комманд. Если принятое состояние кнопок не соответствует недавно переданному.
 		uint32_t lastCommandSendTick;
 		uint8_t lastSendedState; //0 бит - Подогреватель, 1 бит - ТЭН, 2 - разбор воды. 3 - ручной вент. 5 - помпа
-		
+
     private:
         static const int PACKET_HEADER = 170;           //заголовок пакета
-        static const int BUFFER_SIZE = 1024;            //размер буферного массива
+        static const int BUFFER_SIZE = 512;            //размер буферного массива
 
         static const int SD_NO_SENDING = 0;             //не передавать информацию
         static const int SD_EXTENDED = 1;               //передавать расширенный набор параметров (команда 0 из подогревателя).
         static const int SD_REDUCE = 2;                 //передавать сокращенный набор параметров (команда 2 из подогревателя)
         uint8_t buffer[BUFFER_SIZE];                   // буферный массив для приема байтов
-        uint16_t bufferCursorW,                          // курсор для записи байтов в буфер
-                bufferCursorR,                          // курсор для чтения байтов из буфер
-                packetLength,                           // размер поля данных принимаемого пакета
-                packetCounter,                          // счетчик принятых байт в пакете
-                packetTimeOut,                          // для отсчета "нет связи" внутри принимаемого пакета
-                transmitCounter,                        // счетчик байтов для передачи пакета
-                bytesToTransmit,                        // сколько байт будет передано в текущем пакете
-                sendDataState;                          // 0 - не передавать информацию
+        uint16_t bufferCursorW;                          // курсор для записи байтов в буфер
+        uint16_t bufferCursorR;                          // курсор для чтения байтов из буфер
+        uint16_t packetLength;                           // размер поля данных принимаемого пакета
+        uint16_t packetCounter;                          // счетчик принятых байт в пакете
+        uint16_t packetTimeOut;                          // для отсчета "нет связи" внутри принимаемого пакета
+        uint16_t transmitCounter;                        // счетчик байтов для передачи пакета
+        uint16_t bytesToTransmit;                        // сколько байт будет передано в текущем пакете
+        uint8_t sendDataState;                          // 0 - не передавать информацию
                                                         // 1 - передавать расширенный набор параметров (команда 0 из подогревателя).
                                                         // 2 - передавать сокращенный набор параметров (команда 2 из подогревателя)
 
@@ -69,7 +72,6 @@ class Usart
 
         bool isWaitHeaderByte,                          // ожидание заголовка пакета
                 isLinkError;                            // нет связи с внешним устройством
-		
 };
 extern Usart usart;
 

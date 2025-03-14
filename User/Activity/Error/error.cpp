@@ -186,3 +186,9 @@ void Error::buttonPress(void)
     }
 }
 //-----------------------------------------------------
+void Error::ClearErrors(void)
+{
+	hcu.isError = 0;
+	hcu.faultCode = 0;
+}
+//--------------------------------------

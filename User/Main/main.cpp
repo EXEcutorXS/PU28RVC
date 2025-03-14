@@ -38,7 +38,7 @@
 #include "can.h"
 #include "pgn_rvc.h"
 #include "rvc.h"
-#include "bluetooth.h"
+#include "BluetoothHandler.h"
 #include "hcu.h"
 #include "ble_connect.h"
 #include "backup.h"
@@ -60,47 +60,31 @@ void handlerUsart(void);
 void handlerTemperature(void);
 void handlerClock(void);
 void handlerTimer(void);
-void addNewId(uint8_t *id);
-void setNewId(void);
-void setNewKey(void);
 void writeSetup(void);
 void readSetup(void);
 void minuteHandler(void);
-void handlerBluetooth(void);
 
 /* Variables ------------------------------------------------------------------*/
 uint8_t screen_visible=SCREEN_VISIBLE_SEARCH, screen_visible_old=SCREEN_VISIBLE_AIR;
-bool isBleAccept = false;
-bool isBleCancel = false;
-bool isBleSendKey = false;
 
 bool isTest = 0;
 
 bool saveSetupFlag = 0;
 
-uint8_t newId[16];
-uint32_t timerCancel;
-uint32_t counterBleTemp, counterBleSendTemp;
-uint32_t counterBle, counterBleSend;
-
-uint32_t BLE_SEND_LONG_PERIOD;
-uint32_t BLE_SEND_SHORT_PERIOD;
-uint32_t BLE_PAUSE_PERIOD = 0;
-
 const uint8_t _CRC[11]  __attribute__((at(0x0803F800 ))) =
 {
-    0x55, 0x55, 0x55, 0x55,     // длина ПО
-    0x55, 0x55,                 // CRC ПО
-    9, 0, 100, 33,              // версия ПО
-    0x00                        // резерв
+  0x55, 0x55, 0x55, 0x55,     // длина ПО
+  0x55, 0x55,                 // CRC ПО
+  9, 0, 100, 33,              // версия ПО
+  0x00                        // резерв
 };
 
 const uint8_t _CRC2[11]  __attribute__((at(0x0801C000 ))) =
 {
-    0x55, 0x55, 0x55, 0x55,     // длина ПО
-    0x55, 0x55,                 // CRC ПО
-    9, 0, 100, 33,              // версия ПО
-    0x00                        // резерв
+  0x55, 0x55, 0x55, 0x55,     // длина ПО
+  0x55, 0x55,                 // CRC ПО
+  9, 0, 100, 33,              // версия ПО
+  0x00                        // резерв
 };
 
 const Errors errors[28] =
@@ -130,6 +114,7 @@ const Errors errors[28] =
     {29, ERROR_29},
     {30, ERROR_30},
     {37, ERROR_37},
+//    {41, ERROR_41},
     {50, ERROR_50},
     {78, ERROR_78},
     {100, ERROR_100},
@@ -138,103 +123,99 @@ const Errors errors[28] =
 //-----------------------------------------------------
 int main(void)
 {
-    readSetup();
-    initAll();                                                                  // инициализация микроконтроллера
-    display.setLight(display.setup.brightness);                                 // включение подсветки дисплея
+	readSetup();
+	initAll();                                                                  // инициализация микроконтроллера
+	display.setLight(display.setup.brightness);                                 // включение подсветки дисплея
 
-    search.viewScreen();
-    setNewId();
-    setNewKey();
+	search.viewScreen();
+	
+	while(TRUE)
+	{
+	#ifndef NO_IWDG
+		fwdgt_counter_reload();
+	#endif
 
-    if (display.setup.celsius & 0x01) air.changeScale(7, 10, 32, 7, BUTTON_CENTRAL_IMAGE, BUTTON_CENTRAL_IMAGE, 5, 5);
-    else air.changeScale(45, 50, 90, 45, BUTTON_CENTRAL_IMAGE, BUTTON_CENTRAL_IMAGE, 5, 10);
+	// экраны различных режимов работы пульта
+		activitySearch();                                                       // экран ожидания подключения к блоку управления
+		activityError();                                                        // экран индикации неисправностей
+		activityAbout();                                                        // экран информации о производителе
+		activityAir();                                                          // экран управления воздушным отоплением
+		activitySetup();                                                        // экран настройки подогревателя и пульта
+		activityStartTimers();                                                  // экран настройки таймеров запуска
+		activitySetupClock();                                                   // экран настройки текущего времени
+		activitySleep();                                                        // экран спящего режима
+		activityBleConnect(); 												  // экран запроса на подклюение по bluetooth
+		// задачи, независимые от режима работы пульта
+		handlerSleep();                                                         // проверка входа в спящий режим
+		handlerSensor();                                                        // проверка сенсорного экрана
+		handlerUsart();                                                         // передача и прием по последовательному каналу
+		can.handler();
+		rvc.handler();
+		handlerTemperature();                                                   // получение данных температуры
+		handlerClock();                                                         // обновление текущего времени
+		handlerTimer();                                                         // отсчет ограничений по времени работы
+		minuteHandler();
+		blt.handler(); // обработка пакетов данных Bluetooth
+		if (isTest)
+			usart.linkCnt=0;
+		if (saveSetupFlag)
+		{
+			saveSetupFlag=0;
+			writeSetup();
+		}
+		backup.handler();
 
-    while(TRUE)
-    {
-#ifndef NO_IWDG
-        fwdgt_counter_reload();
-#endif
-
-        // экраны различных режимов работы пульта
-        activitySearch();                                                       // экран ожидания подключения к блоку управления
-        activityError();                                                        // экран индикации неисправностей
-        activityAbout();                                                        // экран информации о производителе
-        activityAir();                                                          // экран управления воздушным отоплением
-        activitySetup();                                                        // экран настройки подогревателя и пульта
-        activityStartTimers();                                                  // экран настройки таймеров запуска
-        activitySetupClock();                                                   // экран настройки текущего времени
-        activitySleep();                                                        // экран спящего режима
-        // задачи, независимые от режима работы пульта
-        handlerSleep();                                                         // проверка входа в спящий режим
-        handlerSensor();                                                        // проверка сенсорного экрана
-        handlerUsart();                                                         // передача и прием по последовательному каналу
-        can.handler();
-        rvc.handler();
-        handlerTemperature();                                                   // получение данных температуры
-        handlerClock();                                                         // обновление текущего времени
-        handlerTimer();                                                         // отсчет ограничений по времени работы
-        minuteHandler();
-        if (display.setup.scheduleMode&1)
-            air.checkDayNight();                                                    // проверка дневного/ночного режима
-        handlerBluetooth();
-        if (isTest)
-            usart.linkCnt=0;
-        if (saveSetupFlag)
-        {
-            saveSetupFlag=0;
-            writeSetup();
-        }
-        backup.handler();
-
-    }
+	}
 }
 //-----------------------------------------------------
 void initAll(void)
 {
 
-    SystemInit();
-    clock.initialize();
-    rcu_apb2_clock_config(RCU_APB2_CKAHB_DIV2);
-    core.remapTable();
-    __enable_irq();
-    core.initialize();
-    //***********************************
-    ///*
+  SystemInit();
+  clock.initialize();
+  rcu_apb2_clock_config(RCU_APB2_CKAHB_DIV2);
+  core.remapTable();
+  __enable_irq();
+  core.initialize();
+  //***********************************
+  ///*
 #ifndef NO_IWDG
-    // enable IRC40K
-    rcu_osci_on(RCU_IRC40K);
-    // wait till IRC40K is ready
-    while(SUCCESS != rcu_osci_stab_wait(RCU_IRC40K))
+  // enable IRC40K
+  rcu_osci_on(RCU_IRC40K);
+  // wait till IRC40K is ready
+  while(SUCCESS != rcu_osci_stab_wait(RCU_IRC40K))
     {
     }
-    // confiure FWDGT counter clock: 40KHz(IRC40K) / 64 = 0.625 KHz
-    fwdgt_config(0x0FFF,FWDGT_PSC_DIV64);
-    // After 1.6 seconds to generate a reset
-    fwdgt_enable();
+  // confiure FWDGT counter clock: 40KHz(IRC40K) / 64 = 0.625 KHz
+  fwdgt_config(0x0FFF,FWDGT_PSC_DIV64);
+  // After 1.6 seconds to generate a reset
+  fwdgt_enable();
 #endif
-    //*/
-    //***********************************
-    display.initialize();
-    //***********************************
-    can.initialize();
-    //***********************************
-    usart.initialize();
-    //***********************************
-    temperature.initialize();
-    //***********************************
-    memory.initializeQuad();
-    memory.lockMemory(true);
-    //***********************************
-    slider.initialize();
-    //***********************************
-    sensor.initialize();
-    //***********************************
-    bluetooth.initialize((char*)"Timberline 1.5");
-    //***********************************
-    hcu.initialise();
+  //*/
+	//***********************************
+	display.initialize();
+	//***********************************
+	can.initialize();
+	//***********************************
+	usart.initialize();
+	//***********************************
+	temperature.initialize();
+	//***********************************
+	memory.initializeQuad();
+	memory.lockMemory(true);
+	//***********************************
+	slider.initialize();
+	//***********************************
+	sensor.initialize();
+	//***********************************
+	blt.initialize();
+	hcu.initialise();
 
-    backup.init();
-
+	backup.init();
+	
+	if (display.setup.celsius & 0x01) air.changeScale(7, 10, 32, 7, BUTTON_CENTRAL_IMAGE, BUTTON_CENTRAL_IMAGE, 5, 5);
+	else air.changeScale(45, 50, 90, 45, BUTTON_CENTRAL_IMAGE, BUTTON_CENTRAL_IMAGE, 5, 10);
+  
 }
 //-----------------------------------------------------
 void activitySearch(void)
@@ -243,7 +224,7 @@ void activitySearch(void)
 
     if (hcu.isConnect == hcu.CONNECT_STATUS_SEARCH)
     {
-        if (screen_visible != SCREEN_VISIBLE_SEARCH)
+      if (screen_visible != SCREEN_VISIBLE_SEARCH)
         {
             screen_visible_old = screen_visible;
             screen_visible = SCREEN_VISIBLE_SEARCH;
@@ -287,9 +268,11 @@ void activityError(void)
 
     if (hcu.faultCode != error.codeOld)
     {
+        //error.codeOld = hcu.error;
         if (hcu.faultCode != 0)
         {
-			backup.addErrorToLog(hcu.faultCode);
+
+            backup.addErrorToLog(hcu.faultCode);
             if (hcu.faultCode == 14)
             {
                 hcu.code14Counter++;
@@ -303,10 +286,8 @@ void activityError(void)
                 else
                     hcu.code14Counter=0;
             }
-
-            air.isFHeaterOn = false;
-
-
+			air.isFHeaterOn = false;
+			
             if (screen_visible != SCREEN_VISIBLE_ERROR)
             {
                 if (screen_visible == SCREEN_VISIBLE_SLEEP)
@@ -584,46 +565,57 @@ void activitySleep(void)
 
 void activityBleConnect(void)
 {
-    uint8_t result;
+	static bool firstStart_f = false;
+  uint8_t result;
 
-    if (screen_visible == SCREEN_VISIBLE_BLE_CONNECT)                             // экран запроса подключения по Bluetooth
-    {
-        result = bleConnect.viewHandler();
+  if (screen_visible == SCREEN_VISIBLE_BLE_CONNECT)                             // экран запроса подключения по Bluetooth
+  {
+	  if (firstStart_f) {
+		  firstStart_f = false;
+		  bleConnect.viewScreen();
+	  }
+      result = bleConnect.viewHandler();
 
         switch(result)
         {
         case 1: // подтверждение
-            isBleAccept = true;
-            isBleCancel = false;
-            timerCancel = core.getTick();
-            addNewId(newId); // было ///
-            isBleSendKey = true;
-            screen_visible = screen_visible_old;
-            if (screen_visible == SCREEN_VISIBLE_WORK) air.viewScreen(1);       // показываем тот экран, который был до отключения
-            else if (screen_visible == SCREEN_VISIBLE_SETUP) setup.viewScreen();
-            else
+          blt.isBleAccept = true;
+          blt.isBleCancel = false;
+          blt.timerCancel = core.getTick();
+          blt.addNewId(blt.newId); // 
+          blt.isBleSendKey = true;
+          screen_visible = screen_visible_old;
+          if (screen_visible == SCREEN_VISIBLE_AIR) air.viewScreen(1);       // показываем тот экран, который был до отключения
+          else if (screen_visible == SCREEN_VISIBLE_SETUP) setup.viewScreen();
+          else
             {
-                screen_visible = SCREEN_VISIBLE_WORK;
-                screen_visible_old = screen_visible;
-                air.viewScreen(1);
+              screen_visible = SCREEN_VISIBLE_AIR;
+              screen_visible_old = screen_visible;
+              air.viewScreen(1); // 
             }
-            break;
+			blt.isBleAcceptPage = false;
+			display.setTimer(display.setup.timeout*1000);
+          break;
         case 2: // отмена
-            isBleAccept = false;
-            isBleCancel = true;
-            timerCancel = core.getTick();
-            screen_visible = screen_visible_old;
-            if (screen_visible == SCREEN_VISIBLE_WORK) air.viewScreen(1);       // показываем тот экран, который был до отключения
-            else if (screen_visible == SCREEN_VISIBLE_SETUP) setup.viewScreen();
-            else
+          blt.isBleAccept = false;
+          blt.isBleCancel = true;
+          blt.timerCancel = core.getTick();
+          screen_visible = screen_visible_old;
+          if (screen_visible == SCREEN_VISIBLE_AIR) air.viewScreen(1);       // показываем тот экран, который был до отключения
+          else if (screen_visible == SCREEN_VISIBLE_SETUP) setup.viewScreen();
+          else
             {
-                screen_visible = SCREEN_VISIBLE_WORK;
-                screen_visible_old = screen_visible;
-                air.viewScreen(1);
+              screen_visible = SCREEN_VISIBLE_AIR;
+              screen_visible_old = screen_visible;
+              air.viewScreen(1);
             }
-            break;
+			blt.isBleAcceptPage = false;
+			display.setTimer(display.setup.timeout*1000);
+          break;
         }
-    }
+    } else {
+		firstStart_f = true;
+	}
 }
 
 //-----------------------------------------------------
@@ -698,151 +690,7 @@ void handlerTimer(void)
     }
 }
 //-----------------------------------------------------
-void addNewId(uint8_t *id)
-{
-    uint32_t a, N;
-    uint8_t i, x, array[256+16+16+64];
-    bool isEmpty;
 
-    fmc_unlock();
-    while(fmc_flag_get(FMC_FLAG_BANK0_BUSY) == SET)
-    {
-    }
-    for (i=0; i<16; i++)
-    {
-        isEmpty = true;
-        for (x=0; x<16; x++)
-        {
-            if (*(__IO uint8_t*)(BLE_ID_ADDRESS+16+16+i*16+x) != 0xFF) isEmpty = false;
-        }
-        if (isEmpty == true)
-        {
-            for (a=0; a<8; a+=4)
-            {
-                N = id[0+a];
-                N += id[1+a]<<8;
-                N += id[2+a]<<16;
-                N += id[3+a]<<24;
-                fmc_word_program(BLE_ID_ADDRESS+16+16+i*16+a, N);
-            }
-            fmc_lock();
-            return;
-        }
-    }
-    for (a=0; a<(256+16+16+64); a++)
-    {
-        array[a] = *(__IO uint8_t*)(BLE_ID_ADDRESS+a);
-    }
-    fmc_page_erase(BLE_ID_ADDRESS);
-    while(fmc_flag_get(FMC_FLAG_BANK0_BUSY) == SET)
-    {
-    }
-    for (a=32; a<(240+16+16); a++)
-    {
-        array[a] = array[a+16];
-    }
-    for (a=0; a<8; a++)
-    {
-        array[240+a+16+16] = id[a];
-    }
-    for (a=0; a<(256+16+16+64); a+=4)
-    {
-        N = array[0+a];
-        N += array[1+a]<<8;
-        N += array[2+a]<<16;
-        N += array[3+a]<<24;
-        fmc_word_program(BLE_ID_ADDRESS+a, N);
-    }
-    fmc_lock();
-}
-//-----------------------------------------------------
-void setNewId(void)
-{
-    uint32_t a, N;
-    uint8_t i, x, array[256+16+16+64];
-
-    if (*(__IO uint8_t*)(BLE_ID_ADDRESS+5) == ' ' &&
-            *(__IO uint8_t*)(BLE_ID_ADDRESS+6) == ' ' &&
-            *(__IO uint8_t*)(BLE_ID_ADDRESS+7) == ' ')
-    {
-
-        fmc_unlock();
-        while(fmc_flag_get(FMC_FLAG_BANK0_BUSY) == SET)
-        {
-        }
-        for (a=0; a<(256+16+16+64); a++)
-        {
-            array[a] = *(__IO uint8_t*)(BLE_ID_ADDRESS+a);
-        }
-        fmc_page_erase(BLE_ID_ADDRESS);
-        while(fmc_flag_get(FMC_FLAG_BANK0_BUSY) == SET)
-        {
-        }
-        // ID
-        for (a=0; a<3; a++)
-        {
-            x = 0;
-            for (i=0; i<2; i++)
-            {
-                x |= temperature.array[a*2+i] & 0x0F;
-                x = x<<4;
-            }
-            x = (x+0x20) & 0x3F;
-            array[a+5] = x;
-        }
-        // KEY
-        for (a=0; a<8; a++)
-        {
-            x = 0;
-            for (i=0; i<4; i++)
-            {
-                x |= temperature.array[a*2+i] & 0x03;
-                x = x<<2;
-            }
-            array[a+16] = x;
-        }
-        for (a=0; a<(256+16+16+64); a+=4)
-        {
-            N = array[0+a];
-            N += array[1+a]<<8;
-            N += array[2+a]<<16;
-            N += array[3+a]<<24;
-            fmc_word_program(BLE_ID_ADDRESS+a, N);
-        }
-        fmc_lock();
-    }
-}
-//-----------------------------------------------------
-void setNewKey(void)
-{
-    uint32_t a, N;
-    uint8_t i;
-
-
-    for (a=0; a<8; a++)
-    {
-        if (*(__IO uint8_t*)(BLE_ID_ADDRESS+8+a) != 0xFF)
-        {
-            return;
-        }
-    }
-
-    fmc_unlock();
-    while(fmc_flag_get(FMC_FLAG_BANK0_BUSY) == SET)
-    {
-    }
-    for (a=0; a<2; a++)
-    {
-        N = 0;
-        for (i=0; i<32; i++)
-        {
-            N |= temperature.array[a*6+i] & 0x01;
-            N = N<<1;
-        }
-        fmc_word_program(BLE_ID_ADDRESS+8+a*4, N);
-    }
-    fmc_lock();
-}
 //-----------------------------------------------------
 void writeSetup(void)
 {

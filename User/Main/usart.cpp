@@ -67,7 +67,7 @@ void Usart::handler(void)
 {
     static uint32_t timer = core.getTick();
     
-    if ((core.getTick() - timer) >= 200) {
+    if ((core.getTick() - timer) >= USART_TIMEOUT_PERIOD) {
         timer = core.getTick();
         
         this->processTimeOut();
@@ -143,7 +143,7 @@ void Usart::processReceivedData(void)
                     CRCinPacket=(this->packetIn[this->packetCounter-1]<<8)+this->packetIn[this->packetCounter];
                     if (this->crc==CRCinPacket) {                        //контрольная сумма совпадает.
                         this->isProcessPacket=1;                         //обрабатываем пакет
-                        //usart.linkCnt=0;
+                        usart.linkCnt=0;
                     }
                     else badCrcCounter++;
                     this->isWaitHeaderByte=1;
@@ -264,7 +264,7 @@ void Usart::processTimeOut(void)
 {
     if (this->isWaitHeaderByte==0) {
         if (this->packetTimeOut<250) this->packetTimeOut++;
-        if (this->packetTimeOut==250) {
+        if (this->packetTimeOut==25) {
             this->isWaitHeaderByte=1;
         }
     }
@@ -274,7 +274,7 @@ void Usart::processTimeOut(void)
             this->isLinkError=1;//нет связи
         }
     }
-    if (linkCnt < 50) linkCnt++;
+
 }
 //-----------------------------------------------------
 extern "C" void USART0_IRQHandler(void)

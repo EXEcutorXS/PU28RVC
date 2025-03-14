@@ -538,6 +538,6 @@ void RVCModule::ProcessMessage(uint8_t MsgNum)
         }
     }
     if (redrawSlider)
-        slider.setPosition(hcu.airHeaterTSetPoint[(air.isDay|air.isSelectDay)&(!air.isSelectNight)]);
+        slider.setPosition((uint16_t)hcu.airHeaterTSetPoint[(air.isDay|air.isSelectDay)&(!air.isSelectNight)]);
 
 }

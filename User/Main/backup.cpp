@@ -2,6 +2,7 @@
 #include "system.h"
 #include "backup.h"
 #include "hcu.h"
+#include "BluetoothHandler.h"
 
 Backup backup;
 
@@ -29,6 +30,7 @@ void Backup::init()
 	lastErrors3  =(uint16_t*)0x40006C54;
 	lastErrors4  =(uint16_t*)0x40006C58;
 	lastErrors5  =(uint16_t*)0x40006C5C;
+	isBleAccept  =(uint16_t*)0x40006C60;
 	
     if (*initFlag==0xC0FF)
     {
@@ -59,6 +61,7 @@ void Backup::handler()
     *waterElapsedSeconds = (core.getTick()-hcu.timerOffDomesticWater)/1000;
 	else
 		*waterElapsedSeconds = 0;
+	*isBleAccept = blt.isBleAccept?0xC0FF:0;
 }
 
 void Backup::restoreData()
@@ -74,6 +77,7 @@ void Backup::restoreData()
 		hcu.timerPumpOn = core.getTick()-*pumpElapsedSeconds*1000;
 	if (air.isWaterOn)
 		hcu.timerOffDomesticWater = core.getTick()-*waterElapsedSeconds*1000;
+	blt.isBleAccept = *isBleAccept==0xC0FF;
 }
 
 void Backup::addErrorToLog(uint16_t error)

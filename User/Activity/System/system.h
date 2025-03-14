@@ -50,6 +50,9 @@ class System
         uint16_t durationVal;
         
     private:
+		void BleStatusUpdater(void);
+		void BleStatusView(void);
+		void ScheduleModeView(void);
         bool isWaterOnOld;
         bool isFHeaterOnOld;
         bool isEHeaterOnOld;

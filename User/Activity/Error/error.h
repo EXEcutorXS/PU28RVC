@@ -18,7 +18,7 @@ class Error
         void viewMode(void);
         uint8_t sensorCheck(void);
         void buttonPress(void);
-        
+        void ClearErrors(void);
         uint8_t codeOld;
         
     private:
