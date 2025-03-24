@@ -31,7 +31,6 @@ lockTimer=100000;
 //-----------------------------------------------------
 void Hcu::handler(void)
 {
-//    static uint32_t timerTimeOut = 0;
     static uint32_t timerRequest = 0;
 	static uint32_t timerReceiveHold = 0;
 	static uint32_t Code14Timer = 0;
@@ -183,7 +182,7 @@ void Hcu::handler(void)
 void Hcu::RestoreConnection(void)
 {
 	//NVIC_SystemReset();
-//	uint8_t flag = 1;
+	uint8_t flag = 1;
 }
 //----------------
 void Hcu::UpdateSetpoints(uint8_t airState, float daySetpoint, float nightSetpoint)
