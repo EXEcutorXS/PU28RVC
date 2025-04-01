@@ -73,8 +73,8 @@ void System::viewScreen(bool isFirst)
     
     if (isFirst == true){
         canvas.writeFillRect(0,0,320,240,display.COLOR_BACK);   // вывод заднего фона
-		viewMode();
-        slider.setMinMax(OFF_VALUE, MIN_VALUE, MAX_VALUE, SMALL_STEP, BIG_STEP); // ставим пределы шкалы и шаг отрисовки сетки
+		
+        
         value = hcu.airHeaterTSetPoint[(air.isDay|air.isSelectDay)&(!air.isSelectNight)];
         if (air.isAirOn){
             for (i=0; i<slider.VALUE_LEN; i++){                // ставим ползунок по настройке
@@ -85,14 +85,9 @@ void System::viewScreen(bool isFirst)
         }
         else slider.position = 0;
         slider.positionTempOld = 0;
-//        while(true){
-//            result = slider.viewGridSens(slider.position,BACKGROUND_IMAGE,isClear);    // красная шкала
-//            isClear = false;
-//            if (result == false) a = sensorCheck();
-//            else break;
-//            if (a==3 || a==4) break;
-//        }
-		slider.viewScreen();
+				
+  		slider.viewScreen();
+				slider.setMinMax(OFF_VALUE, MIN_VALUE, MAX_VALUE, SMALL_STEP, BIG_STEP); // ставим пределы шкалы и шаг отрисовки сетки
         slider.drawDigGrid();
 		canvas.loadImageEffect(BUTTON_SYSTEM_X,BUTTON_SYSTEM_Y,ON_IMAGE,BUTTON_SYSTEM_STEP,0);      // отображение значка системы
         canvas.loadImageEffect(275,5,BUTTON_SETUP_IMAGE,BUTTON_SETUP_STEP,1);               // отображение значка настроек

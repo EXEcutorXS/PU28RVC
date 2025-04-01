@@ -15,6 +15,8 @@
 #include "pgn_rvc.h"
 #include "rvc.h"
 
+extern bool isTest;
+
 Hcu hcu;
 //-----------------------------------------------------
 Hcu::Hcu(void)
@@ -162,11 +164,12 @@ void Hcu::handler(void)
     }
 	checkPump();
 		
-	if (core.getTick() > 10000){
-		if (core.getTick()-LastReceivedPacketTick > 30000) {
+		if (core.getTick()-LastReceivedPacketTick > 30000 && isTest==false) 
 			RestoreConnection();
-		}
-		if ((core.getTick()-LastRecPackCheckTick) > 30000)
+		
+
+		
+		if ((core.getTick()-LastRecPackCheckTick) > 30000 && isTest==false)
 		{
 			LastRecPackCheckTick=core.getTick();
 			if ((ReceivedByHCUPacketCounter==ReceivedPacketCounterOld)&&(!Ignore_ReceivedByHCUPacketCounter_f)) {
@@ -176,14 +179,14 @@ void Hcu::handler(void)
 				ReceivedPacketCounterOld=ReceivedByHCUPacketCounter;
 			}
 		}
-	}
+	
 }
 //-----------------------------------------------------
 void Hcu::RestoreConnection(void)
 {
-	//NVIC_SystemReset();
-	uint8_t flag = 1;
+	NVIC_SystemReset();
 }
+
 //----------------
 void Hcu::UpdateSetpoints(uint8_t airState, float daySetpoint, float nightSetpoint)
 {
