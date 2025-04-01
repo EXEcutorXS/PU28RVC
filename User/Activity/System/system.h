@@ -25,6 +25,7 @@ class System
         void checkConnect(void);
         void checkDayNight(void);
         void changeScale(uint8_t offVal, uint8_t minVal, uint8_t maxVal, uint8_t startVal, uint8_t offImage, uint8_t onImage, uint8_t smallStep, uint8_t bigStep);
+		void ScheduleModeView(void);
         
         bool isWaterOn;
         bool isFHeaterOn;
@@ -52,7 +53,7 @@ class System
     private:
 		void BleStatusUpdater(void);
 		void BleStatusView(void);
-		void ScheduleModeView(void);
+		
         bool isWaterOnOld;
         bool isFHeaterOnOld;
         bool isEHeaterOnOld;

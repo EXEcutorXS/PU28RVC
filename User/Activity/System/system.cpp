@@ -245,7 +245,7 @@ void System::viewMode(void)
 //-----------------------------------------------------
 void System::ScheduleModeView(void)
 {
-	if (display.setup.scheduleMode)
+	if (display.setup.scheduleMode&1)
 	{
 		if ((isDay|isSelectDay)&(!isSelectNight))
 			canvas.loadImageEffect(BUTTON_DAY_NIGHT_X,BUTTON_DAY_NIGHT_Y,TEXT_DAY_IMAGE,BUTTON_SETUP_STEP,0);
@@ -744,7 +744,6 @@ void System::checkDayNight(void)
                 if (screen_visible == SCREEN_VISIBLE_AIR) canvas.loadImageEffect(BUTTON_DAY_NIGHT_X,BUTTON_DAY_NIGHT_Y,TEXT_NIGHT_IMAGE,BUTTON_SETUP_STEP,0);
                 slider.setPosition(hcu.airHeaterTSetPoint[(air.isDay|air.isSelectDay)&(!air.isSelectNight)]);
             }
-
         }
     }
     

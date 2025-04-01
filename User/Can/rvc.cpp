@@ -423,15 +423,7 @@ void RVCModule::ProcessMessage(uint8_t MsgNum)
             display.setup.scheduleMode = ((D[1]>>6)&3)|2;
             saveSetupFlag=1;
 			if (screen_visible != SCREEN_VISIBLE_AIR) break;
-            if (display.setup.scheduleMode&1)
-            {
-                if ((air.isDay|air.isSelectDay)&(!air.isSelectNight))
-                    canvas.loadImageEffect(BUTTON_DAY_NIGHT_X,BUTTON_DAY_NIGHT_Y,TEXT_DAY_IMAGE,BUTTON_SETUP_STEP,0);
-                else
-                    canvas.loadImageEffect(BUTTON_DAY_NIGHT_X,BUTTON_DAY_NIGHT_Y,TEXT_NIGHT_IMAGE,BUTTON_SETUP_STEP,0);
-            }
-            else
-                canvas.writeFillRect(BUTTON_DAY_NIGHT_X,BUTTON_DAY_NIGHT_Y,30,30,0);
+			air.ScheduleModeView();
         }
         break;
 

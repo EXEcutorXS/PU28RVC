@@ -1,3 +1,6 @@
+9.0.100.35
+Test mode added
+Moon/sun icon RV-C bug fixed
 9.0.100.34
 Bluetooth added
 9.0.100.33
